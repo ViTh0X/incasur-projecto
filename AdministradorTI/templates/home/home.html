@@ -244,7 +244,7 @@
                     <path d="M7 19h3a2 2 0 0 0 2 -2v-8a2 2 0 0 1 2 -2h7" />
                     <path d="M18 4l3 3l-3 3" />
                     </svg>                    
-                    <a href="{% url 'descargar_archivo' filename='Guía de Generar Archivo BSI.pdf' %}" target="_blank">Generar BSI</a>                    
+                    <a href="{% url 'descargar_archivo_pdf' filename='Guía de Generar Archivo BSI.pdf' %}" target="_blank">Generar BSI</a>                    
                 </div>
                 <div class="variados__menu--items"> 
                     <svg
@@ -262,7 +262,7 @@
                     <path d="M7 19h3a2 2 0 0 0 2 -2v-8a2 2 0 0 1 2 -2h7" />
                     <path d="M18 4l3 3l-3 3" />
                     </svg>
-                    <a href="{% url 'descargar_archivo' filename='Guía de Cuadre de Cuentas Pasivas.pdf' %}" target="_blank">PostCierre Cuadre Ahorros</a>
+                    <a href="{% url 'descargar_archivo_pdf' filename='Guía de Cuadre de Cuentas Pasivas.pdf' %}" target="_blank">PostCierre Cuadre Ahorros</a>
                 </div>
                 <div class="variados__menu--items"> 
                     <svg
@@ -280,7 +280,7 @@
                     <path d="M7 19h3a2 2 0 0 0 2 -2v-8a2 2 0 0 1 2 -2h7" />
                     <path d="M18 4l3 3l-3 3" />
                     </svg>
-                    <a href="{% url 'descargar_archivo' filename='Guía de Cuadre de Cuentas Activos.pdf' %}" target="_blank">PostCierre Cuadre Creditos</a>
+                    <a href="{% url 'descargar_archivo_pdf' filename='Guía de Cuadre de Cuentas Activos.pdf' %}" target="_blank">PostCierre Cuadre Creditos</a>
                 </div>
                 <div class="variados__menu--items"> 
                     <svg
@@ -298,7 +298,7 @@
                     <path d="M7 19h3a2 2 0 0 0 2 -2v-8a2 2 0 0 1 2 -2h7" />
                     <path d="M18 4l3 3l-3 3" />
                     </svg>
-                    <a href="{% url 'descargar_archivo' filename='Guía de cierre diario.pdf' %}" target="_blank">Guia Cierre Diario</a>
+                    <a href="{% url 'descargar_archivo_pdf' filename='Guía de cierre diario.pdf' %}" target="_blank">Guia Cierre Diario</a>
                 </div>
                 <div class="variados__menu--items"> 
                     <svg
@@ -316,7 +316,7 @@
                     <path d="M7 19h3a2 2 0 0 0 2 -2v-8a2 2 0 0 1 2 -2h7" />
                     <path d="M18 4l3 3l-3 3" />
                     </svg>
-                    <a href="{% url 'descargar_archivo' filename='Guía de cierre mensual.pdf' %}" target="_blank">Guia Cierre Mensual</a>
+                    <a href="{% url 'descargar_archivo_pdf' filename='Guía de cierre mensual.pdf' %}" target="_blank">Guia Cierre Mensual</a>
                 </div>
             </div>
             <div class="variados__menu">
@@ -374,18 +374,21 @@
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="#000000"
-                    stroke-width="2"
+                    stroke-width="1"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     >
-                    <path d="M10.5 21h-4.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v3" />
-                    <path d="M16 3v4" />
-                    <path d="M8 3v4" />
-                    <path d="M4 11h10" />
-                    <path d="M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-                    <path d="M18 16.5v1.5l.5 .5" />
-                    </svg> 
-                    <a href="" target="_blank">Usuarios FortiClient</a>                        
+                    <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                    <path d="M4 8h16" />
+                    <path d="M20 12h-16" />
+                    <path d="M4 16h16" />
+                    <path d="M9 4v4" />
+                    <path d="M14 8v4" />
+                    <path d="M8 12v4" />
+                    <path d="M16 12v4" />
+                    <path d="M11 16v4" />
+                    </svg>
+                    <a href="https://192.168.1.250:9443/login?redir=%2F" target="_blank">Link Acceso para Forti-EDR</a>                        
                 </div>
                 <div class="variados__menu--items">
                     <svg
@@ -395,19 +398,46 @@
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="#000000"
-                    stroke-width="2"
+                    stroke-width="1"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     >
-                    <path d="M10.5 21h-4.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v3" />
-                    <path d="M16 3v4" />
-                    <path d="M8 3v4" />
-                    <path d="M4 11h10" />
-                    <path d="M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-                    <path d="M18 16.5v1.5l.5 .5" />
-                    </svg> 
-                    <a href="https://192.168.1.250:9443/login?redir=%2F" target="_blank">Link Acceso para FortiEDR</a>                        
-                </div>                                
+                    <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                    <path d="M4 8h16" />
+                    <path d="M20 12h-16" />
+                    <path d="M4 16h16" />
+                    <path d="M9 4v4" />
+                    <path d="M14 8v4" />
+                    <path d="M8 12v4" />
+                    <path d="M16 12v4" />
+                    <path d="M11 16v4" />
+                    </svg>
+                    <a href="" target="_blank">Usuarios Forti-Client</a>                        
+                </div>
+                <div class="variados__menu--items">
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="28"
+                    height="28"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#000000"
+                    stroke-width="1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    >
+                    <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                    <path d="M4 8h16" />
+                    <path d="M20 12h-16" />
+                    <path d="M4 16h16" />
+                    <path d="M9 4v4" />
+                    <path d="M14 8v4" />
+                    <path d="M8 12v4" />
+                    <path d="M16 12v4" />
+                    <path d="M11 16v4" />
+                    </svg>
+                    <a href="{% url 'instalar_forticlient' %}" target="_blank">Instalador Forti-Client</a>                        
+                </div>                             
         </div>
     </main>    
 </body>    

@@ -323,3 +323,21 @@ body{
     color: var(--color2);
 }
 /***********************************/
+/***********Informacion Principal***********/
+.info__main{
+    margin-left: 5rem;
+}
+.info__main--opciones{
+    text-align: center;
+}
+.info__main--opciones a{
+    display: flex;
+    margin-left: 4rem;
+    column-gap: 1rem;
+    text-decoration: none;
+}
+.info__main--opciones img{
+    width: 50rem;        
+    height: 40rem;
+}
+/***********************************/

@@ -1,7 +1,40 @@
 {% extends '../layout.html' %}
-{% block  %}FortiClient{% endblock  %}
+{% block titulo %}FortiClient{% endblock  %}
 {% block contenido %}
-
-
-
+{% load static %}
+<body>
+    <div class="contenedor">
+        <h1 class="no-margin">Guía para instalar FortiClient:</h1> 
+        <div class="info__main">
+            <h2 class="no-margin">Paso 1:</h2>
+            <div class="info__main--opciones">                
+                <a href="{% url 'descargar_archivo_instaladores' filename='FortiClienInstaller_7.0.exe' %}">
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#000000"
+                    stroke-width="1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    >
+                    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                    <path d="M7 11l5 5l5 -5" />
+                    <path d="M12 4l0 12" />
+                    </svg>
+                    <span class="no-padding">FortiClienInstaller_7.0.exe</span>
+                    </a>
+            </div>
+            <h2 class="no-margin">Paso 2:</h2>
+            <div class="info__main--opciones">
+                <p>- Seguir la configuracion de la imagen de la imagen acontinuacion <span class="informacion__extra">(Cuidado el Nombre de Usuario Varia)</span>.</p>
+                <img src="{% static 'img/Forticlient Config.png' %}" alt="configuracion forticlient">
+            </div> 
+        </div>   
+               
+    </div>
+    
+</body>
 {% endblock  %}
