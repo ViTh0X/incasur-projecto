@@ -27,3 +27,17 @@ class lista_ips(models.Model):
         
     def __str__(self):
         return self.ip
+    
+class lista_ips2(models.Model):  
+    id = models.CharField(primary_key=True)  
+    ip = models.CharField(max_length=15,unique=True)    
+    codigo_estado = models.ForeignKey(tipo_estado_ips,on_delete=models.CASCADE)
+    fecha_modificacion = models.DateField(auto_now=True)
+    
+    class Meta:
+        db_table = 'lista_ips'
+        # Ordena los resultados por el campo 'ip' de forma ascendente
+        ordering = ['id']
+        
+    def __str__(self):
+        return self.ip    
