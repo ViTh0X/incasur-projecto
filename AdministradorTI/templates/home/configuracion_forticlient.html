@@ -1,13 +1,14 @@
 {% extends '../layout.html' %}
-{% block titulo %}FortiClient{% endblock  %}
+{% block titulo %}Como Instalar FortiClient{% endblock  %}
 {% block contenido %}
 {% load static %}
 <body>
     <div class="contenedor">
         <h1 class="no-margin">Guía para instalar FortiClient:</h1> 
         <div class="info__main">
-            <h2 class="no-margin">Paso 1:</h2>
-            <div class="info__main--opciones">                
+            <h2 class="no-margin">Paso 1:</h2>            
+            <div class="info__main--opciones">
+                <h3 class="no-margin">-Descargar el instalador Forticlient:</h3>                
                 <a href="{% url 'descargar_archivo_instaladores' filename='FortiClienInstaller_7.0.exe' %}">
                     <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +30,7 @@
             </div>
             <h2 class="no-margin">Paso 2:</h2>
             <div class="info__main--opciones">
-                <p>- Seguir la configuracion de la imagen de la imagen acontinuacion <span class="informacion__extra">(Cuidado el Nombre de Usuario Varia)</span>.</p>
+                <h3 class="no-margin">- Seguir la configuracion de la imagen de la imagen acontinuacion <span class="informacion__extra">(Cuidado el Nombre de Usuario Varia)</span>.</h3>
                 <img src="{% static 'img/Forticlient Config.png' %}" alt="configuracion forticlient">
             </div> 
         </div>   

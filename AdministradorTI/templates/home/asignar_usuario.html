@@ -1,0 +1,15 @@
+{% extends '../layout.html' %}
+{% block title %}Asignar Usuario{% endblock %}
+{% block contenido %}
+<body>
+    <div class="contenedor">
+        <h1 class="no-margin">Asignar Usuario</h1>
+        <form action="POST">
+            {% csrf_token %}
+            {{ form.id.label_tag }}
+            {{ form.id }}
+            {{ form.id.errors }}
+        </form>
+    </div>
+</body>
+{% endblock %}

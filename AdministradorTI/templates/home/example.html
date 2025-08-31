@@ -1,0 +1,114 @@
+{% extends "../layout.html" %}
+{% block title %} Listar Colaboradores{% endblock  %}
+{% block contenido %}        
+    <body>
+        <main class="contenedor">
+            <div class="contenido__table">
+                <h1 class="no-margin">Lista de Colaboradores</h1>
+                <div class="opciones__table">
+                    <div>
+                        <a href="{% url 'exportar_excel' %}">
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#41b955"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            >
+                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+                            <path d="M10 12l4 5" />
+                            <path d="M10 17l4 -5" />
+                            </svg>
+                        </a>
+                        {% comment %} <a href="">                        
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#ff3b30"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            >
+                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                            <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
+                            <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6" />
+                            <path d="M17 18h2" />
+                            <path d="M20 15h-3v6" />
+                            <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" />
+                            </svg>
+                        </a> {% endcomment %}
+                    </div>                
+                    <div>
+                        <a class="opciones__table--agregar" href="{% url 'crear_colaborador' %}">+ Agregar</a>                
+                    </div>                                
+                </div>            
+                <table class="table">
+                <thead>
+                    <tr>
+                        <th>IP</th>
+                        <th>Nombre</th>
+                        <th>Puesto</th>
+                        <th>Cod Impresion</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for colaborador in colaboradores %}
+                    <tr>
+                        <td>{{ colaborador.ip }}</td>
+                        <td>{{ colaborador.nombre }}</td>
+                        <td>{{ colaborador.puesto }}</td>
+                        <td>{{ colaborador.codimpresion }}</td>
+                        <td>{{ colaborador.estado }}</td>
+                        <td>
+                            <a href="{% url 'editar_colaborador' pk=colaborador.pk %}">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="28"
+                                height="28"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#5856d6"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                <path d="M13.5 6.5l4 4" />
+                                </svg>
+                            </a> 
+                            <a href="{% url 'cesar_colaborador' pk=colaborador.pk %}">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="28"
+                                height="28"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#ff2d55"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M10 10l4 4m0 -4l-4 4" />
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+            
+        </main>                    
+    </body>    
+{% endblock contenido %}

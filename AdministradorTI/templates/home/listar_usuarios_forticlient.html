@@ -1,0 +1,57 @@
+{% extends '../layout.html' %}
+{% block titulo %}Usuarios FortiClient{% endblock %}
+{% block contenido %}
+<body>
+    <main class="contenedor">
+        <div class="contenido__table">
+            <h1 class="no-margin">Usuarios FortiClient</h1>
+            <div class="opciones__table">
+
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Contraseña</th>
+                        <th>Colaborador Asignado</th>
+                        <th>Fecha Modificacion</th>
+                        <th>Asignar</th>
+                    </tr>                    
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios_forticlient %}
+                    <tr>
+                        <td>{{ usuario.usuario }}</td>
+                        <td>{{ usuario.contraseña }}</td>
+                        <td>{{ usuario.usuario_asignado }}</td>
+                        <td>{{ usuario.fecha_modificacion|date:"Y - m - d" }}</td>
+                        <td>
+                            <a href="{% url 'editar_usuario_forti' pk=usuario.id %}">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="32"
+                                height="32"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#000000"
+                                stroke-width="1"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M14 7v3h3l3 -3h-3v-3z" />
+                                <path d="M14 10l-9 9" />
+                                <path d="M5 15v4h4" />
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+        
+
+    </main> 
+</body>
+{% endblock %}

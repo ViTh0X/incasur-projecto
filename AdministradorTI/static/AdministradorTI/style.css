@@ -330,6 +330,11 @@ body{
 .info__main--opciones{
     text-align: center;
 }
+.info__main--opciones h3{
+    margin-left: 3.5rem;
+    text-align: left;
+    font-weight: normal;
+}
 .info__main--opciones a{
     display: flex;
     margin-left: 4rem;
