@@ -1,7 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, FileResponse, Http404
 from django.conf import settings
+
+
+
 import os
+import datetime
 
 from .models import cuentas_forticlient, forms_cuentas_forticlient
 # Create your views here.
@@ -44,13 +48,16 @@ def descargar_archivo_instaladores(request,filename):
     
 def editar_usuario_forti(request,pk):
     usuario_forticlient = get_object_or_404(cuentas_forticlient,pk=pk)
+    tiempo_actual = datetime.date.today()
     if request.method == 'POST':
-        form = forms_cuentas_forticlient(request.POST, instance=usuario_forticlient)#rquest.Post contiene mi data del formulario y instance= contiene el objeto colaborador
+        form = forms_cuentas_forticlient(request.POST, instance=usuario_forticlient)
         if form.is_valid():
             form.save()
-            return redirect('lista_colaboradores')
+            return redirect('listar_usuarios_forticlient')
     else:
         form = forms_cuentas_forticlient(instance=usuario_forticlient)
+    
+    info = {'form':form,'usuario_forticlient':usuario_forticlient,'tiempo_actual':tiempo_actual}
         
-    return render(request,'home/asignar_usuario.html',{'form':form})
+    return render(request,'home/asignar_usuario.html',info)
     return Http404

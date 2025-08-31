@@ -22,4 +22,4 @@ class cuentas_forticlient(models.Model):
 class forms_cuentas_forticlient(forms.ModelForm):
     class Meta:
         model = cuentas_forticlient
-        fields = ['id','usuario','contraseña','usuario_asignado']
+        fields = ['usuario_asignado']

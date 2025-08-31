@@ -25,7 +25,7 @@
                         <td>{{ usuario.contraseña }}</td>
                         <td>{{ usuario.usuario_asignado }}</td>
                         <td>{{ usuario.fecha_modificacion|date:"Y - m - d" }}</td>
-                        <td>
+                        <td >
                             <a href="{% url 'editar_usuario_forti' pk=usuario.id %}">
                                 <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -49,9 +49,7 @@
                 </tbody>
 
             </table>
-        </div>
-        
-
+        </div>        
     </main> 
 </body>
 {% endblock %}

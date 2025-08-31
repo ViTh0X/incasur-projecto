@@ -1,15 +1,40 @@
 {% extends '../layout.html' %}
-{% block title %}Asignar Usuario{% endblock %}
+{% block titulo %}Asignar Usuario{% endblock %}
 {% block contenido %}
 <body>
-    <div class="contenedor">
-        <h1 class="no-margin">Asignar Usuario</h1>
-        <form action="POST">
-            {% csrf_token %}
-            {{ form.id.label_tag }}
-            {{ form.id }}
-            {{ form.id.errors }}
-        </form>
-    </div>
+    <main class="contenedor">
+        <section>
+        <h1 class="no-margin">Asignar Usuario:</h1>
+            <form class="formulario" action="POST">
+                {% csrf_token %}
+                <fieldset >
+                    <legend class="no-margin">Seleccione un Usuario</legend>
+                    <div class="contenedor-campos">
+                        <div class="campo">
+                            <label class="campo--label">Usuario :</label>
+                            <label class="campo--data">{{ usuario_forticlient.usuario }}</label>
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Contraseña :</label>
+                            <label class="campo--data">{{ usuario_forticlient.contraseña }}</label>
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Fecha Asignado :</label>
+                            <label class="campo--data">{{ tiempo_actual|date:'Y - m - d' }}</label>
+                        </div> 
+                        <div class="campo__opciones">
+                            <label class="campo--label">Seleccionar Colaborador:</label>                    
+                            {{ form.usuario_asignado }}
+                            {{ form.usuario_asignado.errors }}                    
+                        </div>
+                        <div class="botones-formularios">
+                            <a href="{% url 'listar_usuarios_forticlient' %}">Volver a la Lista</a>
+                            <button type="submit">Agregar</button>                
+                        </div>                                       
+                    </div>                    
+                </fieldset>                
+            </form>
+        </section>
+    </main>        
 </body>
 {% endblock %}

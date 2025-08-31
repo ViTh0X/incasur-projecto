@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %} <!--Cargando recursos estaticos-->
-    <title>{% block titulo %}{% endblock  %} - Administrador        
+    <title>{% block titulo %}{% endblock  %} - Incasur        
     </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,6 +27,7 @@
             <a href="{% url 'home' %}">Inventario Hardware</a>
             <a href="{% url 'home' %}">Inventario Software</a>
             <a href="{% url 'home' %}">Back UP Informacion</a>
+            <a href="{% url 'home' %}">Equipos Informaticos</a>
         </nav>
     </header>
     {% block contenido %}        
