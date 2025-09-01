@@ -18,10 +18,14 @@ class estado_colaboradores(models.Model):
 
 class lista_colaboradores(models.Model):
     codigo_colaborador = models.AutoField(primary_key=True)
-    ip_colaborador = models.ForeignKey(lista_ips,on_delete=models.CASCADE, to_field='ip')
     nombre_colaborador = models.CharField(max_length=150,unique=True)
-    puesto_colaborador = models.CharField(max_length=70)
-    codigo_impresion_colaborador = models.CharField(max_length=10)    
+    ip_colaborador = models.ForeignKey(lista_ips,on_delete=models.CASCADE, to_field='ip')
+    usuario_sistema = models.CharField(max_length=15,unique=True)
+    correo = models.CharField(max_length=20,unique=True)
+    usuario_sentinel = models.CharField(max_length=10,unique=True)
+    usuario_sbs = models.CharField(max_length=15,unique=True)
+    codigo_impresion_colaborador = models.CharField(max_length=10,unique=True)    
+    cargo_colaborador = models.CharField(max_length=70)    
     estado_colaboradores = models.ForeignKey(estado_colaboradores,on_delete=models.CASCADE)    
     fecha_modificacion = models.DateTimeField(auto_now=True)
     
