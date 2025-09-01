@@ -10,8 +10,7 @@ class cuentas_forticlient(models.Model):
     usuario = models.CharField(max_length=20,unique=True)
     contraseña = models.CharField(max_length=15,unique=True)
     usuario_asignado = models.ForeignKey(lista_colaboradores,null=True,blank=True,on_delete=models.CASCADE,to_field='nombre_colaborador')
-    fecha_modificacion = models.DateField(auto_now=True)
-    
+    fecha_modificacion = models.DateField(auto_now=True)    
     class Meta:
         db_table = 'cuentas_forticlient'
         
