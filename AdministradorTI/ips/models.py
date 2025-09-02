@@ -1,12 +1,10 @@
 from django.db import models
 
-from colaboradores.models import lista_colaboradores
-
 # Create your models here.
 
 class tipo_estado_ips(models.Model):
     codigo_estado = models.AutoField(primary_key=True)
-    nombre_estado = models.CharField(max_length=40)
+    nombre_estado = models.CharField(max_length=40,unique=True)
     descripcion_estado = models.CharField(max_length=60)
     
     class Meta:
@@ -17,7 +15,7 @@ class tipo_estado_ips(models.Model):
     
 class tipo_secciones(models.Model):
     id = models.AutoField(primary_key=True)
-    nombre_seccion = models.CharField(max_length=50)
+    nombre_seccion = models.CharField(max_length=50,unique=True)
     descripcion_seccion = models.CharField(max_length=120)
     
     class Meta:
@@ -28,7 +26,7 @@ class tipo_secciones(models.Model):
     
 class niveles_firewall(models.Model):
     id = models.AutoField(primary_key=True)
-    nombre_nivel = models.CharField(max_length=50)
+    nombre_nivel = models.CharField(max_length=50,unique=True)
     descripcion_nivel = models.CharField(max_length=120)
     
     class Meta:
@@ -39,7 +37,7 @@ class niveles_firewall(models.Model):
     
 class tipo_equipos_informaticos(models.Model):
     id = models.AutoField(primary_key=True)
-    nombre_tipo_equipo = models.CharField(max_length=50)
+    nombre_tipo_equipo = models.CharField(max_length=50,unique=True)
     descripcion_tipo_equipo = models.CharField(max_length=120)
     
     class Meta:
@@ -50,7 +48,7 @@ class tipo_equipos_informaticos(models.Model):
     
 class oficinas(models.Model):
     id = models.AutoField(primary_key=True)
-    nombre_oficina = models.CharField(max_length=150)
+    nombre_oficina = models.CharField(max_length=150,unique=True)
     
     class Meta:
         db_table = 'oficinas'
@@ -62,8 +60,7 @@ class lista_ips(models.Model):
     id = models.CharField(primary_key=True)  
     ip = models.CharField(max_length=15,unique=True) 
     ip_seccion = models.ForeignKey(tipo_secciones,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_seccion')
-    ip_nivel_firewall = models.ForeignKey(niveles_firewall,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_nivel')
-    colaborador_asignado = models.ForeignKey(lista_colaboradores,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_colaborador')
+    ip_nivel_firewall = models.ForeignKey(niveles_firewall,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_nivel')    
     tipo_equipo = models.ForeignKey(tipo_equipos_informaticos,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_tipo_equipo')    
     marca_equipo = models.CharField(default='Generico',max_length=120)
     modelo_equipo = models.CharField(default='Generico',max_length=120)
