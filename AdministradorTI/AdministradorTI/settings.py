@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+21k2e5z4@x^kxk8j*hd^6y93%==$5msg1=a@%j=iao-yjns2-'
+SECRET_KEY = 'django-insecure-unp06nl8bb$-+$d@kplp3l32riq^8w$_w8_wn4qb$tttk%t7y_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.34']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -86,7 +87,6 @@ DATABASES = {
         'USER': os.getenv('DATABASE_USER'),
         'PASSWORD': os.getenv('DATABASE_PASSWORD'),
         'PORT': os.getenv('DATABASE_PORT'),
-        
     }
 }
 
@@ -137,7 +137,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'archivos')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 #Configuracion Celery broker
 CELERY_BROKER_URL = 'redis://localhost:6379/0'

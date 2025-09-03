@@ -24,7 +24,7 @@ class lista_colaboradores(models.Model):
     correo = models.CharField(max_length=20,unique=True,default="SIN CORREO")
     usuario_sentinel = models.CharField(max_length=15, unique=True,default="SIN SENTINEL")
     usuario_sbs = models.CharField(max_length=15,unique=True,default="SIN SBS")
-    codigo_impresion_colaborador = models.CharField(max_length=10,unique=True)    
+    codigo_impresion_colaborador = models.CharField(max_length=20,unique=True)    
     cargo_colaborador = models.CharField(max_length=70)    
     estado_colaboradores = models.ForeignKey(estado_colaboradores,on_delete=models.CASCADE)    
     fecha_modificacion = models.DateTimeField(auto_now=True)

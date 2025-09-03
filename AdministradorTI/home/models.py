@@ -22,3 +22,4 @@ class forms_cuentas_forticlient(forms.ModelForm):
     class Meta:
         model = cuentas_forticlient
         fields = ['usuario_asignado']
+# Create your models here.
