@@ -11,7 +11,7 @@ class tipo_estado_ips(models.Model):
         db_table = 'tipo_estado_ips'
         
     def __str__(self):
-        return self.codigo_estado
+        return self.nombre_estado
     
 class tipo_secciones(models.Model):
     id = models.AutoField(primary_key=True)
@@ -57,7 +57,7 @@ class oficinas(models.Model):
         return self.nombre_oficina    
         
 class lista_ips(models.Model):  
-    id = models.CharField(primary_key=True)  
+    id = models.AutoField(primary_key=True)  
     ip = models.CharField(max_length=15,unique=True) 
     ip_seccion = models.ForeignKey(tipo_secciones,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_seccion')
     ip_nivel_firewall = models.ForeignKey(niveles_firewall,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_nivel')    
@@ -65,7 +65,7 @@ class lista_ips(models.Model):
     marca_equipo = models.CharField(max_length=120,null=True,blank=True)
     modelo_equipo = models.CharField(max_length=120,null=True,blank=True)
     oficina = models.ForeignKey(oficinas,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_oficina')
-    codigo_estado = models.ForeignKey(tipo_estado_ips,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_estado')
+    codigo_estado = models.ForeignKey(tipo_estado_ips,on_delete=models.CASCADE,null=True,blank=True)
     fecha_modificacion = models.DateField(auto_now=True)
     
     class Meta:

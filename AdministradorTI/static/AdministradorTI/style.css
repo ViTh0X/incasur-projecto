@@ -416,5 +416,57 @@ body{
     font-size: 1.5rem;
     background-color: var(--gris);
 }
-
+.campos__formulario--amplio{
+    width: 75%;    
+}
+.campos__formulario--amplio input{
+    border: 0;
+    padding: 0;
+    font-size: 2rem;
+    width: 100%;
+    height: 90%;
+    border-radius: 0.5rem;
+}
+.campos__formulario--listbox{
+    width: 50%;    
+}
+.campos__formulario--listbox select{
+    border: 0;
+    padding: 0;
+    font-size: 2rem;
+    width: 100%;
+    height: 90%;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+.campos__formulario--normal{
+    width: 50%;    
+}
+.campos__formulario--normal input{
+    border: 0;
+    padding: 0;
+    font-size: 2rem;
+    width: 100%;
+    height: 90%;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+.boton__grabarforumlario{
+    margin-top: 1rem;
+    height: 5rem;
+}
+.boton__grabarforumlario button{
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: var(--color1);
+    color: var(--blanco);
+}
+.boton__grabarforumlario button:hover{
+    cursor: pointer;
+}
 /***********************************/

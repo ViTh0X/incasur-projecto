@@ -1,0 +1,44 @@
+{% extends '../layout.html' %}
+{% block titulo %}Lista Colaboradores{% endblock %}
+{% block contenido %}
+<body>
+    <main class="contenedor">
+        <div class="contenido__table">
+            <h1 class="no-margin">Colaboradores Incasur</h1>
+            <div class="opciones__table">
+                <a href="{% url 'agregar_colaborador' %}">Agregar</a>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>IP asignada</th>
+                        <th>Codigo FTIA</th>
+                        <th>Correo Empresarial</th>
+                        <th>Usuario Sentinel</th>
+                        <th>Usuario SBS</th>
+                        <th>Codigo Impresion</th>
+                        <th>Cargo Colaborador</th>
+                        <th>Estado Colaborador</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for colaborador in colaboradores %}
+                    <tr>
+                        <td>{{ colaborador.nombre_colaborador }}</td>
+                        <td>{{ colaborador.ip_colaborador }}</td>
+                        <td>{{ colaborador.usuario_sistema }}</td>
+                        <td>{{ colaborador.correo }}</td>
+                        <td>{{ colaborador.usuario_sentinel }}</td>
+                        <td>{{ colaborador.usuario_sbs }}</td>
+                        <td>{{ colaborador.codigo_impresion_colaborador }}</td>
+                        <td>{{ colaborador.cargo_colaborador }}</td>           
+                        <td>{{ colaborador.estado_colaboradores }}</td>             
+                    </tr>
+                    {% endfor %}                    
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>    
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends '../layout.html' %}
+{% block titulo %}Agregar Colaborador{% endblock %}
+{% block contenido %}
+<body>
+    <main class="contenedor">
+        <section>
+            <h1 class="no-margin">Crear Nuevo Colaborador:</h1>
+                <form class="formulario" method="POST">
+                    {% csrf_token %}                    
+                    <div class="contenedor-campos">
+                        <div class="campo">
+                            <label class="campo--label">Nombre :</label>
+                            <div class="campos__formulario--amplio">
+                                {{ formulario.nombre_colaborador }}
+                                {{ formulario.nombre_colaborador.errors }}
+                            </div>                            
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">IP :</label>
+                            <div class="campos__formulario--listbox">
+                                {{ formulario.ip_colaborador }}
+                                {{ formulario.ip_colaborador.errors }}
+                            </div>                            
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Usuario FTIA :</label>
+                            <div class="campos__formulario--normal">
+                                {{ formulario.usuario_sistema }}
+                                {{ formulario.usuario_sistema.errors }}
+                            </div>                            
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Correo :</label>
+                            <div class="campos__formulario--normal">
+                                {{ formulario.correo }}
+                                {{ formulario.correo.errors }}
+                            </div>                            
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Usuario Sentinel :</label>
+                            <div class="campos__formulario--normal">
+                                {{ formulario.usuario_sentinel }}
+                                {{ formulario.usuario_sentinel.errors }}
+                            </div>                            
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Usuario SBS :</label>
+                            <div class="campos__formulario--normal">
+                                {{ formulario.usuario_sbs }}
+                                {{ formulario.usuario_sbs.errors }}
+                            </div>                            
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Codigo Impresion :</label>
+                            <div class="campos__formulario--normal">
+                                {{ formulario.codigo_impresion_colaborador }}
+                                {{ formulario.codigo_impresion_colaborador.errors }}
+                            </div>                            
+                        </div>                        
+                        <div class="campo">
+                            <label class="campo--label">Cargo :</label>
+                            <div class="campos__formulario--normal">
+                                {{ formulario.cargo_colaborador }}
+                                {{ formulario.cargo_colaborador.errors }}
+                            </div>                            
+                        </div>
+                        <div class="boton__grabarforumlario">
+                            <button type="submit">Agregar</button>
+                        </div>
+                    </div>
+                </form>                    
+        </section>
+    </main>
+</body>
+{% endblock  %}

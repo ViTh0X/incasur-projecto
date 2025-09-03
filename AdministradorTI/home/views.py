@@ -59,5 +59,4 @@ def editar_usuario_forti(request,pk):
     
     info = {'form':form,'usuario_forticlient':usuario_forticlient,'tiempo_actual':tiempo_actual}
         
-    return render(request,'home/asignar_usuario.html',info)
-    return Http404
+    return render(request,'home/asignar_usuario.html',info)    

@@ -1,3 +1,4 @@
+select * from cuentas_forticlient
 INSERT INTO cuentas_forticlient (id,usuario,contraseña,fecha_modificacion)values(1,'incasur-user1','pREaOzQr$Oei',CURRENT_DATE);
 INSERT INTO cuentas_forticlient (id,usuario,contraseña,fecha_modificacion)values(2,'incasur-user2','#ZZdWV8Hm9&q',CURRENT_DATE);
 INSERT INTO cuentas_forticlient (id,usuario,contraseña,fecha_modificacion)values(3,'incasur-user3','$v4qXN5LgJ&U',CURRENT_DATE);
@@ -21,8 +22,9 @@ INSERT INTO cuentas_forticlient (id,usuario,contraseña,fecha_modificacion)value
 
 
 select * from lista_ips
-delete from lista_ips
-
+--delete from lista_ips
+select * from lista_ips order by id asc
+update lista_ips set codigo_estado_id = 2 where  id = '1'
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(1,'192.168.1.1',CURRENT_DATE);
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(2,'192.168.1.2',CURRENT_DATE);
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(3,'192.168.1.3',CURRENT_DATE);
@@ -315,15 +317,27 @@ insert into tipo_estado_ips (codigo_estado,nombre_estado,descripcion_estado) val
 
 select * from tipo_secciones
 
-insert into tipo_secciones (id,nombre_estado,descripcion_estado) values(1,'Auditoria','Ips asignadas a Auditoria');
-insert into tipo_secciones (id,nombre_estado,descripcion_estado) values(2,'Contabilidad','Ips asignadas a Contabilidad');
-insert into tipo_estado_ips (id,nombre_estado,descripcion_estado) values(3,'Gerencia General','Ips asignadas a Gerencia General');
-insert into tipo_estado_ips (id,nombre_estado,descripcion_estado) values(4,'Legal','Ips asignadas a el Area Legal');
-insert into tipo_estado_ips (id,nombre_estado,descripcion_estado) values(5,'Marketing','Ips asignadas a Marketing');
-insert into tipo_estado_ips (id,nombre_estado,descripcion_estado) values(6,'Negocios','Ips asignadas a Marketing');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(1,'Auditoria','Ips asignadas a Auditoria.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(2,'Contabilidad','Ips asignadas a Contabilidad.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(3,'Gerencia General','Ips asignadas a Gerencia General.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(4,'Legal','Ips asignadas a el Area Legal.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(5,'Marketing','Ips asignadas a Marketing.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(6,'Negocios','Ips asignadas a Negocios.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(7,'Operaciones','Ips asignadas a Operaciones.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(8,'OYM','Ips asignadas a Organizacion y Metodos.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(9,'Planeamiento','Ips asignadas a Planeamiento.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(10,'Recuperaciones','Ips asignadas a Recuperaciones.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(11,'Riesgos','Ips asignadas a Riesgos.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(12,'TI','Ips asignadas a Tecnologia e Informacion.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(13,'TI-CCTV','Ips asignadas a Tecnologia e Informacion Camaras.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(14,'TI-DataCenter','Ips asignadas a Tecnologia e Informacion Centro de datos.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(15,'TI-Impresoras','Ips asignadas a Tecnologia e Informacion Impresoras.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(16,'TI-Redes','Ips asignadas a Tecnologia e Informacion Switches, acces point,etc.');
+insert into tipo_secciones (id,nombre_seccion,descripcion_seccion) values(17,'TI-Reloj Control','Ips asignadas a Tecnologia e Informacion Marcacion de asistencia.');
 
-tendriamos que tener 
-ip sin nivel
-ip libre
-ip ocupada
+select * from estado_colaboradores
+insert into estado_colaboradores (codigo_estado,nombre_estado) values(1,'Activo');
+insert into estado_colaboradores (codigo_estado,nombre_estado) values(2,'Cesado');
+
+select * from lista_ips
 
