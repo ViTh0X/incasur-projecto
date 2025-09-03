@@ -308,3 +308,22 @@ insert into tipo_equipos_informaticos (id,nombre_tipo_equipo, descripcion_tipo_e
 insert into tipo_equipos_informaticos (id,nombre_tipo_equipo, descripcion_tipo_equipo) values (13,'Switch','Switches administrables de la red');
 insert into tipo_equipos_informaticos (id,nombre_tipo_equipo, descripcion_tipo_equipo) values (14,'Acces Point','Equipos para brindar wifi en la empresa');
 
+select * from tipo_estado_ips
+insert into tipo_estado_ips (codigo_estado,nombre_estado,descripcion_estado) values(1,'Ocupada','Ip fue asignada a un equipo informatico');
+insert into tipo_estado_ips (codigo_estado,nombre_estado,descripcion_estado) values(2,'Libre','Ip NO fue asignada a un equipo informatico');
+insert into tipo_estado_ips (codigo_estado,nombre_estado,descripcion_estado) values(3,'Sin Nivel','Ip no esta disponible para acceso a internet');
+
+select * from tipo_secciones
+
+insert into tipo_secciones (id,nombre_estado,descripcion_estado) values(1,'Auditoria','Ips asignadas a Auditoria');
+insert into tipo_secciones (id,nombre_estado,descripcion_estado) values(2,'Contabilidad','Ips asignadas a Contabilidad');
+insert into tipo_estado_ips (id,nombre_estado,descripcion_estado) values(3,'Gerencia General','Ips asignadas a Gerencia General');
+insert into tipo_estado_ips (id,nombre_estado,descripcion_estado) values(4,'Legal','Ips asignadas a el Area Legal');
+insert into tipo_estado_ips (id,nombre_estado,descripcion_estado) values(5,'Marketing','Ips asignadas a Marketing');
+insert into tipo_estado_ips (id,nombre_estado,descripcion_estado) values(6,'Negocios','Ips asignadas a Marketing');
+
+tendriamos que tener 
+ip sin nivel
+ip libre
+ip ocupada
+
