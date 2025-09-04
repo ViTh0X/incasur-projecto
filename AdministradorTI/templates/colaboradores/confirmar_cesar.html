@@ -1,0 +1,24 @@
+{% extends '../layout.html' %}
+{% block titulo %}Agregar Colaborador{% endblock %}
+{% block contenido %}
+<body>
+    <div class="confirmar__cesar contenedor">
+        <h1 class="no-margin">Confirmar Cese</h1>
+        <p class="no-margin" >¿Estás seguro de que quieres cesar a "{{ colaborador.nombre_colaborador }}"?</p>
+        <div class="confirmar__cesar--opciones">
+            <form method="post">
+                {% csrf_token %}
+                <div class="botones__confirmar bg-green" > 
+                    <button  type="submit">Sí</button>
+                </div>
+                
+            </form>            
+            <div class="botones__confirmar bg-red">
+                <a class="no-subrayado" href="{% url 'listar_colaboradores' %}">No</a>
+            </div>
+            
+                        
+        </div>
+    </div>    
+</body>
+{% endblock  %}
