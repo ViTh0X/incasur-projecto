@@ -31,7 +31,7 @@ body{
 .contenedor{
     width: min(90% , 120rem);
     margin: 0 auto;
-    padding: 2rem 0 2rem 0;    
+    padding: 0 0 1rem 0;    
 }
 
 .contenedor__grande{

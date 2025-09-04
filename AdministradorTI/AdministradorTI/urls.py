@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('home.urls')),
     path('colaboradores/',include('colaboradores.urls')),
+    path('ip-manager/',include('ips.urls')),
 ]

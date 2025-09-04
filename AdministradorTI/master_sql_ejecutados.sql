@@ -24,7 +24,7 @@ INSERT INTO cuentas_forticlient (id,usuario,contraseña,fecha_modificacion)value
 select * from lista_ips order by id asc
 --delete from lista_ips
 select * from lista_ips where codigo_estado_id = 2
-update lista_ips set codigo_estado_id = 1 where id =1  
+update lista_ips set codigo_estado_id = 2 where id =1  
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(1,'192.168.1.1',CURRENT_DATE);
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(2,'192.168.1.2',CURRENT_DATE);
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(3,'192.168.1.3',CURRENT_DATE);
@@ -340,6 +340,9 @@ insert into estado_colaboradores (codigo_estado,nombre_estado) values(1,'Activo'
 insert into estado_colaboradores (codigo_estado,nombre_estado) values(2,'Cesado');
 
 select * from lista_ips
+
+select *,(select nombre_colaborador from lista_colaboradores as c where c.ip_colaborador_id = i.ip) as nombre_colaborador from lista_ips as i order by id asc
+select * from lista_colaboradores
 
 select *from lista_colaboradores
 delete from lista_colaboradores

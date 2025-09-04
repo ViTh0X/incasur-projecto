@@ -1,5 +1,5 @@
 from django.db import models
-
+from django import forms
 # Create your models here.
 
 class tipo_estado_ips(models.Model):
@@ -76,3 +76,7 @@ class lista_ips(models.Model):
     def __str__(self):
         return self.ip
     
+class ipForm(forms.ModelForm):
+    class Meta:
+        model = lista_ips
+        fields = ['ip_seccion','ip_nivel_firewall','tipo_equipo','marca_equipo','modelo_equipo','oficina']            

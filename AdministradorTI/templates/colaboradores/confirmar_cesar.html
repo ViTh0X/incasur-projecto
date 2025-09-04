@@ -6,7 +6,7 @@
         <h1 class="no-margin">Confirmar Cese</h1>
         <p class="no-margin" >¿Estás seguro de que quieres cesar a "{{ colaborador.nombre_colaborador }}"?</p>
         <div class="confirmar__cesar--opciones">
-            <form method="post">
+            <form method="POST">
                 {% csrf_token %}
                 <div class="botones__confirmar bg-green" > 
                     <button  type="submit">Sí</button>

@@ -98,16 +98,12 @@ def editar_colaborador(request,pk):
     else:
         # Obtener los estados de forma segura por nombre en lugar de PK
         estado_ip_libre = get_object_or_404(tipo_estado_ips, nombre_estado='Libre')
-
         # IPs libres
-        ips_libres = lista_ips.objects.filter(codigo_estado=estado_ip_libre)
-        
+        ips_libres = lista_ips.objects.filter(codigo_estado=estado_ip_libre)        
         # IP actual del colaborador
-        ip_actual = lista_ips.objects.filter(pk=colaborador.ip_colaborador.pk)
-        
+        ip_actual = lista_ips.objects.filter(pk=colaborador.ip_colaborador.pk)        
         # Combina los dos querysets
         ips_para_formulario = ips_libres | ip_actual
-
         formulario = colaboradorForm(instance=colaborador)
         formulario.fields['ip_colaborador'].queryset = ips_para_formulario     
     
@@ -127,9 +123,12 @@ def cesar_colaborador(request,pk):
         ip_colaborador.codigo_estado = estado_ocupado_ip
         ip_colaborador.save()
         
-        cuenta_forticlient = get_object_or_404(cuentas_forticlient,usuario_asignado=nombre_colaborador)
-        cuenta_forticlient.usuario_asignado = None
-        cuenta_forticlient.save()
+        try:      
+            cuenta_forticlient = get_object_or_404(cuentas_forticlient,usuario_asignado=nombre_colaborador)
+            cuenta_forticlient.usuario_asignado = None
+            cuenta_forticlient.save()
+        except Exception as e:
+            print(e)
         
         return redirect('listar_colaboradores')
     

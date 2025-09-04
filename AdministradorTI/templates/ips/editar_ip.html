@@ -1,0 +1,70 @@
+{% extends '../layout.html' %}
+{% block titulo %}Editar IP{% endblock  %}
+{% block contenido %}
+<body>
+    <main class="contenedor">
+        <section>
+            <h1 class="no-margin">Modificar la ip existente</h1>            
+                <form class="formulario" method="POST">
+                    {% csrf_token %}
+                    <div class="contenedor-campos">
+                        <div class="campo">
+                            <label class="campo--label">IP :</label>
+                            <label class="campo--data">{{ ip.ip }}</label>
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Nombre :</label>
+                            <label class="campo--data">{{ data_usuario.nombre_colaborador }}</label>
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Seccion :</label>
+                             <div class="campos__formulario--listbox">
+                                {{ formulario.ip_seccion }}
+                                {{ formulario.ip_seccion.errors }}
+                            </div> 
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Nivel Firewall :</label>
+                             <div class="campos__formulario--listbox">
+                                {{ formulario.ip_nivel_firewall }}
+                                {{ formulario.ip_nivel_firewall.errors }}
+                            </div> 
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Tipo Equipo :</label>
+                             <div class="campos__formulario--listbox">
+                                {{ formulario.tipo_equipo }}
+                                {{ formulario.tipo_equipo.errors }}
+                            </div> 
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Marca Equipo :</label>
+                             <div class="campos__formulario--normal">
+                                {{ formulario.marca_equipo }}
+                                {{ formulario.marca_equipo.errors }}
+                            </div> 
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Modelo Equipo :</label>
+                             <div class="campos__formulario--normal">
+                                {{ formulario.modelo_equipo }}
+                                {{ formulario.modelo_equipo.errors }}
+                            </div> 
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Oficina :</label>
+                             <div class="campos__formulario--listbox">
+                                {{ formulario.oficina }}
+                                {{ formulario.oficina.errors }}
+                            </div> 
+                        </div>
+                        <div class="botones-formularios">
+                            <a href="{% url 'listar_ips' %}">Volver a la Lista</a>
+                            <button type="submit">Actualizar</button>                
+                        </div> 
+                    </div>
+                </form>
+        </section>
+    </main>
+</body>
+{% endblock  %}
