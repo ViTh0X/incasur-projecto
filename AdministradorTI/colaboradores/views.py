@@ -6,6 +6,9 @@ from io import BytesIO
 import os
 import datetime
 import openpyxl
+import pandas as pd
+
+from datetime import datetime
 
 from home.models import cuentas_forticlient
 from .models import lista_colaboradores, colaboradorForm, estado_colaboradores
@@ -133,3 +136,24 @@ def cesar_colaborador(request,pk):
         return redirect('listar_colaboradores')
     
     return render(request,'colaboradores/confirmar_cesar.html',{'colaborador':colaborador})
+
+def generar_excel_colab(request):
+    fecha_hora = datetime.now()
+    colaboradores = lista_colaboradores.objects.all()
+    data_df = colaboradores.values('nombre_colaborador','ip_colaborador','usuario_sistema','correo','usuario_sentinel','codigo_impresion_colaborador','cargo_colaborador','estado_colaboradores')
+    df = pd.DataFrame(list(data_df))
+    df['estado_colaboradores'] = df['estado_colaboradores'].replace({1:'ACTIVO',2:'CESADO'})
+    df = df.rename(columns={        
+        'nombre_colaborador': 'Nombre Completo',
+        'ip_colaborador': 'IP Asignada',
+        'usuario_sistema': 'Codigo Sistema',
+        'correo': 'Correo Interno',
+        'usuario_sentinel': 'Usuario Sentinel',
+        'codigo_impresion_colaborador': 'Codigo Impresion',
+        'cargo_colaborador':'Cargo',
+        'estado_colaboradores' :'Estado'        
+    })
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename="Colaboradores {fecha_hora}.xlsx"'
+    df.to_excel(response,index=False,sheet_name='IPs')
+    return response

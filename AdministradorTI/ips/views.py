@@ -49,7 +49,7 @@ def reiniciar_data_ip(request,pk):
     
     return render(request,'ips/confirmar_reinciar.html',{'ip':ip})
 
-def generar_excel(request):
+def generar_excel_ip(request):
     fecha_hora = datetime.now()
     query_sql = """
     select *,(select nombre_colaborador from lista_colaboradores as c where c.ip_colaborador_id = i.ip and c.estado_colaboradores_id = 1) as nombre_colaborador from lista_ips as i order by id asc
@@ -69,7 +69,7 @@ def generar_excel(request):
             'codigo_estado_id': item.codigo_estado_id,
         })
     df = pd.DataFrame(data_list)
-    df['codigo_estado_id'] = df['codigo_estado_id'].replace({1:'Ocupada',2:'Libre',3:'Sin Nivel'})
+    df['codigo_estado_id'] = df['codigo_estado_id'].replace({1:'OCUPADA',2:'LIBRE',3:'SIN NIVEL'})
     df = df.rename(columns={
         'ip': 'IP del Equipo',
         'nombre_colaborador': 'Nombre Completo',

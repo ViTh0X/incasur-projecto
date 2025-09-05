@@ -4,9 +4,32 @@
 <body>
     <main class="contenedor__grande">
         <div class="contenido__table">
-            <h1 class="no-margin">Colaboradores Incasur</h1>
+            <h1 class="no-margin">Colaboradores Incasur : </h1>
             <div class="opciones__table">
-                <a href="{% url 'agregar_colaborador' %}">+ Agregar</a>
+                <div class="opciones__table--boton">
+                    <a title="Agregar nuevo Colaborador" href="{% url 'agregar_colaborador' %}">+ Agregar</a>
+                </div>
+                <div class="opciones__table--iconos">
+                    <a  title="GENERAR LISTA COLABORADORES" href="{% url 'generar_excel_colab' %}">
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="40"
+                    height="40"
+                    viewBox="2 0 25 20"
+                    fill="none"
+                    stroke="#41b955"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    >
+                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+                    <path d="M10 12l4 5" />
+                    <path d="M10 17l4 -5" />
+                    </svg>
+                    </a>   
+                </div> 
+                
             </div>
             <table class="table">
                 <thead>
@@ -37,7 +60,7 @@
                         <td>{{ colaborador.estado_colaboradores }}</td> 
                         <td>
                             <div>
-                                <a href="{% url 'editar_colaborador' pk=colaborador.codigo_colaborador %}">
+                                <a title="EDITAR COLABORADOR" href="{% url 'editar_colaborador' pk=colaborador.codigo_colaborador %}">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="28"
@@ -53,7 +76,7 @@
                                     <path d="M13.5 6.5l4 4" />
                                     </svg>
                                 </a>
-                                <a href="{% url 'generar_excel_nuevocolab' pk=colaborador.codigo_colaborador %}">
+                                <a title="GENERAR FICHA USUARIOS NUEVOS" href="{% url 'generar_excel_nuevocolab' pk=colaborador.codigo_colaborador %}">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
@@ -71,7 +94,7 @@
                                     <path d="M10 17l4 -5" />
                                     </svg>
                                 </a>
-                                <a href="{% url 'cesar_colaborador' pk=colaborador.codigo_colaborador %}">
+                                <a title="CESAR COLABORADOR" href="{% url 'cesar_colaborador' pk=colaborador.codigo_colaborador %}">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="28"

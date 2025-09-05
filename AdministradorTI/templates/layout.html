@@ -15,9 +15,11 @@
     <header class="header">
         <div class="contenedor">
             <div class="header__titulo">
-                <img class="header__titulo--imagen" src="{% static 'img/logoIncasur.jpg' %}" alt="logo incasur">                    
+                <a href="{% url 'home' %}">
+                    <img class="header__titulo--imagen" src="{% static 'img/logoIncasur.jpg' %}" alt="logo incasur">                    
+                </a>                
                 <div>
-                    <h1 class="no-margin">Administrador Incasur</h1>
+                    <h1 class="no-margin ">Administrador Incasur</h1>
                 </div>
             </div>
         </div>

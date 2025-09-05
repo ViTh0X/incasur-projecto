@@ -13,7 +13,7 @@
 html{
     box-sizing: border-box;
     font-size: 62.5%; /*1rem = 10px*/
-    height: 100%;
+    height: 100%;    
 }
 *,*::before,*::after{
     box-sizing: inherit;
@@ -31,15 +31,21 @@ body{
 .contenedor{
     width: min(90% , 120rem);
     margin: 0 auto;
-    padding: 0 0 1rem 0;    
+    padding: 2rem 2rem 2rem 2rem;    
 }
 
 .contenedor__grande{
-    width: min(90% 140rem);
+    width: min(95% 140rem);
     margin: 0 auto;
     padding: 2rem 2rem 2rem 2rem;
 }
+h1{    
+    height: 5.5rem;
+}
 /*Utilidades*/
+.centra-texto{
+    text-align: center;
+}
 .no-margin{
     margin: 0 0;
 }
@@ -129,15 +135,15 @@ body{
     width: 100%;    
     margin-bottom: 2rem;
 }
-.opciones__table{    
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+.opciones__table{        
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    column-gap: 2rem;    
+    column-gap: 2rem;
+    margin-left: 1rem;
+        
 }
-.opciones__table a{
+/*.opciones__table a{
     border-radius: 0.5rem;
     background-color: var(--color1);    
     text-decoration: none;    
@@ -146,7 +152,33 @@ body{
     font-weight: bold;
     color: var(--blanco);    
     font-size: 1.5rem;    
-    
+    margin-bottom: 1rem;
+}*/
+.opciones__table--boton{
+    border-radius: 0.5rem;
+    background-color: var(--color1);
+    padding: 0.5rem;    
+    text-transform: uppercase;
+    font-weight: bold;      
+    font-size: 1.5rem;    
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding-left: 1rem;        
+    padding-right: 1rem;
+}
+.opciones__table--boton a{
+    color: var(--blanco);  
+    text-decoration: none;
+}
+
+.opciones__table--iconos{
+    border-radius: 0.5rem;
+    background-color: var(--blanco);    
+    text-decoration: none;        
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--blanco);    
+    font-size: 1.5rem;           
 }
 
 .opciones__table--agregar{
@@ -472,9 +504,6 @@ body{
 .boton__grabarforumlario button:hover{
     cursor: pointer;
 }
-.opciones__table--izquierda a{    
-    background-color: var(--blanco);
-    padding: 2rem 0;    
-}
+
 
 /***********************************/

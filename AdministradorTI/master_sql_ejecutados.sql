@@ -341,7 +341,7 @@ insert into estado_colaboradores (codigo_estado,nombre_estado) values(2,'Cesado'
 
 select * from lista_ips
 
-select *,(select nombre_colaborador from lista_colaboradores as c where c.ip_colaborador_id = i.ip) as nombre_colaborador from lista_ips as i order by id asc
+select *,(select nombre_colaborador from lista_colaboradores as c where c.ip_colaborador_id = i.ip and c.estado_colaboradores_id = 1) as nombre_colaborador from lista_ips as i order by id asc
 select * from lista_colaboradores
 
 select *from lista_colaboradores

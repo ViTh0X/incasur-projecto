@@ -3,16 +3,16 @@
 {% block contenido %}
 <body>
     <main class="contenedor">
-        <div class="contenido__table">                        
-            <div class="opciones__table">         
-                <h1 class="no-margin">Lista de IPs</h1>       
-                <div class="opciones__table--izquierda">
-                    <a  title="Generar Excel" href="{% url 'generar_excel' %}">
+        <div class="contenido__table">                                    
+            <h1 class="no-margin">Lista de IPs:</h1>                       
+            <div class="opciones__table">                                
+                <div class="opciones__table--iconos">
+                    <a  title="GENERAR LISTA IPS" href="{% url 'generar_excel_ip' %}">
                     <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="40"
                     height="40"
-                    viewBox="0 0 25 25"
+                    viewBox="2 0 25 20"
                     fill="none"
                     stroke="#41b955"
                     stroke-width="2"
@@ -63,7 +63,7 @@
                         {% endif %}                            
                         <td>
                             <div>
-                                <a href="{% url 'editar_ip' pk=ip.pk %}">
+                                <a title="EDITAR DATOS DE LA IP" href="{% url 'editar_ip' pk=ip.pk %}">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="28"
@@ -79,7 +79,7 @@
                                     <path d="M13.5 6.5l4 4" />
                                     </svg>
                                 </a>
-                                <a href="{% url 'reiniciar_data_ip' pk=ip.pk %}">
+                                <a title="LIMPIAR LOS DATOS DE LA IP" href="{% url 'reiniciar_data_ip' pk=ip.pk %}">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="28"

@@ -6,5 +6,6 @@ urlpatterns = [
     path('agregar-colaborador/',views.agregar_colaborador,name='agregar_colaborador'),
     path('generar-excel-nuevocolab/<int:pk>/',views.generar_excel_nuevocolab,name='generar_excel_nuevocolab'),
     path('editar-colaborador/<int:pk>/',views.editar_colaborador,name='editar_colaborador'),
-    path('cesar-colaborador/<int:pk>/',views.cesar_colaborador,name='cesar_colaborador'),    
+    path('cesar-colaborador/<int:pk>/',views.cesar_colaborador,name='cesar_colaborador'), 
+    path('generar-excel-colab',views.generar_excel_colab,name='generar_excel_colab'),   
 ]
