@@ -1,0 +1,25 @@
+{% extends '../layout.html' %}
+{% block titulo %}¿Seguro de Reinciar?{% endblock %}
+{% block contenido%}
+<body>
+    <div class="confirmar__cesar contenedor">
+        <h1 class="no-margin">Confirmar Reiniciar IP</h1>
+        <p class="no-margin" >¿Estás seguro de que quieres reiniciar la data de la IP :"{{ ip.ip }}"?</p>
+        <p class="no-margin" >OJO Todos los datos relacionado a la IP se borraran</p>
+        <div class="confirmar__cesar--opciones">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="botones__confirmar bg-green" > 
+                    <button  type="submit">Sí</button>
+                </div>
+                
+            </form>            
+            <div class="botones__confirmar bg-red">
+                <a class="no-subrayado" href="{% url 'listar_ips' %}">No</a>
+            </div>
+            
+                        
+        </div>
+    </div>    
+</body>
+{% endblock %}

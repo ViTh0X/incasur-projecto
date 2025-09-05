@@ -130,11 +130,12 @@ body{
     margin-bottom: 2rem;
 }
 .opciones__table{    
-    margin-bottom: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    column-gap: 1rem;    
+    justify-content: flex-start;
+    column-gap: 2rem;    
 }
 .opciones__table a{
     border-radius: 0.5rem;
@@ -145,6 +146,7 @@ body{
     font-weight: bold;
     color: var(--blanco);    
     font-size: 1.5rem;    
+    
 }
 
 .opciones__table--agregar{
@@ -470,4 +472,9 @@ body{
 .boton__grabarforumlario button:hover{
     cursor: pointer;
 }
+.opciones__table--izquierda a{    
+    background-color: var(--blanco);
+    padding: 2rem 0;    
+}
+
 /***********************************/

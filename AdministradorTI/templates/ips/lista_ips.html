@@ -3,10 +3,30 @@
 {% block contenido %}
 <body>
     <main class="contenedor">
-        <div class="contenido__table">
-            <h1 class="no-margin">Lista de IPs</h1>
-            <div class="opciones__table">
-                
+        <div class="contenido__table">                        
+            <div class="opciones__table">         
+                <h1 class="no-margin">Lista de IPs</h1>       
+                <div class="opciones__table--izquierda">
+                    <a  title="Generar Excel" href="{% url 'generar_excel' %}">
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="40"
+                    height="40"
+                    viewBox="0 0 25 25"
+                    fill="none"
+                    stroke="#41b955"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    >
+                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+                    <path d="M10 12l4 5" />
+                    <path d="M10 17l4 -5" />
+                    </svg>
+                    </a>   
+                </div>                                
+                             
             </div>
             <table class="table">
                 <thead>
@@ -20,7 +40,7 @@
                         <th>Modelo Equipo</th>
                         <th>Oficina</th>
                         <th>Estado</th>
-                        <th>Asignar</th>                        
+                        <th>Opciones</th>                        
                     </tr>
                 </thead>
                 <tbody>
@@ -42,23 +62,40 @@
                             <td>Sin Nivel</td>
                         {% endif %}                            
                         <td>
-                            <a href="{% url 'editar_ip' pk=ip.pk %}">
-                            <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="32"
-                            height="32"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="#0d345e"
-                            stroke-width="2.25"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            >
-                            <path d="M14 7v3h3l3 -3h-3v-3z" />
-                            <path d="M14 10l-9 9" />
-                            <path d="M5 15v4h4" />
-                            </svg>
-                            </a>
+                            <div>
+                                <a href="{% url 'editar_ip' pk=ip.pk %}">
+                                    <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="28"
+                                    height="28"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#5856d6"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    >
+                                    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                    <path d="M13.5 6.5l4 4" />
+                                    </svg>
+                                </a>
+                                <a href="{% url 'reiniciar_data_ip' pk=ip.pk %}">
+                                    <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="28"
+                                    height="28"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#ff2d55"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    >
+                                    <path d="M19 20h-10.5l-4.21 -4.3a1 1 0 0 1 0 -1.41l10 -10a1 1 0 0 1 1.41 0l5 5a1 1 0 0 1 0 1.41l-9.2 9.3" />
+                                    <path d="M18 13.3l-6.3 -6.3" />
+                                    </svg>
+                                </a>                                
+                            </div>                            
                         </td>
                     </tr>
                     {% endfor %}
