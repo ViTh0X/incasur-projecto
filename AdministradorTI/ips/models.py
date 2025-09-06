@@ -1,6 +1,7 @@
 from django.db import models
 from django import forms
 # Create your models here.
+# from colaboradores.models import lista_colaboradores
 
 class tipo_estado_ips(models.Model):
     codigo_estado = models.AutoField(primary_key=True)
@@ -75,6 +76,26 @@ class lista_ips(models.Model):
         
     def __str__(self):
         return self.ip
+    
+class historial_acciones(models.Model):
+    id = models.AutoField(primary_key=True)
+    ip_historial = models.ForeignKey(lista_ips,on_delete=models.CASCADE,to_field='ip')
+    nombre_colaborador = models.CharField(max_length=150)
+    accion_realizada = models.TextField(max_length=500)
+    fecha_realizacion = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'historial_acciones'
+        ordering = ['id']
+    
+    def __str__(self):
+        return self.ip
+    
+class historial_accionForm(forms.ModelForm):
+    class Meta:
+        model = historial_acciones
+        fields = ['ip_historial','accion_realizada'] #Solo van los campos editables "EN HTML" si se editan en el view no es necesario
+    
     
 class ipForm(forms.ModelForm):
     class Meta:

@@ -7,7 +7,7 @@ import pandas as pd
 import os
 from datetime import datetime
 
-from .models import lista_ips, oficinas, tipo_equipos_informaticos, niveles_firewall, tipo_secciones, tipo_estado_ips, ipForm
+from .models import lista_ips, historial_acciones,oficinas, tipo_equipos_informaticos, niveles_firewall, tipo_secciones, tipo_estado_ips, ipForm,historial_accionForm
 from colaboradores.models import lista_colaboradores
 
 
@@ -85,3 +85,31 @@ def generar_excel_ip(request):
     response['Content-Disposition'] = f'attachment; filename="Lista de IPs {fecha_hora}.xlsx"'
     df.to_excel(response,index=False,sheet_name='IPs')
     return response
+
+def agregar_accion(request):
+    if request.method == 'POST':
+        formulario = historial_accionForm(request.POST)
+        if formulario.is_valid():            
+            agregar_accion = formulario.save(commit=True)
+            ip_colaborador_f = formulario.cleaned_data['ip_historial']            
+            try:                
+                objeto_colaborador = get_object_or_404(lista_colaboradores,ip_colaborador=ip_colaborador_f)            
+                agregar_accion.nombre_colaborador = objeto_colaborador.nombre_colaborador
+            except:
+                agregar_accion.nombre_colaborador = "Sin colaborador asignado"
+            agregar_accion.save()
+            return redirect('listar_ips')
+    else:
+        ip_disponibles = lista_ips.objects.exclude(codigo_estado = 3)
+        formulario =  historial_accionForm()
+        formulario.fields['ip_historial'].queryset = ip_disponibles        
+    
+    return render(request,'ips/agregar_accion.html',{'formulario':formulario})            
+            
+def ver_historial_acciones(request,pk):    
+    ip_seleccionada = lista_ips.objects.get(pk=pk)
+    historiales = historial_acciones.objects.filter(ip_historial=ip_seleccionada.ip)
+    if not historiales: 
+        return render(request,'ips/historial_vacio.html')
+    else:
+        return render(request,'ips/ver_historial_acciones.html',{'historiales':historiales})    

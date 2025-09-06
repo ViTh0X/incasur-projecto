@@ -1,0 +1,35 @@
+{% extends '../layout.html' %}
+{% block titulo %}Ip-Manager{% endblock  %}
+{% block contenido %}
+<body>
+    <main class="contenedor">
+        <div class="contenido__table">                                    
+            <h1 class="no-margin">Historial de Acciones Realizadas:</h1>                       
+            <div class="opciones__table">
+                <div class="opciones__table--boton">
+                    <a href="{% url 'listar_ips' %}">Volver a la Lista IPS</a>                    
+                </div>                                                                                                            
+            </div>
+            <div class="queryset_vacio">
+                <h1 class="no-margin">La ip seleccionada no tiene historial</h1>
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="128"
+                height="128"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#0ea427"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                >
+                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                <path d="M9 10l.01 0" />
+                <path d="M15 10l.01 0" />
+                <path d="M9.5 15.25a3.5 3.5 0 0 1 5 0" />
+                </svg>
+            </div>
+        </div>
+    </main>
+</body>    
+{% endblock  %}

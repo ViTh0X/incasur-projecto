@@ -1,0 +1,34 @@
+{% extends '../layout.html' %}
+{% block titulo %}Agregar Colaborador{% endblock %}
+{% block contenido %}
+<body>
+    <main class="contenedor">
+        <section>
+            <h1 class="no-margin">Agregar Accion realizada al equipo:</h1>
+                <form class="formulario" method="POST">
+                    {% csrf_token %}                    
+                    <div class="contenedor-campos">                        
+                        <div class="campo">
+                            <label class="campo--label">Seleccione la ip :</label>
+                            <div class="campos__formulario--listbox">
+                                {{ formulario.ip_historial }}
+                                {{ formulario.ip_historial.errors }}
+                            </div>                            
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Ingrese el detalle :</label>
+                            <div class="campos__formulario--areatexto">
+                                {{ formulario.accion_realizada }}
+                                {{ formulario.accion_realizada.errors }}
+                            </div>                            
+                        </div>                                                
+                        <div class="botones-formularios">
+                            <a href="{% url 'listar_ips' %}">Volver a la Lista</a>
+                            <button type="submit">Guardar</button>                
+                        </div>  
+                    </div>
+                </form>                    
+        </section>
+    </main>
+</body>
+{% endblock  %}

@@ -1,0 +1,36 @@
+{% extends '../layout.html' %}
+{% block titulo %}Ip-Manager{% endblock  %}
+{% block contenido %}
+<body>
+    <main class="contenedor">
+        <div class="contenido__table">                                    
+            <h1 class="no-margin">Historial de Acciones Realizadas:</h1>                       
+            <div class="opciones__table">
+                <div class="opciones__table--boton">
+                    <a href="{% url 'listar_ips' %}">Volver a la Lista IPS</a>                    
+                </div>                                                                               
+                             
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>IP</th>
+                        <th>Nombre Colaborador</th>
+                        <th>Detalle de Accion Realizada</th>                        
+                        <th>Fecha Accion Realizada</th>                                               
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for historial in historiales %}                    
+                    <tr>
+                        <td>{{ historial.ip_historial }}</td>
+                        <td>{{ historial.nombre_colaborador }}</td>
+                        <td>{{ historial.accion_realizada }}</td>
+                        <td>{{ historial.fecha_realizacion }}</td>                        
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>    
+{% endblock  %}

@@ -1,0 +1,275 @@
+import paramiko
+import stat
+import os
+from pathlib import Path
+from paramiko import SFTPError
+from .utilidades_log import *
+
+class SSHManager(logArchivos):
+    
+    def __init__(self,hostname:str,username:str,port:int,keyfile:str):        
+        self.hostname = hostname
+        self.username = username
+        self.port = port
+        self.keyfile = keyfile
+        self.conexionSSH = None
+        self.canalSFTP = None
+        self.rutaArchivo = None                                             
+
+    def revisarConexionSSH(self):
+        try:
+            self.conexionSSH = paramiko.SSHClient()
+            self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=3,username=self.username,key_filename=self.keyfile)
+            return True 
+        except Exception as e:            
+            print("No Se conecto")
+            return False
+        finally:
+            if self.conexionSSH:
+                self.conexionSSH.close()
+                
+    def ejecuta_inventario(self):                       
+        try:
+            self.conexionSSH = paramiko.SSHClient()
+            self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile)            
+        except Exception as e:              
+            print(f"No Se conecto {self.hostname}")            
+        comando = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
+        stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
+        stdout.read()
+        stderr.read() 
+        ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
+        ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"
+        try:
+            self.canalSFTP = self.conexionSSH.open_sftp()                   
+        except paramiko.SFTPError as sftpE:
+            print(f"error sftp  {sftpE}")
+        self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)        
+        self.canalSFTP.close()
+        self.conexionSSH.close()
+        
+                       
+        
+    def guardar_inventarios(self):
+        dic_inventario_hardware = {}   
+        ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
+        ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"                                    
+        with open(ruta_archivo_local,'r') as inventario_hardware:
+            for linea in inventario_hardware:
+                if "Nombre" in linea:   #0              
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    nombre_pc = data
+                    dic_inventario_hardware['nombre_pc'] = nombre_pc
+                elif "Placa" in linea: #1                
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    placa = data
+                    dic_inventario_hardware['placa'] = placa
+                elif "Procesador" in linea:       #2          
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    procesador = data       
+                    dic_inventario_hardware['procesador'] = procesador                  
+                elif "Ram" in linea:       #3          
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    ram = data
+                    dic_inventario_hardware['ram'] = ram     
+                elif "Tarjeta Integrada" in linea:       #4          
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    tarjeta_integrada = data          
+                    dic_inventario_hardware['tarjeta_integrada'] = tarjeta_integrada                   
+                elif "Tarjeta Dedicada" in linea:       #5          
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    tarjeta_dedicada = data      
+                    dic_inventario_hardware['tarjeta_dedicada'] = tarjeta_dedicada
+                elif "S.O." in linea: #6                
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()                    
+                    sistema_operativo = data      
+                    dic_inventario_hardware['sistema_operativo'] = sistema_operativo    
+                elif "Puerta Enlace" in linea:    #7             
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    puerta_enlace = data     
+                    dic_inventario_hardware['puerta_enlace'] = puerta_enlace                                         
+                elif "Almacenamiento" in linea:    #7             
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    almacenamiento = data     
+                    dic_inventario_hardware['almacenamiento'] = almacenamiento
+        return dic_inventario_hardware
+        
+        
+    def realizarConSSH(self):
+        self.rutaArchivo = self.crearArchivo(self.hostname)
+        try:                        
+            self.conexionSSH = paramiko.SSHClient()            
+            self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())            
+            mensaje = f"Intentando Realizar conexion a {self.hostname} con el usuario {self.username}."
+            self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile)                                    
+            return True , self.rutaArchivo                   
+        except paramiko.AuthenticationException as sshE:            
+            mensaje = f"Error al establecer conexion SSH a host {self.hostname} al usuario {self.username} establecida con exito."
+            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
+            return False , self.rutaArchivo
+        except Exception as e:
+            mensaje = f"Ocurrio un error inesperado : {e}"
+            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
+            return False , self.rutaArchivo
+        # finally:
+        #     if self.conexionSSH:
+        #         self.conexionSSH.close()        
+    
+    
+    def crearCanalSFTP(self):
+        try:
+            self.canalSFTP = self.conexionSSH.open_sftp()
+            mensaje = f"Se creo canal SFTP para {self.hostname} de manera exitosa"            
+            self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)            
+        except paramiko.SFTPError as sftpE:
+            mensaje = f"Error al crear canal SFTP {sftpE} para {self.hostname}"
+            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)            
+    
+    
+    def rutasIniciales(self,listaCarpetas:list):
+        rutaInicial = f"D:/Backup/{self.hostname}/"
+        listaRutasLocales = []                
+        os.makedirs(rutaInicial,exist_ok=True)
+        for carpetas in listaCarpetas:
+            print(f"Creando{carpetas}")
+            ruta = Path(rutaInicial)/carpetas
+            os.makedirs(ruta,exist_ok=True)
+            print(f"Esto se creo {ruta}")        
+            listaRutasLocales.append(ruta)
+            mensaje = "Las carpetas iniciales en el Disco D: fueron creadas con exito"
+            self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+        return listaRutasLocales
+    
+    
+    def creaRutasRemotas(self,usuario:str,listaRutaLocales:list):        
+        lsRutaBKUP = []
+        rBaseRemoC = "C:/Users/"        
+        try:
+            for rLocal in listaRutaLocales:            
+                lsR = {}
+                rutaTexto = str(rLocal)
+                if "Documentos" in rutaTexto:
+                    print("Entre al if")
+                    ruta = Path(rBaseRemoC)/usuario/"Documents"
+                    print("")
+                    lsR[rLocal] = ruta
+                    lsRutaBKUP.append(lsR)
+                    print("termino todo lo del if")
+                elif "Descargas" in rutaTexto:
+                    print("Entre al if")
+                    ruta = Path(rBaseRemoC)/usuario/"Downloads"
+                    lsR[rLocal] = ruta
+                    lsRutaBKUP.append(lsR)
+                    print("termino todo lo del if")
+                elif "Escritorio" in rutaTexto:
+                    print("Entre al if")
+                    ruta = Path(rBaseRemoC)/usuario/"Desktop"
+                    lsR[rLocal] = ruta
+                    lsRutaBKUP.append(lsR)
+                    print("termino todo lo del if")
+                elif "Discos" in rutaTexto:
+                    print("Entre al if")
+                    ruta ="D:/"
+                    local = Path(rLocal)/"Disco_D"
+                    lsR[local] = ruta
+                    lsRutaBKUP.append(lsR)
+                    lsR = {}
+                    ruta ="E:/"
+                    local = Path(rLocal)/"Disco_E"
+                    lsR[local] = ruta
+                    lsRutaBKUP.append(lsR)
+                    lsR = {}
+                    ruta ="F:/"
+                    local = Path(rLocal)/"Disco_F"
+                    lsR[local] = ruta
+                    lsRutaBKUP.append(lsR)
+                    lsR = {}
+                    ruta ="G:/"
+                    local = Path(rLocal)/"Disco_G"
+                    lsR[local] = ruta
+                    lsRutaBKUP.append(lsR)
+                    lsR = {}
+                    ruta ="H:/"
+                    local = Path(rLocal)/"Disco_H"
+                    lsR[local] = ruta
+                    lsRutaBKUP.append(lsR)
+                    lsR = {}
+                    print("termino todo lo del if")
+            mensaje = "Las rutas iniciales fueron preparadas con exito"
+            self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+            return lsRutaBKUP
+        except Exception as e:
+            mensaje = f"Error preparando las rutas : {e}"
+            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
+            
+            
+            
+    def realizarBKUP(self,rBaseRemo:str,rBaseLocal:str,nombreCarpeta:str):
+        if nombreCarpeta != "":
+            rBaseRemoR = f"{rBaseRemo}\\{nombreCarpeta}"
+            rBaseLocalR = f"{rBaseLocal}\\{nombreCarpeta}"
+        else:
+            rBaseRemoR = rBaseRemo
+            rBaseLocalR = rBaseLocal        
+        try:                
+            listaArchivos = list(self.canalSFTP.listdir_iter(rBaseRemoR))
+            nombreArchivo = ""         
+            for archivo in listaArchivos:            
+                nombreArchivo = archivo.filename
+                if stat.S_ISDIR(archivo.st_mode):                    
+                    creaRutaLocal = f"{rBaseLocalR}\\{nombreArchivo}"
+                    os.makedirs(creaRutaLocal,exist_ok=True)
+                    mensaje = f"Se creo la carpeta {nombreCarpeta}"
+                    self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                            
+                    self.realizarBKUP(rBaseRemoR,rBaseLocalR,nombreArchivo)                                            
+                else:                            
+                    rutaCopiarLocal = f"{rBaseLocalR}\\{nombreArchivo}"
+                    rutaCopiarRemoto = f"{rBaseRemoR}\\{nombreArchivo}"
+                    existeLocal = os.path.exists(rutaCopiarLocal)
+                    try:
+                        if not existeLocal:
+                            mensaje = f"Copiando archivo {nombreArchivo}"
+                            self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
+                            mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
+                            self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                        
+                            self.canalSFTP.get(rutaCopiarRemoto,rutaCopiarLocal)
+                            mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
+                            self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
+                        else:    
+                            tamañoRemoto = archivo.st_size
+                            tamañoLocal = os.path.getsize(rutaCopiarLocal)
+                            if tamañoRemoto != tamañoLocal:
+                                mensaje = f"Copiando archivo {nombreArchivo}"
+                                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
+                                mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
+                                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                        
+                                self.canalSFTP.get(rutaCopiarRemoto,rutaCopiarLocal)
+                                mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
+                                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+                            else:
+                                mensaje = f"El archivo {nombreArchivo} ya fue guardado de manera local"
+                                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
+                    except FileNotFoundError as e:
+                        mensaje = f"Error posiblemente el archivo no existe : {e}"
+                        self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                        
+                    except Exception as e:
+                        mensaje = f"Ocurrio un error inesperado : {e}"
+                        self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                        
+                                                                                                                    
+        except SFTPError as e:
+            mensaje = f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}"
+            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                  
+        except FileExistsError as e:
+            mensaje = f"Error en ruta {rBaseRemoR} posiblemente no existe : {e}"
+            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                              
+        except Exception as e:            
+            mensaje = f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}"
+            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)  
+            
+            
+    def cerrarConexiones(self):
+        self.canalSFTP.close()
+        self.conexionSSH.close()

@@ -11,9 +11,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='lista_ips',
-            name='codigo_estado',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='ips.tipo_estado_ips', to_field='nombre_estado'),
-        ),
+        
     ]

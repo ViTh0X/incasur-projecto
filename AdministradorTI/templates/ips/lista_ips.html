@@ -2,10 +2,13 @@
 {% block titulo %}Ip-Manager{% endblock  %}
 {% block contenido %}
 <body>
-    <main class="contenedor">
+    <main class="contenedor__grande">
         <div class="contenido__table">                                    
             <h1 class="no-margin">Lista de IPs:</h1>                       
-            <div class="opciones__table">                                
+            <div class="opciones__table">
+                <div class="opciones__table--boton">
+                    <a title="AGREGAR ACCION REALIZADA A LA IP" href="{% url 'agregar_accion' %}">+ Agregar Acciones</a>                    
+                </div>                                
                 <div class="opciones__table--iconos">
                     <a  title="GENERAR LISTA IPS" href="{% url 'generar_excel_ip' %}">
                     <svg
@@ -94,7 +97,23 @@
                                     <path d="M19 20h-10.5l-4.21 -4.3a1 1 0 0 1 0 -1.41l10 -10a1 1 0 0 1 1.41 0l5 5a1 1 0 0 1 0 1.41l-9.2 9.3" />
                                     <path d="M18 13.3l-6.3 -6.3" />
                                     </svg>
-                                </a>                                
+                                </a>   
+                                <a title="HISTORIAL DE ACCIONES" href="{% url 'ver_historial_acciones' pk=ip.pk %}">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="28"
+                                height="28"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#b0745e"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                >
+                                <path d="M12 8l0 4l2 2" />
+                                <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
+                                </svg>
+                                </a>                             
                             </div>                            
                         </td>
                     </tr>
