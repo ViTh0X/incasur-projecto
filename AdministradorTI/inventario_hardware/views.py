@@ -1,7 +1,87 @@
-from django.shortcuts import render
-from django.http import Http404
+from django.shortcuts import render , redirect
+from django.http import Http404, JsonResponse 
+from django.http.response import HttpResponse
 
+from datetime import datetime
+
+from home.models import logs_actividades_celery
+from .models import inventario_hardware,faltantes_inventario_hardware
+
+#Haciendo uso de Celery
+from celery.result import AsyncResult
+from .task  import ejecutar_inventario_hardware,ejecutar_faltantes_inventario_hardware
 # Create your views here.
 
+import pandas as pd
+
 def listar_inventario_hardware(request):
+    año_actual = datetime.now().year
+    mes_actual = datetime.now().month
+    inventarios_hardware = inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual)
+    if not inventarios_hardware:                  
+        return render(request,'inventario_hardware/no_realizo_inventario_este_mes.html')        
+    else:
+        return render(request,'inventario_hardware/lista_inventario_h.html',{'inventarios_hardware':inventarios_hardware})    
+        
+
+def iniciar_inventario_hardware(request):
+    if request.method == 'POST':
+        tarea = ejecutar_inventario_hardware.delay()
+        
+        return JsonResponse({'task_id':tarea.id})
+    return redirect('listar_inventario_hardware')
+
+def verificar_estado_tarea(request,task_id):
+    estado_tarea = AsyncResult(task_id)
+    data = {
+        'estado':estado_tarea.status,
+        'resultado':estado_tarea.result
+    }
+    
+    return JsonResponse(data)
+
+def iniciar_faltantes_hardware(request):
+    if request.method == 'POST':
+        tarea = ejecutar_faltantes_inventario_hardware.delay()
+        
+        return JsonResponse({'task_id':tarea.id})
+    return redirect('listar_inventario_hardware')
+    
+def listar_faltantes_hardware(request):
+    lista_faltantes = faltantes_inventario_hardware.objects.all()
+    if not lista_faltantes:
+        return render(request,'inventario_hardware/no_tiene_faltantes.html')
+    else:
+        return render(request,'inventario_hardware/lista_faltantes_h.html',{'lista_faltantes':lista_faltantes})
+
+def generar_excell_all(request):
+    fecha_hora = datetime.now()
+    inventarios_hardware = inventario_hardware.objects.all()
+    data_df = inventarios_hardware.values('ip','nombre_colaborador','nombre_equipo','placa','procesador','ram','video_integrada','video_dedicada','so','almacenamiento','puertas_enlace','fecha_modificacion')
+    df = pd.DataFrame(list(data_df))
+    df = df.rename(columns={
+        'ip':'IP',
+        'nombre_colaborador':'Nombre Colaborador',
+        'nombre_equipo':'Nombre del Equipo',
+        'placa':'Info Placa',
+        'procesador':'Info Procesador',        
+        'ram':'Info Ram',
+        'video_integrada':'Info Video Integrada',
+        'video_dedicada':'Info Video Dedicada',
+        'so':'Info SO',
+        'almacenamiento':'Info Almacenamiento',
+        'puertas_enlace':'Info Puertas de Enlace',
+        'fecha_modificacion':'Fecha Ejecutado'
+    })
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename="InventarioHardware{fecha_hora}.xlsx"'
+    df.to_excel(response,index=False,sheet_name='InventarioHardware')
+    return response
+
+
+def listar_logs(request):
+    lista_logs = logs_actividades_celery.objects.all().order_by('-tiempo_creacion')
+    return render(request,'logs/listar_logs_ih.html',{'lista_logs':lista_logs})
+
+def actualizar_tabla(request):
     return Http404

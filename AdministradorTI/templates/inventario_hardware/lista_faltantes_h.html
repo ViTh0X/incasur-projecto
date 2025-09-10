@@ -1,0 +1,41 @@
+{% extends '../layout.html' %}
+{% block titulo %}Inventario Hardware{% endblock  %}
+{% block contenido %}
+<body>
+    <main class="contenedor">
+        <div class="contenido__table">
+            <h1 class="no-margin">Faltantes Inventario Hardware : </h1>
+            <p class="no-margin">No se actualizo el inventario por un problema de red</p>
+            <div class="opciones__table marginb-04">
+                <div class="opciones__table--boton">                
+                    <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE" href="{% url 'agregar_colaborador' %}">Ejecutar Inventario</a>                                         -->                     
+                     <button id="ejecutar_inventario_faltantes_h">Ejecutar Faltantes</button>
+                     <a title="VOLVER A INVENTARIO HARDWARE" href="{% url 'listar_inventario_hardware' %}">Volver</a>                     
+                </div>                 
+                    <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE PARA LOS FALTANTES" href="{% url 'agregar_colaborador' %}">Ejecutar Faltantes</a>                                         -->                                                                                     
+            </div>
+            <table class="table" id="tabla_inventario_h">
+                <thead>
+                    <tr>
+                        <th>IP</th>
+                        <th>Nombre Colaborador</th>                                                                        
+                        <th>Ultimo Realizado</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for faltante in lista_faltantes %}
+                    <tr>
+                        <td>{{ faltante.ip }}</td>
+                        <td>{{ faltante.nombre_colaborador }}</td>
+                        <td>{{ faltante.fecha_modificacion|date:"m-Y" }}</td>                        
+                    </tr>
+                    {% endfor %}                    
+                </tbody> 
+            </table>
+        </div>
+        <script>
+            const csrftoken = "{{ csrf_token }}";
+        </script> 
+    </main>        
+</body>
+{% endblock  %}

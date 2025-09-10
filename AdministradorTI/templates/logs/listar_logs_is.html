@@ -1,0 +1,34 @@
+{% extends '../layout.html' %}
+{% block titulo %}Inventario Hardware{% endblock  %}
+{% block contenido %}
+<body>
+    <main class="contenedor">
+        <div class="contenido__table">
+            <h1 class="no-margin">Logs de Ejecucion:</h1>            
+            <div class="opciones__table marginb-04">
+                <div class="opciones__table--boton">                
+                    <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE" href="{% url 'agregar_colaborador' %}">Ejecutar Inventario</a>                                         -->                                          
+                     <a title="VOLVER A INVENTARIO HARDWARE" href="{% url 'listar_inventario_software' %}">Volver</a>                     
+                </div>                 
+                    <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE PARA LOS FALTANTES" href="{% url 'agregar_colaborador' %}">Ejecutar Faltantes</a>                                         -->                                                                                     
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Fecha Creacion</th>
+                        <th>Detalle</th>                                                                                                
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in lista_logs %}
+                    <tr>
+                        <td>{{ log.tiempo_creacion }}</td>
+                        <td>{{ log.mensaje }}</td>                        
+                    </tr>
+                    {% endfor %}                    
+                </tbody> 
+            </table>
+        </div>
+    </main>        
+</body>
+{% endblock  %}

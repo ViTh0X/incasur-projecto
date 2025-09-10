@@ -27,16 +27,17 @@
             <a href="{% url 'home' %}">Home</a>
             <a href="{% url 'listar_colaboradores' %}">Colaboradores</a>
             <a href="{% url 'listar_ips' %}">Ip Manager</a>
-            <a href="{% url 'home' %}">Inventario Hardware</a>
-            <a href="{% url 'home' %}">Inventario Software</a>
+            <a href="{% url 'listar_inventario_hardware' %}">Inventario Hardware</a>
+            <a href="{% url 'listar_inventario_software' %}">Inventario Software</a>
             <a href="{% url 'home' %}">Back UP Informacion</a>            
         </nav>
-    </header>
+    </header>    
     {% block contenido %}        
     {% endblock  %}
     <footer class="footer">
         <p>Creado por Leonard Samir Quispe Cardenas &copy;</p>
     </footer>
+    <script src="{% static 'AdministradorTI/script.js' %}"></script> 
 </body>
 </html>
 

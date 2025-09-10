@@ -1,0 +1,168 @@
+{% extends '../layout.html' %}
+{% block titulo %}Inventario Software{% endblock  %}
+{% block contenido %}
+<body>
+    <main class="contenedor__grande">
+        <div class="contenido__table">
+            <h1 class="no-margin">Inventario Software : </h1>
+            <div class="opciones__table">
+                <div class="opciones__table--boton">
+                    <button id="ejecutar_inventario_s">Ejecutar Inventario</button>
+                    <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE" href="{% url 'agregar_colaborador' %}">Ejecutar Inventario</a>                                         -->                     
+                     <!-- <button id="ejecutar_inventario_faltantes">Ejecutar Faltantes</button>
+                                          -->
+                     <a title="VER LISTA DE IPS FALTANTES" href="{% url 'listar_faltantes_software' %}">Ver Faltantes</a>
+                     <a title="VER LOGS DE LA EJECUCION" href="{% url 'listar_logs' %}">Ver Logs</a>                                        
+                </div>                 
+                    <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE PARA LOS FALTANTES" href="{% url 'agregar_colaborador' %}">Ejecutar Faltantes</a>                                         -->                                                     
+                <div class="opciones__table--iconos">
+                    <a  title="GENERAR TODO EL HISTORIAL DE INVENTARIOS SOFTWARE" href="{% url 'generar_excell_all' %}">
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="40"
+                    height="40"
+                    viewBox="2 0 25 20"
+                    fill="none"
+                    stroke="#41b955"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    >
+                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+                    <path d="M10 12l4 5" />
+                    <path d="M10 17l4 -5" />
+                    </svg>
+                    </a>   
+                </div> 
+                
+            </div>
+            <table class="table" id="tabla_inventario_h">
+                <thead>
+                    <tr>
+                        <th>IP</th>
+                        <th>Nombre Colaborador</th>
+                        <th>Office</th>
+                        <th>Acceso Remoto</th>
+                        <th>Editores Texto</th>
+                        <th>Data Base</th>
+                        <th>PDF</th>
+                        <th>FTIA</th>
+                        <th>Impresoras</th>
+                        <th>Navegadores</th>
+                        <th>Compresores</th>
+                        <th>Drivers</th>
+                        <th>Drive</th>
+                        <th>TI</th>
+                        <th>Otros</th>
+                        <th>Ultimo Realizado</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in lista_inventarios %}
+                    <tr>
+                        <td>{{ item.ip }}</td>
+                        <td>{{ item.nombre_colaborador }}</td>                        
+                        <td>
+                            <ul>
+                                {% for office in item.Office %}
+                                <li>{{ office }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for office in item.Acceso_Remoto %}
+                                <li>{{ office }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for office in item.Editores_Texto %}
+                                <li>{{ office }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for office in item.Base_Datos %}
+                                <li>{{ office }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for office in item.PDF %}
+                                <li>{{ office }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for office in item.FTIA %}
+                                <li>{{ office }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for office in item.Impresoras %}
+                                <li>{{ office }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for office in item.Navegadores %}
+                                <li>{{ office }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for office in item.Compresores %}
+                                <li>{{ office }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for office in item.Drivers %}
+                                <li>{{ office }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for office in item.Drive %}
+                                <li>{{ office }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for office in item.TI %}
+                                <li>{{ office }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for office in item.Otros %}
+                                <li>{{ office }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>{{ item.fecha|date:"m-Y" }}</td>                                                                                                 
+                    </tr>
+                    {% endfor %}                    
+                </tbody> 
+            </table>
+        </div>
+        <script>
+            const csrftoken = "{{ csrf_token }}";
+        </script> 
+    </main>        
+</body>
+{% endblock  %}

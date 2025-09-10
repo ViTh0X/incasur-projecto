@@ -7,7 +7,7 @@ import pandas as pd
 import os
 from datetime import datetime
 
-from .models import lista_ips, historial_acciones,oficinas, tipo_equipos_informaticos, niveles_firewall, tipo_secciones, tipo_estado_ips, ipForm,historial_accionForm
+from .models import lista_ips, historial_acciones, ipForm,historial_accionForm
 from colaboradores.models import lista_colaboradores
 
 

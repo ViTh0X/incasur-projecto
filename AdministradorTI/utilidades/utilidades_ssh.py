@@ -29,7 +29,7 @@ class SSHManager(logArchivos):
             if self.conexionSSH:
                 self.conexionSSH.close()
                 
-    def ejecuta_inventario(self):                       
+    def ejecuta_inventario_hardware(self):                       
         try:
             self.conexionSSH = paramiko.SSHClient()
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -52,7 +52,7 @@ class SSHManager(logArchivos):
         
                        
         
-    def guardar_inventarios(self):
+    def guardar_inventario_hardware(self):
         dic_inventario_hardware = {}   
         ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
         ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"                                    
@@ -95,7 +95,108 @@ class SSHManager(logArchivos):
                     almacenamiento = data     
                     dic_inventario_hardware['almacenamiento'] = almacenamiento
         return dic_inventario_hardware
+    
+    
+    def ejecuta_inventario_software(self):                       
+        try:
+            self.conexionSSH = paramiko.SSHClient()
+            self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile)            
+        except Exception as e:              
+            print(f"No Se conecto {self.hostname}")            
+        comando = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"
+        stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
+        stdout.read()
+        stderr.read() 
+        ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/software/{self.hostname}-software.txt"
+        ruta_archivo_local = f"D:/Inventarios/{self.hostname}-software.txt"
+        try:
+            self.canalSFTP = self.conexionSSH.open_sftp()                   
+        except paramiko.SFTPError as sftpE:
+            print(f"error sftp  {sftpE}")
+        self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)        
+        self.canalSFTP.close()
+        self.conexionSSH.close()
         
+                       
+        
+    def guardar_inventario_software(self):
+        lista_office=[]
+        lista_acceso_remoto=[]
+        lista_editores_texto=[]
+        lista_base_datos=[]
+        lista_pdf=[]
+        lista_ftia=[]
+        lista_impresoras=[]
+        lista_navegadores=[]
+        lista_compresores=[]
+        lista_drivers=[]
+        lista_drive=[]
+        lista_TI=[]
+        lista_otros=[]          
+        ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
+        ruta_archivo_local = f"D:/Inventarios/{self.hostname}-software.txt"                                            
+        with open(ruta_archivo_local,'r') as inventario_hardware:
+            for linea in inventario_hardware:
+                if "Office" in linea:   #0              
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','')
+                    lista_office.append(data)
+                elif "Acceso Remoto" in linea: #1                
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    lista_acceso_remoto.append(data)                    
+                elif "Editores Texto" in linea:       #2          
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    lista_editores_texto.append(data)
+                elif "Base Datos" in linea:       #3          
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    lista_base_datos.append(data)
+                elif "PDF" in linea:       #4          
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    lista_pdf.append(data)
+                elif "FTIA" in linea:       #5          
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    lista_ftia.append(data)                    
+                elif "Impresoras" in linea: #6                
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()                    
+                    lista_impresoras.append(data)
+                elif "Navegadores" in linea:    #7             
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    lista_navegadores.append(data)
+                elif "Compresores" in linea:    #7             
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    lista_compresores.append(data)
+                elif "Drivers" in linea:
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    lista_drivers.append(data)
+                elif "Drivers" in linea:
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    lista_drivers.append(data)
+                elif "Drive" in linea:
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    lista_drive.append(data)
+                elif "T. I." in linea:
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    lista_TI.append(data)
+                elif "Otros" in linea:
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
+                    lista_otros.append(data)
+            dic_inventario_software = {
+                1:lista_office,
+                2:lista_acceso_remoto,
+                3:lista_editores_texto,
+                4:lista_base_datos,
+                5:lista_pdf,
+                6:lista_ftia,
+                7:lista_impresoras,
+                8:lista_navegadores,
+                9:lista_compresores,
+                10:lista_drivers,
+                11:lista_drive,
+                12:lista_TI,
+                13:lista_otros                
+            }                     
+        return dic_inventario_software
+            
         
     def realizarConSSH(self):
         self.rutaArchivo = self.crearArchivo(self.hostname)

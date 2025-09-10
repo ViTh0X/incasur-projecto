@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'home',
     'colaboradores',
     'ips',
+    'inventario_hardware',
+    'inventario_software',
 ]
 
 MIDDLEWARE = [

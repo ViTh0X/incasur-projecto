@@ -25,3 +25,15 @@ class forms_cuentas_forticlient(forms.ModelForm):
         model = cuentas_forticlient
         fields = ['usuario_asignado']
 # Create your models here.
+
+class logs_actividades_celery(models.Model):
+    id = models.AutoField(primary_key=True)
+    tiempo_creacion = models.DateTimeField(auto_now=True)
+    mensaje = models.CharField(max_length=250)
+    
+    class Meta:
+        db_table = 'logs_invetario_hardware'
+        ordering = ['id']
+    
+    def __str__(self):
+        return self.mensaje

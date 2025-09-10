@@ -346,3 +346,19 @@ select * from lista_colaboradores
 
 select *from lista_colaboradores
 delete from lista_colaboradores
+
+select * from tipo_software
+
+insert into tipo_software (nombre_tipo,descripcion_tipo) values('Office','Suites de Offices para editar documentos');
+insert into tipo_software (nombre_tipo,descripcion_tipo) values('Acceso Remoto','Software para acceso a equipo de forma remota');
+insert into tipo_software (nombre_tipo,descripcion_tipo) values('Editores Texto','Software para editar texto');
+insert into tipo_software (nombre_tipo,descripcion_tipo) values('Base de datos','Software para usar base de datos');
+insert into tipo_software (nombre_tipo,descripcion_tipo) values('PDF','Software para ver y editar pdfs');
+insert into tipo_software (nombre_tipo,descripcion_tipo) values('FTIA','Software para el uso del sistema FTIA');
+insert into tipo_software (nombre_tipo,descripcion_tipo) values('Impresoras','Software control de impresoras');
+insert into tipo_software (nombre_tipo,descripcion_tipo) values('Navegadores','Software para navegar por internet');
+insert into tipo_software (nombre_tipo,descripcion_tipo) values('Compresores','Software para comprimir archivos');
+insert into tipo_software (nombre_tipo,descripcion_tipo) values('Drivers','Drivers para el hardware del equipo');
+insert into tipo_software (nombre_tipo,descripcion_tipo) values('Drive','Software para drive de informacion en la nube');
+insert into tipo_software (nombre_tipo,descripcion_tipo) values('TI','Software especial permitido para el area de TI');
+insert into tipo_software (nombre_tipo,descripcion_tipo) values('Otros','Otro tipo de software no considerado en categorias existentes');

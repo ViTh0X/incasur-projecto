@@ -1,5 +1,82 @@
 {% extends '../layout.html' %}
 {% block titulo %}Inventario Hardware{% endblock  %}
 {% block contenido %}
-
+<body>
+    <main class="contenedor__grande">
+        <div class="contenido__table">
+            <h1 class="no-margin">Inventario Hardware : </h1>
+            <div class="opciones__table">
+                <div class="opciones__table--boton">
+                    <button id="ejecutar_inventario_h">Ejecutar Inventario</button>
+                    <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE" href="{% url 'agregar_colaborador' %}">Ejecutar Inventario</a>                                         -->                     
+                     <!-- <button id="ejecutar_inventario_faltantes">Ejecutar Faltantes</button>
+                                          -->
+                     <a title="VER LISTA DE IPS FALTANTES" href="{% url 'listar_faltantes_hardware' %}">Ver Faltantes</a>
+                     <a title="VER LOGS DE LA EJECUCION" href="{% url 'listar_logs' %}">Ver Logs</a>                                        
+                </div>                 
+                    <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE PARA LOS FALTANTES" href="{% url 'agregar_colaborador' %}">Ejecutar Faltantes</a>                                         -->                                                     
+                <div class="opciones__table--iconos">
+                    <a  title="GENERAR TODO EL HISTORIAL DE INVENTARIOS HARDWARE" href="{% url 'generar_excell_all' %}">
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="40"
+                    height="40"
+                    viewBox="2 0 25 20"
+                    fill="none"
+                    stroke="#41b955"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    >
+                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+                    <path d="M10 12l4 5" />
+                    <path d="M10 17l4 -5" />
+                    </svg>
+                    </a>   
+                </div> 
+                
+            </div>
+            <table class="table" id="tabla_inventario_h">
+                <thead>
+                    <tr>
+                        <th>IP</th>
+                        <th>Nombre Colaborador</th>
+                        <th>Nombre Equipo</th>
+                        <th>Placa Base</th>
+                        <th>Procesador</th>
+                        <th>Ram</th>
+                        <th>Video Integrada</th>
+                        <th>Videos Dedidacada</th>
+                        <th>S.O.</th>
+                        <th>Almacenamiento</th>
+                        <th>Puertas de Enlace</th>
+                        <th>Ultimo Realizado</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inventario in inventarios_hardware %}
+                    <tr>
+                        <td>{{ inventario.ip }}</td>
+                        <td>{{ inventario.nombre_colaborador }}</td>
+                        <td>{{ inventario.nombre_equipo }}</td>
+                        <td>{{ inventario.placa }}</td>
+                        <td>{{ inventario.procesador }}</td>
+                        <td>{{ inventario.ram }}</td>
+                        <td>{{ inventario.video_integrada }}</td>
+                        <td>{{ inventario.video_dedicada }}</td>           
+                        <td>{{ inventario.so }}</td>    
+                        <td>{{ inventario.almacenamiento }}</td> 
+                        <td>{{ inventario.puertas_enlace }}</td>  
+                        <td>{{ inventario.fecha_modificacion|date:"m-Y" }}</td>                                                                                                   
+                    </tr>
+                    {% endfor %}                    
+                </tbody> 
+            </table>
+        </div>
+        <script>
+            const csrftoken = "{{ csrf_token }}";
+        </script> 
+    </main>        
+</body>
 {% endblock  %}

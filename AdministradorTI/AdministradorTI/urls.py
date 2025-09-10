@@ -23,4 +23,5 @@ urlpatterns = [
     path('colaboradores/',include('colaboradores.urls')),
     path('ip-manager/',include('ips.urls')),
     path('inventario-hardware/',include('inventario_hardware.urls')),
+    path('inventario-software/',include('inventario_software.urls'))
 ]
