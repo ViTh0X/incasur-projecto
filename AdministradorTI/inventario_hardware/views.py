@@ -18,10 +18,14 @@ def listar_inventario_hardware(request):
     año_actual = datetime.now().year
     mes_actual = datetime.now().month
     inventarios_hardware = inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual)
+    if mes_actual < 10:
+        fecha_hardware = f"{año_actual} - 0{mes_actual}"
+    else:
+        fecha_hardware = f"{año_actual} - {mes_actual}"
     if not inventarios_hardware:                  
         return render(request,'inventario_hardware/no_realizo_inventario_este_mes.html')        
     else:
-        return render(request,'inventario_hardware/lista_inventario_h.html',{'inventarios_hardware':inventarios_hardware})    
+        return render(request,'inventario_hardware/lista_inventario_h.html',{'inventarios_hardware':inventarios_hardware,'fecha_hardware':fecha_hardware})    
         
 
 def iniciar_inventario_hardware(request):
@@ -54,7 +58,7 @@ def listar_faltantes_hardware(request):
     else:
         return render(request,'inventario_hardware/lista_faltantes_h.html',{'lista_faltantes':lista_faltantes})
 
-def generar_excell_all(request):
+def generar_excell_all_h(request):
     fecha_hora = datetime.now()
     inventarios_hardware = inventario_hardware.objects.all()
     data_df = inventarios_hardware.values('ip','nombre_colaborador','nombre_equipo','placa','procesador','ram','video_integrada','video_dedicada','so','almacenamiento','puertas_enlace','fecha_modificacion')

@@ -1,0 +1,3 @@
+2025-09-10 20:30:59.405048 - 192.168.0.33 - ERR - Ocurrio un error inesperado [Errno 2] No such file - F:/ - D:\Backup\192.168.0.33\Discos\Disco_F
+2025-09-10 20:30:59.405855 - 192.168.0.33 - ERR - Ocurrio un error inesperado Socket is closed - G:/ - D:\Backup\192.168.0.33\Discos\Disco_G
+2025-09-10 20:30:59.406381 - 192.168.0.33 - ERR - Ocurrio un error inesperado Socket is closed - H:/ - D:\Backup\192.168.0.33\Discos\Disco_H

@@ -2,7 +2,7 @@ from celery import shared_task
 from django.shortcuts import get_object_or_404, get_list_or_404
 from .models import inventario_hardware, faltantes_inventario_hardware
 from home.models import logs_actividades_celery
-from ips.models import tipo_estado_ips, lista_ips
+from ips.models import tipo_estado_ips, lista_ips,tipo_equipos_informaticos
 from colaboradores.models import lista_colaboradores
 from datetime import datetime
 import os
@@ -16,7 +16,10 @@ from utilidades.utilidades_ssh import SSHManager
 def ejecutar_inventario_hardware():
     try:
         estado_ips = get_object_or_404(tipo_estado_ips,pk=1)
-        lista_ips_ocupadas = lista_ips.objects.filter(codigo_estado=estado_ips).values('ip')
+        laptop = get_object_or_404(tipo_equipos_informaticos,pk=1)
+        pc = get_object_or_404(tipo_equipos_informaticos,pk=2)
+        nombres_a_filtrar = [laptop.nombre_tipo_equipo, pc.nombre_tipo_equipo]        
+        lista_ips_ocupadas = lista_ips.objects.filter(codigo_estado=estado_ips,tipo_equipo__in=nombres_a_filtrar).values('ip')                        
         for ip in lista_ips_ocupadas:
             string_ip = ip['ip']
             username = "Administrador"
@@ -56,8 +59,7 @@ def ejecutar_inventario_hardware():
                     ip_filtrada = lista_ips.objects.get(ip=string_ip)
                     faltantes_hardware = faltantes_inventario_hardware(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
                     faltantes_hardware.save()
-            except Exception as e:
-                print(f"Error_ssh {e}")
+            except:                
                 faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                 ip_filtrada = lista_ips.objects.get(ip=string_ip)
                 faltantes_hardware = faltantes_inventario_hardware(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
@@ -68,6 +70,7 @@ def ejecutar_inventario_hardware():
         )                                
         logs_inventario_hardware.save()
         return "TAREA INVENTARIO HARDWARE TERMINARDA"    
+    
     except Exception as e:
         logs_inventario_hardware = logs_actividades_celery(
             mensaje = f"Error{e}"

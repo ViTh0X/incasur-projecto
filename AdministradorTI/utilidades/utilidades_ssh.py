@@ -208,12 +208,16 @@ class SSHManager(logArchivos):
             self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile)                                    
             return True , self.rutaArchivo                   
         except paramiko.AuthenticationException as sshE:            
-            mensaje = f"Error al establecer conexion SSH a host {self.hostname} al usuario {self.username} establecida con exito."
+            mensaje = f"Error al establecer conexion SSH a host {self.hostname} al usuario {self.username}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
-            return False , self.rutaArchivo
+            if self.conexionSSH:
+                self.conexionSSH.close()
+            return False , self.rutaArchivo            
         except Exception as e:
             mensaje = f"Ocurrio un error inesperado : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
+            if self.conexionSSH:
+                self.conexionSSH.close()
             return False , self.rutaArchivo
         # finally:
         #     if self.conexionSSH:
@@ -362,14 +366,25 @@ class SSHManager(logArchivos):
                                                                                                                     
         except SFTPError as e:
             mensaje = f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}"
-            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                  
+            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
+            if self.canalSFTP:
+                self.canalSFTP.close()
+            if self.conexionSSH:
+                self.conexionSSH.close()                  
         except FileExistsError as e:
             mensaje = f"Error en ruta {rBaseRemoR} posiblemente no existe : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                              
+            if self.canalSFTP:
+                self.canalSFTP.close()
+            if self.conexionSSH:
+                self.conexionSSH.close()
         except Exception as e:            
             mensaje = f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}"
-            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)  
-            
+            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname) 
+            if self.canalSFTP:
+                self.canalSFTP.close()
+            if self.conexionSSH:
+                self.conexionSSH.close()                    
             
     def cerrarConexiones(self):
         self.canalSFTP.close()

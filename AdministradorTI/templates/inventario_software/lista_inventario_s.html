@@ -4,7 +4,7 @@
 <body>
     <main class="contenedor__grande">
         <div class="contenido__table">
-            <h1 class="no-margin">Inventario Software : </h1>
+            <h1 class="no-margin">Inventario Software <span>{{ fecha_software }}</span>: </h1>
             <div class="opciones__table">
                 <div class="opciones__table--boton">
                     <button id="ejecutar_inventario_s">Ejecutar Inventario</button>
@@ -12,11 +12,11 @@
                      <!-- <button id="ejecutar_inventario_faltantes">Ejecutar Faltantes</button>
                                           -->
                      <a title="VER LISTA DE IPS FALTANTES" href="{% url 'listar_faltantes_software' %}">Ver Faltantes</a>
-                     <a title="VER LOGS DE LA EJECUCION" href="{% url 'listar_logs' %}">Ver Logs</a>                                        
+                     <a title="VER LOGS DE LA EJECUCION" href="{% url 'listar_logs_s' %}">Ver Logs</a>                                        
                 </div>                 
                     <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE PARA LOS FALTANTES" href="{% url 'agregar_colaborador' %}">Ejecutar Faltantes</a>                                         -->                                                     
                 <div class="opciones__table--iconos">
-                    <a  title="GENERAR TODO EL HISTORIAL DE INVENTARIOS SOFTWARE" href="{% url 'generar_excell_all' %}">
+                    <a  title="GENERAR TODO EL HISTORIAL DE INVENTARIOS SOFTWARE" href="{% url 'generar_excell_all_s' %}">
                     <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="40"
@@ -55,7 +55,7 @@
                         <th>Drive</th>
                         <th>TI</th>
                         <th>Otros</th>
-                        <th>Ultimo Realizado</th>                        
+                        <!-- <th>Ultimo Realizado</th>                         -->
                     </tr>
                 </thead>
                 <tbody>
@@ -154,7 +154,7 @@
                                 {% endfor %}
                             </ul>
                         </td>
-                        <td>{{ item.fecha|date:"m-Y" }}</td>                                                                                                 
+                        <!-- <td>{{ item.fecha|date:"m-Y" }}</td>                                                                                                  -->
                     </tr>
                     {% endfor %}                    
                 </tbody> 

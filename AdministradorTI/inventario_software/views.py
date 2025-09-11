@@ -8,7 +8,7 @@ from colaboradores.models import lista_colaboradores
 from home.models import logs_actividades_celery
 
 from celery.result import AsyncResult
-from .task import ejecutar_faltantes_inventario_software,ejecutar_inventario_sofware
+from .task import ejecutar_faltantes_inventario_software,ejecutar_inventario_software
 
 import pandas as pd
 from io import BytesIO
@@ -93,8 +93,11 @@ def listar_inventario_software(request):
                 'Otros' : datos['Otros'],
                 'fecha' : datos['fecha']
             })
-        
-        return render(request,'inventario_software/lista_inventario_s.html',{'lista_inventarios':lista_inventarios})
+        if mes_actual < 10:
+            fecha_software = f"{año_actual} - 0{mes_actual}"
+        else:
+            fecha_software = f"{año_actual} - {mes_actual}"
+        return render(request,'inventario_software/lista_inventario_s.html',{'lista_inventarios':lista_inventarios,'fecha_software':fecha_software})
 
 def listar_faltantes_software(request):
     lista_faltantes = faltantes_inventario_software.objects.all()
@@ -103,14 +106,14 @@ def listar_faltantes_software(request):
     else:
         return render(request,'inventario_software/lista_faltantes_s.html',{'lista_faltantes':lista_faltantes})
     
-def listar_logs(request):
+def listar_logs_s(request):
     lista_logs = logs_actividades_celery.objects.all().order_by('-tiempo_creacion')
     return render(request,'logs/listar_logs_is.html',{'lista_logs':lista_logs})
 
 
 def iniciar_inventario_software(request):
     if request.method == 'POST':
-        tarea = ejecutar_inventario_sofware.delay()
+        tarea = ejecutar_inventario_software.delay()
         
         return JsonResponse({'task_id':tarea.id})
     return redirect('listar_inventario_hardware')
@@ -132,7 +135,7 @@ def iniciar_faltantes_software(request):
     return redirect('listar_inventario_hardware')
 
 
-def generar_excell_all(request):
+def generar_excell_all_s(request):
     fecha_hora = datetime.now()
     año_actual = datetime.now().year
     mes_actual = datetime.now().month

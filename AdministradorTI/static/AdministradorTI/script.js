@@ -108,3 +108,59 @@ if(botonFaltantes_s){
         });
     });
 }
+
+
+const boton_backup = document.getElementById('ejecutar_backup');
+
+if (boton_backup){
+    boton_backup.addEventListener('click',function(){
+        fetch('/backup-informacion/iniciar-backup-informacion/',{
+            method:'POST',
+            headers:{'X-CSRFToken': csrftoken }
+        })
+        .then(response => response.json())
+        .then(data =>{
+            const taskID = data.task_id;
+            if(taskID){
+                /*Verificacion constante el estado */
+                const intervalos = setInterval(()=>{
+                    fetch(`/backup-informacion/status/${taskID}/`)
+                    .then(response => response.json())
+                    .then(estadoData =>{
+                        if(estadoData.estado === 'SUCCESS'){
+                            clearInterval(intervalos);
+                            // alert("Termino el backup");
+                        }
+                    })
+                },3000);
+            }
+        });
+    });
+}
+
+const boton_backup_faltantes = document.getElementById('ejecutar_backup_faltantes');
+if(boton_backup_faltantes){
+    boton_backup_faltantes.addEventListener('click',function(){
+        fetch('/backup-informacion/iniciar-faltantes-backup/',{
+            method:'POST',
+            headers:{'X-CSRFToken': csrftoken }
+        })
+        .then(response => response.json())
+        .then(data =>{
+            const taskID = data.task_id;
+            if(taskID){
+                /*Verificacion constante el estado */
+                const intervalos = setInterval(()=>{
+                    fetch(`/backup-informacion/status/${taskID}/`)
+                    .then(response => response.json())
+                    .then(estadoData =>{
+                        if(estadoData.estado === 'SUCCESS'){
+                            clearInterval(intervalos);
+                            // alert("Termino el backup");
+                        }
+                    })
+                },3000);
+            }
+        });
+    });
+}

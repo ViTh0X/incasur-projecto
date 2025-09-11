@@ -1,16 +1,16 @@
 {% extends '../layout.html' %}
-{% block titulo %}Inventario Hardware{% endblock  %}
+{% block titulo %}Inventario Software{% endblock  %}
 {% block contenido %}
 <body>
     <main class="contenedor">
         <div class="contenido__table">
-            <h1 class="no-margin">Faltantes Inventario Hardware : </h1>
+            <h1 class="no-margin">Faltantes Inventario Software : </h1>
             <p class="no-margin">No se actualizo el inventario por un problema de red</p>
             <div class="opciones__table marginb-04">
                 <div class="opciones__table--boton">                
                     <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE" href="{% url 'agregar_colaborador' %}">Ejecutar Inventario</a>                                         -->                     
                      <button id="ejecutar_inventario_faltantes_s">Ejecutar Faltantes</button>
-                     <a title="VOLVER A INVENTARIO HARDWARE" href="{% url 'listar_inventario_software' %}">Volver</a>                     
+                     <a title="VOLVER A INVENTARIO SOFTWARE" href="{% url 'listar_inventario_software' %}">Volver</a>                     
                 </div>                 
                     <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE PARA LOS FALTANTES" href="{% url 'agregar_colaborador' %}">Ejecutar Faltantes</a>                                         -->                                                                                     
             </div>

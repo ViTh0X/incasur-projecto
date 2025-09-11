@@ -1,0 +1,39 @@
+{% extends '../layout.html' %}
+{% block titulo %}Backup Informacion{% endblock  %}
+{% block contenido %}
+<body>
+    <main class="contenedor">
+        <div class="contenido__table">
+            <h1 class="no-margin">Faltantes Backup Informacion : </h1>
+            <p class="no-margin">No se actualizo el inventario por un problema de red</p>
+            <div class="opciones__table marginb-04">
+                <div class="opciones__table--boton">                                    
+                     <button id="ejecutar_backup_faltantes">Ejecutar Faltantes</button>
+                     <a title="VOLVER A BACKUP INFORMACION" href="{% url 'listar_backup_informacion' %}">Volver</a>                     
+                </div>                                     
+            </div>
+            <table class="table" id="tabla_inventario_h">
+                <thead>
+                    <tr>
+                        <th>IP</th>
+                        <th>Nombre Colaborador</th>                                                                        
+                        <th>Ultimo Realizado</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for faltante in lista_faltantes %}
+                    <tr>
+                        <td>{{ faltante.ip }}</td>
+                        <td>{{ faltante.nombre_colaborador }}</td>
+                        <td>{{ faltante.fecha_modificacion|date:"m-Y" }}</td>                        
+                    </tr>
+                    {% endfor %}                    
+                </tbody> 
+            </table>
+        </div>
+        <script>
+            const csrftoken = "{{ csrf_token }}";
+        </script> 
+    </main>        
+</body>
+{% endblock  %}

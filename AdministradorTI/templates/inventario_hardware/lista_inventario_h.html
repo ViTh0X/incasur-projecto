@@ -4,19 +4,15 @@
 <body>
     <main class="contenedor__grande">
         <div class="contenido__table">
-            <h1 class="no-margin">Inventario Hardware : </h1>
+            <h1 class="no-margin">Inventario Hardware <span>{{ fecha_hardware }}</span>: </h1>
             <div class="opciones__table">
                 <div class="opciones__table--boton">
-                    <button id="ejecutar_inventario_h">Ejecutar Inventario</button>
-                    <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE" href="{% url 'agregar_colaborador' %}">Ejecutar Inventario</a>                                         -->                     
-                     <!-- <button id="ejecutar_inventario_faltantes">Ejecutar Faltantes</button>
-                                          -->
+                    <button id="ejecutar_inventario_h">Ejecutar Inventario</button>                    
                      <a title="VER LISTA DE IPS FALTANTES" href="{% url 'listar_faltantes_hardware' %}">Ver Faltantes</a>
-                     <a title="VER LOGS DE LA EJECUCION" href="{% url 'listar_logs' %}">Ver Logs</a>                                        
-                </div>                 
-                    <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE PARA LOS FALTANTES" href="{% url 'agregar_colaborador' %}">Ejecutar Faltantes</a>                                         -->                                                     
+                     <a title="VER LOGS DE LA EJECUCION" href="{% url 'listar_logs_h' %}">Ver Logs</a>                                        
+                </div>                                     
                 <div class="opciones__table--iconos">
-                    <a  title="GENERAR TODO EL HISTORIAL DE INVENTARIOS HARDWARE" href="{% url 'generar_excell_all' %}">
+                    <a  title="GENERAR TODO EL HISTORIAL DE INVENTARIOS HARDWARE" href="{% url 'generar_excell_all_h' %}">
                     <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="40"
@@ -35,7 +31,6 @@
                     </svg>
                     </a>   
                 </div> 
-                
             </div>
             <table class="table" id="tabla_inventario_h">
                 <thead>
@@ -51,7 +46,7 @@
                         <th>S.O.</th>
                         <th>Almacenamiento</th>
                         <th>Puertas de Enlace</th>
-                        <th>Ultimo Realizado</th>                        
+                        <!-- <th>Ultimo Realizado</th>                         -->
                     </tr>
                 </thead>
                 <tbody>
@@ -68,7 +63,7 @@
                         <td>{{ inventario.so }}</td>    
                         <td>{{ inventario.almacenamiento }}</td> 
                         <td>{{ inventario.puertas_enlace }}</td>  
-                        <td>{{ inventario.fecha_modificacion|date:"m-Y" }}</td>                                                                                                   
+                        <!-- <td>{{ inventario.fecha_modificacion|date:"m-Y" }}</td>                                                                                                    -->
                     </tr>
                     {% endfor %}                    
                 </tbody> 

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'ips',
     'inventario_hardware',
     'inventario_software',
+    'bkinformacion',
 ]
 
 MIDDLEWARE = [
