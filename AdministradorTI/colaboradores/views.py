@@ -15,8 +15,11 @@ from .models import lista_colaboradores, colaboradorForm, estado_colaboradores
 from ips.models import tipo_estado_ips, lista_ips
 # Create your views here.
 def listar_colaboradores(request):
-    estado_colaborador = get_object_or_404(estado_colaboradores,pk=1)
-    colaboradores = lista_colaboradores.objects.filter(estado_colaboradores=estado_colaborador)
+    try:
+        estado_colaborador = get_object_or_404(estado_colaboradores,pk=1)
+        colaboradores = lista_colaboradores.objects.filter(estado_colaboradores=estado_colaborador)
+    except:
+        pass
     return render(request,'colaboradores/lista_colaboradores.html',{'colaboradores':colaboradores})   
 
 def agregar_colaborador(request):
