@@ -20,14 +20,19 @@ class SSHManager(logArchivos):
         try:
             self.conexionSSH = paramiko.SSHClient()
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=3,username=self.username,key_filename=self.keyfile)
-            return True 
-        except Exception as e:            
-            print("No Se conecto")
+            self.conexionSSH.connect(hostname=self.hostname, port=self.port, timeout=15, username=self.username, key_filename=self.keyfile)
+            print(f"Conexión SSH exitosa a {self.hostname}")
+            self.conexionSSH.close()
+            return True
+        except paramiko.AuthenticationException as auth_error:
+            print(f"Error de autenticación: {auth_error}")
             return False
-        finally:
-            if self.conexionSSH:
-                self.conexionSSH.close()
+        except paramiko.SSHException as ssh_error:
+            print(f"Error SSH: {ssh_error}")
+            return False
+        except Exception as e:
+            print(f"Error desconocido: {e}")
+            return False
                 
     def ejecuta_inventario_hardware(self):                       
         try:
