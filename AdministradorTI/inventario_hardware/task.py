@@ -22,7 +22,7 @@ def ejecutar_inventario_hardware():
             string_ip = ip['ip']
             username = "Administrador"
             puerto = os.getenv('SSH_PORT')
-            keyfile = os.getenv('SSH_KEYFILE')
+            keyfile = '/root/.ssh/id_rsa'
             print("KEYFILE USADO:", os.getenv('SSH_KEYFILE'))
             SSH_instancia = SSHManager(string_ip,username,puerto,keyfile)
             esta_en_linea = SSH_instancia.revisarConexionSSH()
