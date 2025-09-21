@@ -24,7 +24,7 @@ class SSHManager(logArchivos):
             self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=3,username=self.username,key_filename=self.keyfile)
             return True 
         except Exception as e:            
-            print("No Se conecto")
+            print("No Se conecto {e}")
             return False
         # finally:
         #     if self.conexionSSH:
@@ -37,7 +37,7 @@ class SSHManager(logArchivos):
             self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile)            
             print("Conectadooooooooooooooo")
         except Exception as e:              
-            print(f"No Se conecto {self.hostname}")           
+            print(f"No Se conecto {self.hostname} -- {e}")           
         print("Se conecto con exito")             
         comando = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
         stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
