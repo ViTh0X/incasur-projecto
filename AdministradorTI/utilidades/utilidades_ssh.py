@@ -46,6 +46,7 @@ class SSHManager(logArchivos):
         ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
         ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
         # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"
+        print("Las rutas estan bien")
         try:
             self.canalSFTP = self.conexionSSH.open_sftp()
             print("El canal se creo")                   
