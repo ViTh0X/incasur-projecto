@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 from paramiko import SFTPError
 from .utilidades_log import *
+import time
 
 class SSHManager(logArchivos):
     
@@ -43,6 +44,7 @@ class SSHManager(logArchivos):
         stdout.read()
         stderr.read() 
         print("Ejecuto el comando con exito")
+        time.sleep(5)
         ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
         ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
         # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"
