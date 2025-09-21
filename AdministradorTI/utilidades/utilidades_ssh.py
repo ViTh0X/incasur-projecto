@@ -25,9 +25,9 @@ class SSHManager(logArchivos):
         except Exception as e:            
             print("No Se conecto")
             return False
-        finally:
-            if self.conexionSSH:
-                self.conexionSSH.close()
+        # finally:
+        #     if self.conexionSSH:
+        #         self.conexionSSH.close()
                 
     def ejecuta_inventario_hardware(self):                       
         try:
@@ -48,8 +48,8 @@ class SSHManager(logArchivos):
         except paramiko.SFTPError as sftpE:
             print(f"error sftp  {sftpE}")
         self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)        
-        self.canalSFTP.close()
-        self.conexionSSH.close()
+        # self.canalSFTP.close()
+        # self.conexionSSH.close()
         
                        
         
@@ -117,8 +117,8 @@ class SSHManager(logArchivos):
         except paramiko.SFTPError as sftpE:
             print(f"error sftp  {sftpE}")
         self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)        
-        self.canalSFTP.close()
-        self.conexionSSH.close()
+        # self.canalSFTP.close()
+        # self.conexionSSH.close()
         
                        
         
