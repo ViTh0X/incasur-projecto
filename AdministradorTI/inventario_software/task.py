@@ -17,9 +17,7 @@ def ejecutar_inventario_software():
         laptop = get_object_or_404(tipo_equipos_informaticos,pk=1)
         pc = get_object_or_404(tipo_equipos_informaticos,pk=2)
         nombres_a_filtrar = [laptop.nombre_tipo_equipo, pc.nombre_tipo_equipo]        
-        lista_ips_ocupadas = lista_ips.objects.filter(codigo_estado=estado_ips,tipo_equipo__in=nombres_a_filtrar).values('ip')
-        # estado_ips = get_object_or_404(tipo_estado_ips,pk=1)
-        # lista_ips_ocupadas = lista_ips.objects.filter(codigo_estado=estado_ips).values('ip')
+        lista_ips_ocupadas = lista_ips.objects.filter(codigo_estado=estado_ips,tipo_equipo__in=nombres_a_filtrar).values('ip')        
         for ip in lista_ips_ocupadas:
             string_ip = ip['ip']
             username = "Administrador"
@@ -30,15 +28,19 @@ def ejecutar_inventario_software():
             #Filtrando el objeto ip
             ip_filtrada = lista_ips.objects.get(ip=string_ip)
             #Filtrando el objeto nombre Trabajador
-            nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)            
+            nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)
+            print(f"{string_ip} - El equipo esta en linea")            
             mes_actual = datetime.now().month
             año_actual = datetime.now().year                    
             try:
                 if esta_en_linea:
                     SSH_instancia.ejecuta_inventario_software()
+                    print("Ejecuto inventario software")    
                     inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    print("Elimino duplicados")
                     ##################################
                     diccionario_inventario_software = SSH_instancia.guardar_inventario_software()
+                    print("Guardo el inventario")
                     for codigo_categoria, lista_software in diccionario_inventario_software.items():
                         categoria = tipo_software.objects.get(id=codigo_categoria)
                         for software in lista_software:
@@ -48,6 +50,7 @@ def ejecutar_inventario_software():
                                 nombre_software =software                                
                             )
                             modelado_inventario_software.save()
+                            print(f"Crea el inventario en DB {lista_software}")
                     faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                 else:
                     faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()

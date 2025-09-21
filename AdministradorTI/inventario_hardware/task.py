@@ -22,24 +22,22 @@ def ejecutar_inventario_hardware():
             string_ip = ip['ip']
             username = "Administrador"
             puerto = os.getenv('SSH_PORT')
-            keyfile = '/root/.ssh/id_rsa'
-            print("KEYFILE USADO:", os.getenv('SSH_KEYFILE'))
+            keyfile = os.getenv('SSH_KEYFILE')            
             SSH_instancia = SSHManager(string_ip,username,puerto,keyfile)
             esta_en_linea = SSH_instancia.revisarConexionSSH()
             #Filtrando el objeto ip
             ip_filtrada = lista_ips.objects.get(ip=string_ip)
             #Filtrando el objeto nombre Trabajador
             nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)
-            print("######hasta aqui funciono")
+            print(f"{string_ip} - El equipo esta en linea")
             mes_actual = datetime.now().month
             año_actual = datetime.now().year
             try:
-                if esta_en_linea:
-                    print("Ingreso al iff")
+                if esta_en_linea:                    
                     SSH_instancia.ejecuta_inventario_hardware()     
-                    print("Eejecuto inventario software")                                
+                    print("Ejecuto inventario hardware")                                
                     inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                    print("Elimino el inventario ya existente")
+                    print("Elimino duplicados")
                     ##################################
                     diccionario_inventario_hardware = SSH_instancia.guardar_inventario_hardware()                
                     print("Guardo el inventario")
@@ -57,7 +55,9 @@ def ejecutar_inventario_hardware():
                         puertas_enlace = diccionario_inventario_hardware['puerta_enlace']                             
                     )
                     modelado_inventario_hardware.save()
+                    print("Crea el inventario en DB")
                     faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()                                   
+                    print("Elimino duplicados")
                 else:
                     faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                     ip_filtrada = lista_ips.objects.get(ip=string_ip)
