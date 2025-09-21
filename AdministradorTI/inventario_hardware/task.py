@@ -23,6 +23,7 @@ def ejecutar_inventario_hardware():
             username = "Administrador"
             puerto = os.getenv('SSH_PORT')
             keyfile = os.getenv('SSH_KEYFILE')
+            print("KEYFILE USADO:", os.getenv('SSH_KEYFILE'))
             SSH_instancia = SSHManager(string_ip,username,puerto,keyfile)
             esta_en_linea = SSH_instancia.revisarConexionSSH()
             #Filtrando el objeto ip
