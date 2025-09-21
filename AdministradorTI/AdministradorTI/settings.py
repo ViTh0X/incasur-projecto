@@ -156,3 +156,5 @@ CELERY_TASK_ACKS_LATE = True
 # Permite que los trabajadores procesen una tarea a la vez
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 #Configuracion Celery broker
+print("DEBUG from .env:", os.getenv("DEBUG"))
+print("DB USER:", os.getenv("DATABASE_USER"))
