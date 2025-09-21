@@ -149,4 +149,10 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'America/Lima'
+# Configuración de Celery
+# Asegura que las tareas sean reconocidas solo después de ser completadas
+CELERY_TASK_ACKS_LATE = True
+
+# Permite que los trabajadores procesen una tarea a la vez
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 #Configuracion Celery broker
