@@ -41,7 +41,8 @@ class SSHManager(logArchivos):
         stdout.read()
         stderr.read() 
         ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
-        ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"
+        ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
+        # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"
         try:
             self.canalSFTP = self.conexionSSH.open_sftp()                   
         except paramiko.SFTPError as sftpE:
@@ -53,9 +54,9 @@ class SSHManager(logArchivos):
                        
         
     def guardar_inventario_hardware(self):
-        dic_inventario_hardware = {}   
-        ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
-        ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"                                    
+        dic_inventario_hardware = {}           
+        ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
+        # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"                                    
         with open(ruta_archivo_local,'r') as inventario_hardware:
             for linea in inventario_hardware:
                 if "Nombre" in linea:   #0              
@@ -109,7 +110,8 @@ class SSHManager(logArchivos):
         stdout.read()
         stderr.read() 
         ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/software/{self.hostname}-software.txt"
-        ruta_archivo_local = f"D:/Inventarios/{self.hostname}-software.txt"
+        ruta_archivo_local = f"/root/Inventarios/{self.hostname}-software.txt"
+        # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-software.txt"
         try:
             self.canalSFTP = self.conexionSSH.open_sftp()                   
         except paramiko.SFTPError as sftpE:
@@ -133,9 +135,9 @@ class SSHManager(logArchivos):
         lista_drivers=[]
         lista_drive=[]
         lista_TI=[]
-        lista_otros=[]          
-        ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
-        ruta_archivo_local = f"D:/Inventarios/{self.hostname}-software.txt"                                            
+        lista_otros=[]                  
+        ruta_archivo_local = f"/root/Inventarios/{self.hostname}-software.txt"
+        # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-software.txt"                                            
         with open(ruta_archivo_local,'r') as inventario_hardware:
             for linea in inventario_hardware:
                 if "Office" in linea:   #0              
