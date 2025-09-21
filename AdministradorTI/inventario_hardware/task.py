@@ -29,6 +29,7 @@ def ejecutar_inventario_hardware():
             ip_filtrada = lista_ips.objects.get(ip=string_ip)
             #Filtrando el objeto nombre Trabajador
             nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)
+            print("######hasta aqui funciono")
             mes_actual = datetime.now().month
             año_actual = datetime.now().year
             try:
