@@ -52,6 +52,8 @@ class SSHManager(logArchivos):
             print("El canal se creo")                   
         except paramiko.SFTPError as sftpE:
             print(f"error sftp  {sftpE}")
+        except Exception as e:
+            print(f"Ubo un error no creo el canal sftp{e}")
         self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)        
         print("copio el archivo con exito")
         # self.canalSFTP.close()
