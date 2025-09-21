@@ -34,6 +34,7 @@ class SSHManager(logArchivos):
             self.conexionSSH = paramiko.SSHClient()
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile)            
+            print("Conectadooooooooooooooo")
         except Exception as e:              
             print(f"No Se conecto {self.hostname}")           
         print("Se conecto con exito")             
