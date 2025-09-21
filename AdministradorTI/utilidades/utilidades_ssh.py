@@ -35,11 +35,13 @@ class SSHManager(logArchivos):
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile)            
         except Exception as e:              
-            print(f"No Se conecto {self.hostname}")            
+            print(f"No Se conecto {self.hostname}")           
+        print("Se conecto con exito")             
         comando = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
         stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
         stdout.read()
         stderr.read() 
+        print("Ejecuto el comando con exito")
         ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
         ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
         # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"
@@ -49,6 +51,7 @@ class SSHManager(logArchivos):
         except paramiko.SFTPError as sftpE:
             print(f"error sftp  {sftpE}")
         self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)        
+        print("copio el archivo con exito")
         # self.canalSFTP.close()
         # self.conexionSSH.close()
         
