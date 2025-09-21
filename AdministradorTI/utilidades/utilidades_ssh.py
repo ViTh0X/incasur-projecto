@@ -50,6 +50,10 @@ class SSHManager(logArchivos):
         # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"
         print("Las rutas estan bien")
         try:
+            self.conexionSSH = paramiko.SSHClient()
+            self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile)            
+            print("Conectadooooooooooooooo")
             self.canalSFTP = self.conexionSSH.open_sftp()
             print("El canal se creo")                   
         except paramiko.SFTPError as sftpE:
