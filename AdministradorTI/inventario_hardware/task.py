@@ -34,10 +34,12 @@ def ejecutar_inventario_hardware():
             año_actual = datetime.now().year
             try:
                 if esta_en_linea:
+                    print("Ingreso al iff")
                     SSH_instancia.ejecuta_inventario_hardware()                                     
                     inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                     ##################################
                     diccionario_inventario_hardware = SSH_instancia.guardar_inventario_hardware()                
+                    print("Ejecuto ambos inventarios")
                     modelado_inventario_hardware = inventario_hardware(
                         ip = ip_filtrada,
                         nombre_colaborador = nombre_colab_filtrado,

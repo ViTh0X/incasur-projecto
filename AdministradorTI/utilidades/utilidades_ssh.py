@@ -44,7 +44,8 @@ class SSHManager(logArchivos):
         ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
         # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"
         try:
-            self.canalSFTP = self.conexionSSH.open_sftp()                   
+            self.canalSFTP = self.conexionSSH.open_sftp()
+            print("El canal se creo")                   
         except paramiko.SFTPError as sftpE:
             print(f"error sftp  {sftpE}")
         self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)        
