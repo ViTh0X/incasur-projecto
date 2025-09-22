@@ -245,7 +245,7 @@ class SSHManager(logArchivos):
     
     
     def rutasIniciales(self,listaCarpetas:list):
-        rutaInicial = f"D:/Backup/{self.hostname}/"
+        rutaInicial = f"/backupcolaboradores/Backup/{self.hostname}/"
         listaRutasLocales = []                
         os.makedirs(rutaInicial,exist_ok=True)
         for carpetas in listaCarpetas:
@@ -254,7 +254,7 @@ class SSHManager(logArchivos):
             os.makedirs(ruta,exist_ok=True)
             print(f"Esto se creo {ruta}")        
             listaRutasLocales.append(ruta)
-            mensaje = "Las carpetas iniciales en el Disco D: fueron creadas con exito"
+            mensaje = "Las carpetas iniciales en el Disco /backupcolaboradores/ fueron creadas con exito"
             self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
         return listaRutasLocales
     
@@ -311,8 +311,7 @@ class SSHManager(logArchivos):
                     local = Path(rLocal)/"Disco_H"
                     lsR[local] = ruta
                     lsRutaBKUP.append(lsR)
-                    lsR = {}
-                    print("termino todo lo del if")
+                    lsR = {}                    
             mensaje = "Las rutas iniciales fueron preparadas con exito"
             self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
             return lsRutaBKUP
