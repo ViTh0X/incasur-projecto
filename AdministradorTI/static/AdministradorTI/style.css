@@ -36,9 +36,9 @@ body{
 
 ul {
   list-style-type: none;  
+  margin: 0;
   padding: 0;
-  text-align: left;
-  font-size: 1.5rem;
+  text-align: left;  
 }
 .contenedor__grande{
     width: min(95% 140rem);
