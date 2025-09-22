@@ -49,8 +49,7 @@ def ejecutar_inventario_software():
                                 tipo_software = categoria,
                                 nombre_software =software                                
                             )
-                            modelado_inventario_software.save()
-                            print(f"Crea el inventario en DB {lista_software}")
+                            modelado_inventario_software.save()                            
                     faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                 else:
                     faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()

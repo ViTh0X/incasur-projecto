@@ -51,8 +51,6 @@ def listar_inventario_software(request):
                 inventario_agrupado[ip]['Editores Texto'].append(data.nombre_software)
             elif data.tipo_software.nombre_tipo == 'Base Datos':
                 inventario_agrupado[ip]['Base Datos'].append(data.nombre_software)
-            elif data.tipo_software.nombre_tipo == 'Base Datos':
-                inventario_agrupado[ip]['Base Datos'].append(data.nombre_software)
             elif data.tipo_software.nombre_tipo == 'PDF':
                 inventario_agrupado[ip]['PDF'].append(data.nombre_software)
             elif data.tipo_software.nombre_tipo == 'FTIA':
@@ -168,8 +166,6 @@ def generar_excell_all_s(request):
             inventario_agrupado[ip]['Acceso Remoto'].append(data.nombre_software)
         elif data.tipo_software.nombre_tipo == 'Editores Texto':
             inventario_agrupado[ip]['Editores Texto'].append(data.nombre_software)
-        elif data.tipo_software.nombre_tipo == 'Base Datos':
-            inventario_agrupado[ip]['Base Datos'].append(data.nombre_software)
         elif data.tipo_software.nombre_tipo == 'Base Datos':
             inventario_agrupado[ip]['Base Datos'].append(data.nombre_software)
         elif data.tipo_software.nombre_tipo == 'PDF':
