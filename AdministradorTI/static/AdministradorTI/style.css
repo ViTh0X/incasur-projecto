@@ -35,8 +35,8 @@ body{
 }
 
 ul {
-  list-style-type: none;
-  margin: 0;
+  list-style-type: circle;
+  margin: 1rem;
   padding: 0;
   text-align: left;
 }
