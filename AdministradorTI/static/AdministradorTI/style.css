@@ -36,10 +36,10 @@ body{
 
 ul {
   list-style-type: circle;
-  margin: 1rem;
+  margin-left: 1.5rem;
   padding: 0;
   text-align: left;
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 .contenedor__grande{
     width: min(95% 140rem);
