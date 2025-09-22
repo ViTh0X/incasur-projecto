@@ -40,8 +40,7 @@
             <table class="table" id="tabla_inventario_h">
                 <thead>
                     <tr>
-                        <th>IP</th>
-                        <th>Nombre Colaborador</th>
+                        <th>Colaborado</th>                        
                         <th>Office</th>
                         <th>Acceso Remoto</th>
                         <th>Editores Texto</th>
@@ -61,8 +60,12 @@
                 <tbody>
                     {% for item in lista_inventarios %}
                     <tr>
-                        <td>{{ item.ip }}</td>
-                        <td>{{ item.nombre_colaborador }}</td>                        
+                        <td>
+                            <ul>
+                                <li>•{{ item.ip }}</li>
+                                <li>•{{ item.nombre_colaborador }}</li>
+                            </ul>                                             
+                        </td>
                         <td>
                             <ul>
                                 {% for office in item.Office %}
