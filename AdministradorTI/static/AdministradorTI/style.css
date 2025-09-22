@@ -38,7 +38,8 @@ ul {
   list-style-type: none;  
   margin: 0;
   padding: 0;
-  text-align: left;  
+  text-align: left;
+  font-size: 1.2rem;  
 }
 .contenedor__grande{
     width: min(95% 140rem);

@@ -149,7 +149,7 @@ class SSHManager(logArchivos):
         with open(ruta_archivo_local,'r') as inventario_hardware:
             for linea in inventario_hardware:
                 if "Office" in linea:   #0              
-                    data = linea[linea.find(":")+1:len(linea)].replace('\n','')
+                    data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
                     lista_office.append(data)
                 elif "Acceso Remoto" in linea: #1                
                     data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
