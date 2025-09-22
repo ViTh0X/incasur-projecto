@@ -39,6 +39,7 @@ ul {
   margin: 1rem;
   padding: 0;
   text-align: left;
+  font-size: 1rem;
 }
 .contenedor__grande{
     width: min(95% 140rem);
