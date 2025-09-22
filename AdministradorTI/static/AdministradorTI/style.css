@@ -35,8 +35,7 @@ body{
 }
 
 ul {
-  list-style-type: circle;
-  margin-left: 1.5rem;
+  list-style-type: none;  
   padding: 0;
   text-align: left;
   font-size: 1.5rem;
