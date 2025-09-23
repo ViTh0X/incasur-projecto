@@ -8,11 +8,12 @@ import time
 
 class SSHManager(logArchivos):
     
-    def __init__(self,hostname:str,username:str,port:int,keyfile:str):        
+    def __init__(self,hostname:str,username:str,port:int,keyfile:str,passphrase:str):        
         self.hostname = hostname
         self.username = username
         self.port = port
         self.keyfile = keyfile
+        self.passphrase = passphrase
         self.conexionSSH = None
         self.canalSFTP = None
         self.rutaArchivo = None                                             
@@ -21,7 +22,7 @@ class SSHManager(logArchivos):
         try:
             self.conexionSSH = paramiko.SSHClient()
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=3,username=self.username,key_filename=self.keyfile)
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=3,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)
             return True 
         except Exception as e:            
             print(f"No Se conecto Error : {e}")
@@ -34,7 +35,7 @@ class SSHManager(logArchivos):
         try:
             self.conexionSSH = paramiko.SSHClient()
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile)                        
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                        
         except Exception as e:              
             print(f"No Se conecto {self.hostname} -- {e}")                   
         comando = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
@@ -109,7 +110,7 @@ class SSHManager(logArchivos):
         try:
             self.conexionSSH = paramiko.SSHClient()
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile)            
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
         except Exception as e:              
             print(f"No Se conecto {self.hostname}")            
         comando = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"
@@ -215,7 +216,7 @@ class SSHManager(logArchivos):
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())            
             mensaje = f"Intentando Realizar conexion a {self.hostname} con el usuario {self.username}."
             self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
-            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile)                                    
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                    
             return True , self.rutaArchivo                   
         except paramiko.AuthenticationException as sshE:            
             mensaje = f"Error al establecer conexion SSH a host {self.hostname} al usuario {self.username}"
