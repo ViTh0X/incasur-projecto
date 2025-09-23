@@ -69,7 +69,7 @@ def generar_excel_nuevocolab(request,pk):
     hoja['H11'] = str(colaborador.usuario_windows).lower()
     hoja['H12'] = str(usuario_correo_str).lower()
     hoja['R12'] = str(colaborador.usuario_sbs)
-    hoja['H14'] = str(colaborador.codigo_impresion_colaborador)
+    hoja['H13'] = str(colaborador.codigo_impresion_colaborador)
     hoja['G29'] = str(colaborador.nombre_colaborador).upper()
     hoja['N30'] = str(colaborador.cargo_colaborador).upper()
     #Opcional guardar el libro en memoria para mas robustes
