@@ -62,10 +62,12 @@ def generar_excel_nuevocolab(request,pk):
     hoja['P9'] = str(colaborador.correo).lower()
     hoja['H10'] = str(colaborador.usuario_sistema)
     hoja['R10'] = str(colaborador.usuario_sentinel) 
-    hoja['R11'] = colaborador.ip_colaborador.ip                      
+    hoja['R11'] = str(colaborador.usuario_reloj_control)
+    hoja['R13'] = colaborador.ip_colaborador.ip                      
     usuario_correo_str = str(colaborador.correo)
     usuario_correo_str = usuario_correo_str[0:usuario_correo_str.find('@')]
-    hoja['H12'] = str(usuario_correo_str).upper()
+    hoja['H11'] = str(colaborador.usuario_windows).lower()
+    hoja['H12'] = str(usuario_correo_str).lower()
     hoja['R12'] = str(colaborador.usuario_sbs)
     hoja['H14'] = str(colaborador.codigo_impresion_colaborador)
     hoja['G29'] = str(colaborador.nombre_colaborador).upper()
@@ -143,7 +145,7 @@ def cesar_colaborador(request,pk):
 def generar_excel_colab(request):
     fecha_hora = datetime.now()
     colaboradores = lista_colaboradores.objects.all()
-    data_df = colaboradores.values('nombre_colaborador','ip_colaborador','usuario_sistema','correo','usuario_sentinel','codigo_impresion_colaborador','cargo_colaborador','estado_colaboradores')
+    data_df = colaboradores.values('nombre_colaborador','ip_colaborador','usuario_sistema','correo','usuario_sentinel','usuario_windows','usuario_reloj_control','codigo_impresion_colaborador','cargo_colaborador','estado_colaboradores')
     df = pd.DataFrame(list(data_df))
     df['estado_colaboradores'] = df['estado_colaboradores'].replace({1:'ACTIVO',2:'CESADO'})
     df = df.rename(columns={        
@@ -152,6 +154,8 @@ def generar_excel_colab(request):
         'usuario_sistema': 'Codigo Sistema',
         'correo': 'Correo Interno',
         'usuario_sentinel': 'Usuario Sentinel',
+        'usuario_windows': 'Usuario Windows',
+        'usuario_reloj_control' : 'Usuario Reloj Control',
         'codigo_impresion_colaborador': 'Codigo Impresion',
         'cargo_colaborador':'Cargo',
         'estado_colaboradores' :'Estado'        

@@ -267,27 +267,19 @@ class SSHManager(logArchivos):
             for rLocal in listaRutaLocales:            
                 lsR = {}
                 rutaTexto = str(rLocal)
-                if "Documentos" in rutaTexto:
-                    print("Entre al if")
-                    ruta = Path(rBaseRemoC)/usuario/"Documents"
-                    print("")
+                if "Documentos" in rutaTexto:                    
+                    ruta = Path(rBaseRemoC)/usuario/"Documents"                    
                     lsR[rLocal] = ruta
-                    lsRutaBKUP.append(lsR)
-                    print("termino todo lo del if")
-                elif "Descargas" in rutaTexto:
-                    print("Entre al if")
+                    lsRutaBKUP.append(lsR)                    
+                elif "Descargas" in rutaTexto:                    
                     ruta = Path(rBaseRemoC)/usuario/"Downloads"
                     lsR[rLocal] = ruta
-                    lsRutaBKUP.append(lsR)
-                    print("termino todo lo del if")
-                elif "Escritorio" in rutaTexto:
-                    print("Entre al if")
+                    lsRutaBKUP.append(lsR)                    
+                elif "Escritorio" in rutaTexto:                    
                     ruta = Path(rBaseRemoC)/usuario/"Desktop"
                     lsR[rLocal] = ruta
-                    lsRutaBKUP.append(lsR)
-                    print("termino todo lo del if")
-                elif "Discos" in rutaTexto:
-                    print("Entre al if")
+                    lsRutaBKUP.append(lsR)                    
+                elif "Discos" in rutaTexto:                    
                     ruta ="D:/"
                     local = Path(rLocal)/"Disco_D"
                     lsR[local] = ruta
@@ -324,8 +316,8 @@ class SSHManager(logArchivos):
             
     def realizarBKUP(self,rBaseRemo:str,rBaseLocal:str,nombreCarpeta:str):
         if nombreCarpeta != "":
-            rBaseRemoR = f"{rBaseRemo}\\{nombreCarpeta}"
-            rBaseLocalR = f"{rBaseLocal}\\{nombreCarpeta}"
+            rBaseRemoR = f"{rBaseRemo}/{nombreCarpeta}"
+            rBaseLocalR = f"{rBaseLocal}/{nombreCarpeta}"
         else:
             rBaseRemoR = rBaseRemo
             rBaseLocalR = rBaseLocal        
@@ -335,14 +327,14 @@ class SSHManager(logArchivos):
             for archivo in listaArchivos:            
                 nombreArchivo = archivo.filename
                 if stat.S_ISDIR(archivo.st_mode):                    
-                    creaRutaLocal = f"{rBaseLocalR}\\{nombreArchivo}"
+                    creaRutaLocal = f"{rBaseLocalR}/{nombreArchivo}"
                     os.makedirs(creaRutaLocal,exist_ok=True)
                     mensaje = f"Se creo la carpeta {nombreCarpeta}"
                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                            
                     self.realizarBKUP(rBaseRemoR,rBaseLocalR,nombreArchivo)                                            
                 else:                            
-                    rutaCopiarLocal = f"{rBaseLocalR}\\{nombreArchivo}"
-                    rutaCopiarRemoto = f"{rBaseRemoR}\\{nombreArchivo}"
+                    rutaCopiarLocal = f"{rBaseLocalR}/{nombreArchivo}"
+                    rutaCopiarRemoto = f"{rBaseRemoR}/{nombreArchivo}"
                     existeLocal = os.path.exists(rutaCopiarLocal)
                     try:
                         if not existeLocal:

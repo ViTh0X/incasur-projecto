@@ -39,9 +39,11 @@ def ejecutar_backup_informacion():
                     lista_backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                     listaRutasLocales = SSH_instancia.rutasIniciales(["Documentos","Escritorio","Descargas","Discos"])
                     listaRutas = SSH_instancia.creaRutasRemotas(username,listaRutasLocales)
+                    print("Inicio la ejecucion del Backup Espere...")
                     for rutas in listaRutas:
                         llave, valor = list(rutas.items())[0]
                         SSH_instancia.realizarBKUP(str(valor),str(llave),"")
+                    print("Termino La ejecucion del Backup")
                     SSH_instancia.cerrarConexiones()
                     existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip)
                     if existen_errores:

@@ -21,15 +21,9 @@ def ejecutar_inventario_hardware():
         for ip in lista_ips_ocupadas:
             string_ip = ip['ip']
             username = "Administrador"
-            puerto = os.getenv('SSH_PORT')
-            print(puerto)
-            print(os.getenv('SSH_PORT'))
-            keyfile = os.getenv('SSH_KEYFILE')
-            print(keyfile) 
-            print(os.getenv('SSH_KEYFILE'))           
-            passphrase = os.getenv('SSH_PASSPHRASE')
-            print(passphrase)
-            print(os.getenv('SSH_PASSPHRASE'))
+            puerto = os.getenv('SSH_PORT')            
+            keyfile = os.getenv('SSH_KEYFILE')            
+            passphrase = os.getenv('SSH_PASSPHRASE')            
             SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
             esta_en_linea = SSH_instancia.revisarConexionSSH()
             #Filtrando el objeto ip
@@ -103,8 +97,7 @@ def ejecutar_faltantes_inventario_hardware():
             username = "Administrador"
             puerto = os.getenv('SSH_PORT')
             keyfile = os.getenv('SSH_KEYFILE')
-            passphrase = os.getenv('SSH_PASSPHRASE')
-            print(os.getenv('SSH_PASSPHRASE'))
+            passphrase = os.getenv('SSH_PASSPHRASE')            
             SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
             esta_en_linea = SSH_instancia.revisarConexionSSH()
             #Filtrando el objeto ip

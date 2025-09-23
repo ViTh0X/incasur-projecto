@@ -24,6 +24,8 @@ class lista_colaboradores(models.Model):
     correo = models.CharField(max_length=50,unique=True)
     usuario_sentinel = models.CharField(max_length=15, unique=True,default="SIN SENTINEL")
     usuario_sbs = models.CharField(max_length=15,unique=True,default="SIN SBS")
+    usuario_windows = models.CharField(max_length=15,unique=True,default="SIN WINDOWS")
+    usuario_reloj_control = models.CharField(max_length=15,unique=True,default="SIN MARCACION")
     codigo_impresion_colaborador = models.CharField(max_length=20,unique=True)    
     cargo_colaborador = models.CharField(max_length=70)    
     estado_colaboradores = models.ForeignKey(estado_colaboradores,on_delete=models.CASCADE)    
@@ -40,4 +42,4 @@ class lista_colaboradores(models.Model):
 class colaboradorForm(forms.ModelForm):
     class Meta:
         model = lista_colaboradores
-        fields = ['nombre_colaborador','ip_colaborador','usuario_sistema','correo','usuario_sentinel','usuario_sbs','codigo_impresion_colaborador','cargo_colaborador']
+        fields = ['nombre_colaborador','ip_colaborador','usuario_sistema','correo','usuario_sentinel','usuario_sbs','usuario_windows','usuario_reloj_control','codigo_impresion_colaborador','cargo_colaborador']
