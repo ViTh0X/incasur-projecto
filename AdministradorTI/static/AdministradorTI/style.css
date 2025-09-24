@@ -148,6 +148,9 @@ h1{
     height: 3rem;   
      
 }
+.table tr :hover{
+    font-size: 2.1rem;
+}
 .table{
     text-align: center;
     width: 100%;    
