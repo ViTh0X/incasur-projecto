@@ -35,7 +35,7 @@ class logArchivos():
             pass
         with open(rutaArchivo_buscado,'r') as archivo_errores:
             for linea in archivo_errores:
-                if "ERR" in  linea:
+                if "- ERR -" in  linea:
                     with open(nombre_archivo_err,'a') as archivo_log_errores:
                         mensaje = linea
                         archivo_log_errores.write(mensaje)

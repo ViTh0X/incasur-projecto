@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from utilidades.utilidades_ssh import SSHManager
 
-@shared_task
+@shared_task(autoretry_for=(Exception,), max_retries=0)
 def ejecutar_backup_informacion():
     try:
         estado_ips = get_object_or_404(tipo_estado_ips,pk=1)
@@ -83,7 +83,7 @@ def ejecutar_backup_informacion():
         logs_inventario_hardware.save()
         return "ERROR REALIZANDO EL BACKUP DE INFORMACION"
     
-@shared_task
+@shared_task(autoretry_for=(Exception,), max_retries=0)
 def ejecutar_faltantes_backup_informacion():
     try:
         try:
