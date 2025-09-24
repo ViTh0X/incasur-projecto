@@ -149,7 +149,7 @@ h1{
      
 }
 .table tr:hover{
-    border: solid 1rem var(--color2);
+    background-color: var(--color2);
 }
 .table{
     text-align: center;
