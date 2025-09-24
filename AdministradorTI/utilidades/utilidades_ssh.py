@@ -217,7 +217,9 @@ class SSHManager(logArchivos):
             mensaje = f"Intentando Realizar conexion a {self.hostname} con el usuario {self.username}."
             self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
             self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                    
-            self.conexionSSH.set_keepalive(60)
+            transport = self.conexionSSH.get_transport()
+            if transport:
+                transport.set_keepalive(60)
             return True , self.rutaArchivo                   
         except paramiko.AuthenticationException as sshE:            
             mensaje = f"Error al establecer conexion SSH a host {self.hostname} al usuario {self.username}"
