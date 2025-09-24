@@ -148,7 +148,7 @@ h1{
     height: 3rem;   
      
 }
-.table tr :hover{
+.table tr:hover{
     border: solid 1rem var(--color2);
 }
 .table{
