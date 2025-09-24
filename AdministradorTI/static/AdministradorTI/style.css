@@ -148,8 +148,8 @@ h1{
     height: 3rem;   
      
 }
-.table tr:hover{
-    background-color: var(--color2);
+.table tbody tr:hover {
+  background-color: #f0f0f0; /* Un gris muy claro, se ve bien en casi cualquier tabla */
 }
 .table{
     text-align: center;
