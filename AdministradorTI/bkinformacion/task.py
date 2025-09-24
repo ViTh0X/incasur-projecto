@@ -18,6 +18,7 @@ def ejecutar_backup_informacion():
         pc = get_object_or_404(tipo_equipos_informaticos,pk=2)
         nombres_a_filtrar = [laptop.nombre_tipo_equipo, pc.nombre_tipo_equipo]        
         lista_ips_ocupadas = lista_ips.objects.filter(codigo_estado=estado_ips,tipo_equipo__in=nombres_a_filtrar).values('ip')
+        print(lista_ips_ocupadas)
         for ip in lista_ips_ocupadas:
             string_ip = ip['ip']
             username = "Administrador"
@@ -35,8 +36,7 @@ def ejecutar_backup_informacion():
             try:
                 if esta_en_linea:
                     SSH_instancia.realizarConSSH()
-                    SSH_instancia.crearCanalSFTP()
-                    lista_backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    SSH_instancia.crearCanalSFTP()                    
                     listaRutasLocales = SSH_instancia.rutasIniciales(["Documentos","Escritorio","Descargas","Discos"])
                     listaRutas = SSH_instancia.creaRutasRemotas(username,listaRutasLocales)
                     print("Inicio la ejecucion del Backup Espere...")
@@ -45,6 +45,7 @@ def ejecutar_backup_informacion():
                         SSH_instancia.realizarBKUP(str(valor),str(llave),"")
                     print("Termino La ejecucion del Backup")
                     SSH_instancia.cerrarConexiones()
+                    lista_backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                     existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip)
                     if existen_errores:
                         detalle_backup = "Parece que aparecieron unos errores revise el log."                        

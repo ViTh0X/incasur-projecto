@@ -22,7 +22,7 @@ class SSHManager(logArchivos):
         try:
             self.conexionSSH = paramiko.SSHClient()
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=3,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=3,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
             return True 
         except Exception as e:            
             print(f"No Se conecto Error : {e}")
@@ -217,6 +217,7 @@ class SSHManager(logArchivos):
             mensaje = f"Intentando Realizar conexion a {self.hostname} con el usuario {self.username}."
             self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
             self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                    
+            self.conexionSSH.set_keepalive(60)
             return True , self.rutaArchivo                   
         except paramiko.AuthenticationException as sshE:            
             mensaje = f"Error al establecer conexion SSH a host {self.hostname} al usuario {self.username}"
