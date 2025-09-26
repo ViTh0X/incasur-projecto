@@ -363,21 +363,15 @@ class SSHManager(logArchivos):
                             else:
                                 mensaje = f"El archivo {nombreArchivo} ya fue guardado de manera local"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
-                    except FileNotFoundError as e:
-                        print(rutaCopiarLocal)
-                        print(rutaCopiarRemoto)
+                    except FileNotFoundError as e:                        
                         print(f"Error posiblemente el archivo no existe : {e}")
                         mensaje = f"Error posiblemente el archivo no existe : {e}"
                         self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                        
-                    except Exception as e:
-                        print(rutaCopiarLocal)
-                        print(rutaCopiarRemoto)
+                    except Exception as e:                        
                         print(f"Ocurrio un error inesperado : {e} bucle 1")
                         mensaje = f"Ocurrio un error inesperado : {e}"
                         self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                                                                                                                                               
-        except SFTPError as e:
-            print(rutaCopiarLocal)
-            print(rutaCopiarRemoto)
+        except SFTPError as e:            
             print(f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}")
             mensaje = f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
@@ -385,9 +379,7 @@ class SSHManager(logArchivos):
                 self.canalSFTP.close()
             if self.conexionSSH:
                 self.conexionSSH.close()                  
-        except FileExistsError as e:
-            print(rutaCopiarLocal)
-            print(rutaCopiarRemoto)
+        except FileExistsError as e:            
             print(f"Error en ruta {rBaseRemoR} posiblemente no existe : {e}")
             mensaje = f"Error en ruta {rBaseRemoR} posiblemente no existe : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                              
@@ -395,9 +387,7 @@ class SSHManager(logArchivos):
                 self.canalSFTP.close()
             if self.conexionSSH:
                 self.conexionSSH.close()
-        except Exception as e:            
-            print(rutaCopiarLocal)
-            print(rutaCopiarRemoto)
+        except Exception as e:                        
             print(f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}")
             mensaje = f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname) 
