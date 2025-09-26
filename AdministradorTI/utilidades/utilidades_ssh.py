@@ -282,7 +282,7 @@ class SSHManager(logArchivos):
                     ruta = Path(rBaseRemoC)/usuario/"Desktop"
                     lsR[rLocal] = ruta
                     lsRutaBKUP.append(lsR)                    
-                elif "Discos" in rutaTexto:                    
+                '''elif "Discos" in rutaTexto:                    
                     ruta ="D:/"
                     local = Path(rLocal)/"Disco_D"
                     lsR[local] = ruta
@@ -307,7 +307,7 @@ class SSHManager(logArchivos):
                     local = Path(rLocal)/"Disco_H"
                     lsR[local] = ruta
                     lsRutaBKUP.append(lsR)
-                    lsR = {}                    
+                    lsR = {}   '''                 
             mensaje = "Las rutas iniciales fueron preparadas con exito"
             self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
             return lsRutaBKUP
