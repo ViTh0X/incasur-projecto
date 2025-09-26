@@ -404,11 +404,7 @@ class SSHManager(logArchivos):
             if self.canalSFTP:
                 self.canalSFTP.close()
             if self.conexionSSH:
-                self.conexionSSH.close()                    
-        if self.canalSFTP:
-                self.canalSFTP.close()
-        if self.conexionSSH:
-            self.conexionSSH.close()
+                self.conexionSSH.close()                            
                 
     def cerrarConexiones(self):
         self.canalSFTP.close()
