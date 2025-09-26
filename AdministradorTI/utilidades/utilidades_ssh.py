@@ -369,7 +369,10 @@ class SSHManager(logArchivos):
                     except Exception as e:
                         mensaje = f"Ocurrio un error inesperado : {e}"
                         self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                        
-                                                                                                                    
+            if self.canalSFTP:
+                self.canalSFTP.close()
+            if self.conexionSSH:
+                self.conexionSSH.close()                                                                                                                    
         except SFTPError as e:
             mensaje = f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
