@@ -339,6 +339,8 @@ class SSHManager(logArchivos):
                 else:                            
                     rutaCopiarLocal = f"{rBaseLocalR}/{nombreArchivo}"
                     rutaCopiarRemoto = f"{rBaseRemoR}/{nombreArchivo}"
+                    print(rutaCopiarLocal)
+                    print(rutaCopiarLocal)
                     existeLocal = os.path.exists(rutaCopiarLocal)
                     try:
                         if not existeLocal:
@@ -351,7 +353,7 @@ class SSHManager(logArchivos):
                             self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                         else:    
                             tamañoRemoto = archivo.st_size
-                            tamañoLocal = os.path.getsize(rutaCopiarLocal)
+                            tamañoLocal = os.path.getsize(rutaCopiarLocal)                            
                             if tamañoRemoto != tamañoLocal:
                                 mensaje = f"Copiando archivo {nombreArchivo}"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
@@ -364,9 +366,11 @@ class SSHManager(logArchivos):
                                 mensaje = f"El archivo {nombreArchivo} ya fue guardado de manera local"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                     except FileNotFoundError as e:
+                        print(f"Error posiblemente el archivo no existe : {e}")
                         mensaje = f"Error posiblemente el archivo no existe : {e}"
                         self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                        
                     except Exception as e:
+                        print(f"Ocurrio un error inesperado : {e} bucle 1")
                         mensaje = f"Ocurrio un error inesperado : {e}"
                         self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                        
             if self.canalSFTP:
@@ -374,6 +378,7 @@ class SSHManager(logArchivos):
             if self.conexionSSH:
                 self.conexionSSH.close()                                                                                                                    
         except SFTPError as e:
+            print(f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}")
             mensaje = f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
             if self.canalSFTP:
@@ -381,6 +386,7 @@ class SSHManager(logArchivos):
             if self.conexionSSH:
                 self.conexionSSH.close()                  
         except FileExistsError as e:
+            print(f"Error en ruta {rBaseRemoR} posiblemente no existe : {e}")
             mensaje = f"Error en ruta {rBaseRemoR} posiblemente no existe : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                              
             if self.canalSFTP:
@@ -388,6 +394,7 @@ class SSHManager(logArchivos):
             if self.conexionSSH:
                 self.conexionSSH.close()
         except Exception as e:            
+            print(f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}")
             mensaje = f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname) 
             if self.canalSFTP:
