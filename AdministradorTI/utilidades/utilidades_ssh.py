@@ -282,12 +282,13 @@ class SSHManager(logArchivos):
                     ruta = Path(rBaseRemoC)/usuario/"Desktop"
                     lsR[rLocal] = ruta
                     lsRutaBKUP.append(lsR)                    
-                '''elif "Discos" in rutaTexto:                    
+                elif "Discos" in rutaTexto:                    
                     ruta ="D:/"
                     local = Path(rLocal)/"Disco_D"
                     lsR[local] = ruta
                     lsRutaBKUP.append(lsR)
                     lsR = {}
+                    '''
                     ruta ="E:/"
                     local = Path(rLocal)/"Disco_E"
                     lsR[local] = ruta
