@@ -156,4 +156,12 @@ CELERY_TASK_ACKS_LATE = True
 # Permite que los trabajadores procesen una tarea a la vez
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 #Configuracion Celery broker
+# Límite de tiempo (duro) para terminar una tarea, en segundos.
+# 7200 segundos = 2 horas. Esto dará margen para que el backup
+# termine sin ser terminado por el worker.
+CELERY_TASK_TIME_LIMIT = 7200 
 
+# Opcional: Límite de tiempo suave. Si se excede, lanza una excepción SoftTimeLimitExceeded 
+# dentro de la tarea, permitiéndole limpiar conexiones o guardar progreso.
+# 6000 segundos = 1 hora y 40 minutos.
+CELERY_TASK_SOFT_TIME_LIMIT = 6000 
