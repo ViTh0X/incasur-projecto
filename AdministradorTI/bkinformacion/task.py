@@ -29,10 +29,11 @@ def ejecutar_backup_informacion():
             esta_en_linea = SSH_instancia.revisarConexionSSH()
             #Filtrando el objeto ip
             ip_filtrada = lista_ips.objects.get(ip=string_ip)
-            #Filtrando el objeto nombre Trabajador
-            nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)
             mes_actual = datetime.now().month
             año_actual = datetime.now().year
+            lista_backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+            #Filtrando el objeto nombre Trabajador
+            nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)                        
             try:
                 if esta_en_linea:
                     SSH_instancia.realizarConSSH()
@@ -44,8 +45,7 @@ def ejecutar_backup_informacion():
                         llave, valor = list(rutas.items())[0]
                         SSH_instancia.realizarBKUP(str(valor),str(llave),"")
                     print("Termino La ejecucion del Backup")
-                    SSH_instancia.cerrarConexiones()
-                    lista_backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    SSH_instancia.cerrarConexiones()                    
                     existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip)
                     if existen_errores:
                         detalle_backup = "Parece que aparecieron unos errores revise el log."                        
@@ -55,7 +55,7 @@ def ejecutar_backup_informacion():
                         ip = ip_filtrada,
                         nombre_colaborador = nombre_colab_filtrado,
                         detalle = detalle_backup
-                    )
+                    )                    
                     modelado_backup_informacion.save()
                     faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                 else:
