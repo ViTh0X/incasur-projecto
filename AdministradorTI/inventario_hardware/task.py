@@ -23,9 +23,9 @@ def ejecutar_inventario_hardware():
             username = "Administrador"
             puerto = os.getenv('SSH_PORT')            
             keyfile = os.getenv('SSH_KEYFILE')            
-            passphrase = os.getenv('SSH_PASSPHRASE')            
+            passphrase = os.getenv('SSH_PASSPHRASE')
             SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
-            esta_en_linea = SSH_instancia.revisarConexionSSH()
+            esta_en_linea = SSH_instancia.revisarConexionSSH()                                    
             #Filtrando el objeto ip
             ip_filtrada = lista_ips.objects.get(ip=string_ip)
             #Filtrando el objeto nombre Trabajador
@@ -34,7 +34,8 @@ def ejecutar_inventario_hardware():
             mes_actual = datetime.now().month
             año_actual = datetime.now().year
             try:
-                if esta_en_linea:                    
+                if esta_en_linea:
+                    print("Ingreso al if")                    
                     SSH_instancia.ejecuta_inventario_hardware()     
                     print("Ejecuto inventario hardware")                                
                     inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
@@ -108,6 +109,7 @@ def ejecutar_faltantes_inventario_hardware():
             año_actual = datetime.now().year
             try:
                 if esta_en_linea:
+                    print("Ingreso al if")
                     SSH_instancia.ejecuta_inventario_hardware()               
                     inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                     ##################################
