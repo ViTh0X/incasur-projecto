@@ -65,7 +65,8 @@ def ejecutar_inventario_hardware():
                     ip_filtrada = lista_ips.objects.get(ip=string_ip)
                     faltantes_hardware = faltantes_inventario_hardware(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
                     faltantes_hardware.save()
-            except:                
+            except Exception as e:                
+                print(f"Error {e}")
                 faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                 ip_filtrada = lista_ips.objects.get(ip=string_ip)
                 faltantes_hardware = faltantes_inventario_hardware(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
