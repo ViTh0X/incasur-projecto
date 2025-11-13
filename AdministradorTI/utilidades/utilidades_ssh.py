@@ -65,7 +65,7 @@ class SSHManager(logArchivos):
         dic_inventario_hardware = {}           
         ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
         # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"                                    
-        with open(ruta_archivo_local,'r') as inventario_hardware:
+        with open(ruta_archivo_local,'r',encoding='windows-1252') as inventario_hardware:
             for linea in inventario_hardware:
                 if "Nombre" in linea:   #0              
                     data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
@@ -148,8 +148,8 @@ class SSHManager(logArchivos):
             lista_otros=[]                  
             ruta_archivo_local = f"/root/Inventarios/{self.hostname}-software.txt"
             # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-software.txt"                                            
-            with open(ruta_archivo_local,'r') as inventario_hardware:
-                for linea in inventario_hardware:
+            with open(ruta_archivo_local,'r') as inventario_software:
+                for linea in inventario_software:
                     if "Office" in linea:   #0              
                         data = linea[linea.find(":")+1:len(linea)].replace('\n','').strip()
                         lista_office.append(data)
@@ -209,7 +209,7 @@ class SSHManager(logArchivos):
                 }                     
             return dic_inventario_software
         except Exception as e:
-            print(f"Erorrrrrrrr {e}")
+            print(f"Error leyendo archivo {e}")
         
     def realizarConSSH(self):
         self.rutaArchivo = self.crearArchivo(self.hostname)

@@ -39,11 +39,8 @@ def ejecutar_inventario_software():
                     print("Ejecuto inventario software")    
                     inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                     print("Elimino duplicados")
-                    ##################################
-                    try:
-                        diccionario_inventario_software = SSH_instancia.guardar_inventario_software()
-                    except Exception as e:
-                        print(f"Errorr encontrado{e}")
+                    ##################################                    
+                    diccionario_inventario_software = SSH_instancia.guardar_inventario_software()                    
                     for codigo_categoria, lista_software in diccionario_inventario_software.items():
                         categoria = tipo_software.objects.get(id=codigo_categoria)
                         for software in lista_software:
