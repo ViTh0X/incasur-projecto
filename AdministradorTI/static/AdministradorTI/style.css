@@ -31,8 +31,7 @@ body{
 .contenedor{
     width: min(90% , 120rem);
     margin: 0 auto;
-    padding: 2rem 2rem 2rem 2rem;  
-    background-color: red;      
+    padding: 2rem 2rem 2rem 2rem;       
 }
 
 ul {
