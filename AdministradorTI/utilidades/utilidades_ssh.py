@@ -37,12 +37,15 @@ class SSHManager(logArchivos):
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                        
         except Exception as e:              
-            print(f"No Se conecto {self.hostname} -- {e}")                   
-        comando = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
-        stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
-        stdout.read()
-        stderr.read() 
-        print("Inventario_hardware ejecutado con exito")
+            print(f"No Se conecto {self.hostname} -- {e}") 
+        try:                  
+            comando = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
+            stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
+            stdout.read()
+            stderr.read() 
+            print("Inventario_hardware ejecutado con exito")
+        except Exception as e:
+            print("Error al ejecutar el archivo no lo encontro")
         time.sleep(5)
         ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
         ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
