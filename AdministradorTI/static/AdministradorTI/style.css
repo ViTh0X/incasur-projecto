@@ -542,6 +542,6 @@ h1{
     align-items: center;
 }
 
-.login input{
-    
+.login{
+    display: flex;
 }
