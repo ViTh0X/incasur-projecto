@@ -545,8 +545,12 @@ h1{
 .login{
     display: grid;
     grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
 }
 .login input{
+    height: 1.5rem;
+    font-size: 1.2rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
