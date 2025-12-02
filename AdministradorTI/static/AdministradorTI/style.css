@@ -543,5 +543,6 @@ h1{
 }
 
 .login{
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr;
 }
