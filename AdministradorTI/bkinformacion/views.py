@@ -9,9 +9,12 @@ from datetime import datetime
 from .models import lista_backups_informacion,faltantes_backup_informacion
 from home.models import logs_actividades_celery
 
+from django.contrib.auth.decorators  import login_required
+
 import os
 # Create your views here.
 
+@login_required(login_url="pagina_login")
 def listar_backup_informacion(request):
     mes_actual = datetime.now().month
     año_actual = datetime.now().year
@@ -25,6 +28,7 @@ def listar_backup_informacion(request):
     else:
         return render(request,'bkinformacion/lista_backup_informacion.html',{'lista_backup':lista_backup})
 
+@login_required(login_url="pagina_login")
 def listar_faltantes_backup(request):
     lista_faltantes = faltantes_backup_informacion.objects.all()
     if not lista_faltantes:
@@ -32,10 +36,12 @@ def listar_faltantes_backup(request):
     else:
         return render(request,'bkinformacion/lista_faltantes_bk.html',{'lista_faltantes':lista_faltantes})
 
+@login_required(login_url="pagina_login")
 def listar_logs(request):
     lista_logs = logs_actividades_celery.objects.all().order_by('-tiempo_creacion')
     return render(request,'logs/listar_logs_bk.html',{'lista_logs':lista_logs})
 
+@login_required(login_url="pagina_login")
 def iniciar_backup_informacion(request):
     if request.method == 'POST':
         tarea = ejecutar_backup_informacion.delay()
@@ -43,6 +49,7 @@ def iniciar_backup_informacion(request):
         return JsonResponse({'task_id':tarea.id})
     return redirect('listar_inventario_hardware')
 
+@login_required(login_url="pagina_login")
 def verificar_estado_tarea(request,task_id):
     estado_tarea = AsyncResult(task_id)
     data = {
@@ -52,6 +59,7 @@ def verificar_estado_tarea(request,task_id):
     
     return JsonResponse(data)
 
+@login_required(login_url="pagina_login")
 def iniciar_faltantes_backup(request):
     if request.method == 'POST':
         tarea = ejecutar_faltantes_backup_informacion.delay()
@@ -59,6 +67,7 @@ def iniciar_faltantes_backup(request):
         return JsonResponse({'task_id':tarea.id})
     return redirect('listar_inventario_hardware')
 
+@login_required(login_url="pagina_login")
 def descargar_logs_errores(request,pk):    
     backup_ip = get_object_or_404(lista_backups_informacion,pk=pk)
     ip_bk = backup_ip.ip.ip

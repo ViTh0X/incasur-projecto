@@ -12,8 +12,11 @@ from celery.result import AsyncResult
 from .task  import ejecutar_inventario_hardware,ejecutar_faltantes_inventario_hardware
 # Create your views here.
 
+from django.contrib.auth.decorators  import login_required
+
 import pandas as pd
 
+@login_required(login_url="pagina_login")
 def listar_inventario_hardware(request):
     año_actual = datetime.now().year
     mes_actual = datetime.now().month
@@ -27,7 +30,7 @@ def listar_inventario_hardware(request):
     else:
         return render(request,'inventario_hardware/lista_inventario_h.html',{'inventarios_hardware':inventarios_hardware,'fecha_hardware':fecha_hardware})    
         
-
+@login_required(login_url="pagina_login")
 def iniciar_inventario_hardware(request):
     if request.method == 'POST':
         tarea = ejecutar_inventario_hardware.delay()
@@ -35,6 +38,7 @@ def iniciar_inventario_hardware(request):
         return JsonResponse({'task_id':tarea.id})
     return redirect('listar_inventario_hardware')
 
+@login_required(login_url="pagina_login")
 def verificar_estado_tarea(request,task_id):
     estado_tarea = AsyncResult(task_id)
     data = {
@@ -44,6 +48,7 @@ def verificar_estado_tarea(request,task_id):
     
     return JsonResponse(data)
 
+@login_required(login_url="pagina_login")
 def iniciar_faltantes_hardware(request):
     if request.method == 'POST':
         tarea = ejecutar_faltantes_inventario_hardware.delay()
@@ -51,6 +56,7 @@ def iniciar_faltantes_hardware(request):
         return JsonResponse({'task_id':tarea.id})
     return redirect('listar_inventario_hardware')
     
+@login_required(login_url="pagina_login")    
 def listar_faltantes_hardware(request):
     lista_faltantes = faltantes_inventario_hardware.objects.all()
     if not lista_faltantes:
@@ -58,6 +64,7 @@ def listar_faltantes_hardware(request):
     else:
         return render(request,'inventario_hardware/lista_faltantes_h.html',{'lista_faltantes':lista_faltantes})
 
+@login_required(login_url="pagina_login")
 def generar_excell_all_h(request):
     fecha_hora = datetime.now()
     inventarios_hardware = inventario_hardware.objects.all()
@@ -82,10 +89,11 @@ def generar_excell_all_h(request):
     df.to_excel(response,index=False,sheet_name='InventarioHardware')
     return response
 
-
+@login_required(login_url="pagina_login")
 def listar_logs(request):
     lista_logs = logs_actividades_celery.objects.all().order_by('-tiempo_creacion')
     return render(request,'logs/listar_logs_ih.html',{'lista_logs':lista_logs})
 
+@login_required(login_url="pagina_login")
 def actualizar_tabla(request):
     return Http404

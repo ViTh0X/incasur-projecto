@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block titulo %}LOGIN{% endblock  %}
+{% block contenido %}
+<body>
+    <!--Mensaje set flash-->
+    {% if form.errors %}
+        <p>{{ form.errors }}</p>
+    {% endif %}    
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    {% if request.GET.next %}   
+    <form action="{% url 'pagina_login' %}?next={{ request.GET.next }}" method="post">
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+    {% else %}
+    <form action="{% url 'pagina_login' %}" method="post">
+    {% endif %}
+        {% csrf_token %}
+        {{ form.usuario }}
+        {{ form.contraseña }}
+        <button type="submit">Ingresar</button>
+    </form>
+</body>
+{% endblock  %}

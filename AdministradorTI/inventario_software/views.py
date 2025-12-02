@@ -10,10 +10,13 @@ from home.models import logs_actividades_celery
 from celery.result import AsyncResult
 from .task import ejecutar_faltantes_inventario_software,ejecutar_inventario_software
 
+from django.contrib.auth.decorators import login_required
+
 import pandas as pd
 from io import BytesIO
 # Create your views here.
 
+@login_required(login_url="pagina_login")
 def listar_inventario_software(request):
     año_actual = datetime.now().year
     mes_actual = datetime.now().month
@@ -97,18 +100,21 @@ def listar_inventario_software(request):
             fecha_software = f"{año_actual} - {mes_actual}"
         return render(request,'inventario_software/lista_inventario_s.html',{'lista_inventarios':lista_inventarios,'fecha_software':fecha_software})
 
+@login_required(login_url="pagina_login")
 def listar_faltantes_software(request):
     lista_faltantes = faltantes_inventario_software.objects.all()
     if not lista_faltantes:
         return render(request,'inventario_software/no_tiene_faltantes.html')
     else:
         return render(request,'inventario_software/lista_faltantes_s.html',{'lista_faltantes':lista_faltantes})
-    
+
+@login_required(login_url="pagina_login")    
 def listar_logs_s(request):
     lista_logs = logs_actividades_celery.objects.all().order_by('-tiempo_creacion')
     return render(request,'logs/listar_logs_is.html',{'lista_logs':lista_logs})
 
 
+@login_required(login_url="pagina_login")
 def iniciar_inventario_software(request):
     if request.method == 'POST':
         tarea = ejecutar_inventario_software.delay()
@@ -116,6 +122,8 @@ def iniciar_inventario_software(request):
         return JsonResponse({'task_id':tarea.id})
     return redirect('listar_inventario_hardware')
 
+
+@login_required(login_url="pagina_login")
 def verificar_estado_tarea(request,task_id):
     estado_tarea = AsyncResult(task_id)
     data = {
@@ -125,6 +133,8 @@ def verificar_estado_tarea(request,task_id):
     
     return JsonResponse(data)
 
+
+@login_required(login_url="pagina_login")
 def iniciar_faltantes_software(request):
     if request.method == 'POST':
         tarea = ejecutar_faltantes_inventario_software.delay()
@@ -132,7 +142,7 @@ def iniciar_faltantes_software(request):
         return JsonResponse({'task_id':tarea.id})
     return redirect('listar_inventario_hardware')
 
-
+@login_required(login_url="pagina_login")
 def generar_excell_all_s(request):
     fecha_hora = datetime.now()
     año_actual = datetime.now().year

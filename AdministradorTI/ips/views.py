@@ -10,7 +10,9 @@ from datetime import datetime
 from .models import lista_ips, historial_acciones, ipForm,historial_accionForm
 from colaboradores.models import lista_colaboradores
 
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url="pagina_login")
 def listar_ips(request):
     query_sql = """
     select *,(select nombre_colaborador from lista_colaboradores as c where c.ip_colaborador_id = i.ip and c.estado_colaboradores_id = 1) as nombre_colaborador from lista_ips as i order by id asc
@@ -21,7 +23,7 @@ def listar_ips(request):
     }
     return render (request,'ips/lista_ips.html',resultado)
     
-    
+@login_required(login_url="pagina_login")    
 def editar_ip(request,pk):
     ip = get_object_or_404(lista_ips,pk=pk)         
     if request.method == 'POST':
@@ -35,6 +37,8 @@ def editar_ip(request,pk):
         print(data_usuario)                                
     return render(request,'ips/editar_ip.html',{'formulario':formulario,'ip':ip,'data_usuario':data_usuario})
 
+
+@login_required(login_url="pagina_login")
 def reiniciar_data_ip(request,pk):
     ip = get_object_or_404(lista_ips,pk=pk)
     if request.method == 'POST':
@@ -49,6 +53,7 @@ def reiniciar_data_ip(request,pk):
     
     return render(request,'ips/confirmar_reinciar.html',{'ip':ip})
 
+@login_required(login_url="pagina_login")
 def generar_excel_ip(request):
     fecha_hora = datetime.now()
     query_sql = """
@@ -86,6 +91,8 @@ def generar_excel_ip(request):
     df.to_excel(response,index=False,sheet_name='IPs')
     return response
 
+
+@login_required(login_url="pagina_login")
 def agregar_accion(request):
     if request.method == 'POST':
         formulario = historial_accionForm(request.POST)
@@ -105,7 +112,8 @@ def agregar_accion(request):
         formulario.fields['ip_historial'].queryset = ip_disponibles        
     
     return render(request,'ips/agregar_accion.html',{'formulario':formulario})            
-            
+
+@login_required(login_url="pagina_login")            
 def ver_historial_acciones(request,pk):    
     ip_seleccionada = lista_ips.objects.get(pk=pk)
     historiales = historial_acciones.objects.filter(ip_historial=ip_seleccionada.ip)

@@ -13,7 +13,11 @@ from datetime import datetime
 from home.models import cuentas_forticlient
 from .models import lista_colaboradores, colaboradorForm, estado_colaboradores
 from ips.models import tipo_estado_ips, lista_ips
+
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+
+@login_required(login_url="pagina_login")
 def listar_colaboradores(request):
     try:
         estado_colaborador = get_object_or_404(estado_colaboradores,pk=1)
@@ -22,6 +26,7 @@ def listar_colaboradores(request):
         pass
     return render(request,'colaboradores/lista_colaboradores.html',{'colaboradores':colaboradores})   
 
+@login_required(login_url="pagina_login")
 def agregar_colaborador(request):
     if request.method == 'POST':
         formulario = colaboradorForm(request.POST)
@@ -48,6 +53,7 @@ def agregar_colaborador(request):
     
     return render(request,'colaboradores/agregar_colaborador.html',{'formulario':formulario})
 
+@login_required(login_url="pagina_login")
 def generar_excel_nuevocolab(request,pk):
     colaborador = get_object_or_404(lista_colaboradores,pk=pk)
     plantilla_ruta = os.path.join(settings.MEDIA_ROOT,'plantillas_excel','PLANTILLA-USUARIOS-NUEVOS.xlsx')
@@ -83,7 +89,9 @@ def generar_excel_nuevocolab(request,pk):
     response['Content-Disposition'] = f'attachment; filename=colaborador_{colaborador.nombre_colaborador}.xlsx'
     libro.save(response)
     return response
-            
+
+
+@login_required(login_url="pagina_login")            
 def editar_colaborador(request,pk):
     colaborador = get_object_or_404(lista_colaboradores,pk=pk)
     ip_colaborador_antigua = colaborador.ip_colaborador.ip
@@ -117,6 +125,7 @@ def editar_colaborador(request,pk):
     
     return render(request,'colaboradores/editar_colaborador.html',{'formulario':formulario})
 
+@login_required(login_url="pagina_login")
 def cesar_colaborador(request,pk):
     colaborador = get_object_or_404(lista_colaboradores,pk=pk)
     if request.method == 'POST':
@@ -142,6 +151,7 @@ def cesar_colaborador(request,pk):
     
     return render(request,'colaboradores/confirmar_cesar.html',{'colaborador':colaborador})
 
+@login_required(login_url="pagina_login")
 def generar_excel_colab(request):
     fecha_hora = datetime.now()
     colaboradores = lista_colaboradores.objects.all()

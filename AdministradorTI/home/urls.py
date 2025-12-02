@@ -8,4 +8,6 @@ urlpatterns = [
     path('editar-usuario-forti/<str:pk>/',views.editar_usuario_forti,name='editar_usuario_forti'),
     path('download-archivo-pdf/<str:filename>',views.descargar_archivo_guias_pdf,name='descargar_archivo_pdf'),
     path('download-archivo-exe/<str:filename>',views.descargar_archivo_instaladores,name='descargar_archivo_instaladores'),
+    path('login/',views.pagina_login,name='pagina_login'),
+    path('logout/',views.pagina_logout,name='pagina_logout'),
 ]

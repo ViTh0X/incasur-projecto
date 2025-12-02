@@ -225,9 +225,7 @@ h1{
     font-weight: bold;
     text-decoration: none;
 }
-
 /*Home*/
-
 @media (min-width: 768px) {
     .variados{
         display: grid;
