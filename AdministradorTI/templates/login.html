@@ -12,7 +12,7 @@
         {% endfor %}
     {% endif %}
     {% if request.GET.next %}   
-    <div class="contenedor">
+    <div class="contenedor-login">
         <form action="{% url 'pagina_login' %}?next={{ request.GET.next }}" method="post">
             <input type="hidden" name="next" value="{{ request.GET.next }}">
         {% else %}

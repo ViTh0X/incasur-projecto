@@ -546,3 +546,13 @@ h1{
     display: grid;
     grid-template-columns: 1fr;
 }
+.login input{
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.contenedor-login{
+    width: 100rem;
+    margin: 0 auto;
+    padding: 2rem 2rem 2rem 2rem;       
+}
