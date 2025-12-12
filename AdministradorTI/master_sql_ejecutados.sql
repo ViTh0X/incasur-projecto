@@ -20,11 +20,14 @@ INSERT INTO cuentas_forticlient (id,usuario,contraseña,fecha_modificacion)value
 INSERT INTO cuentas_forticlient (id,usuario,contraseña,fecha_modificacion)values(19,'incasur-user19','b8MGjbTk7K@r',CURRENT_DATE);
 INSERT INTO cuentas_forticlient (id,usuario,contraseña,fecha_modificacion)values(20,'incasur-libre','#SrlgBAbAyc%',CURRENT_DATE);
 
-
+select * from auth_user	
 select * from lista_ips order by id asc
+select * from tipo_estado_ips
 --delete from lista_ips
+select * from 
 select * from lista_ips where codigo_estado_id = 2
-update lista_ips set codigo_estado_id = 2 where id =1  
+--Poner en libre una ip
+-- update lista_ips set codigo_estado_id = 2 where id = 41  
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(1,'192.168.1.1',CURRENT_DATE);
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(2,'192.168.1.2',CURRENT_DATE);
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(3,'192.168.1.3',CURRENT_DATE);
