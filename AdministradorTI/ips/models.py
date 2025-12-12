@@ -59,7 +59,7 @@ class oficinas(models.Model):
         
 class lista_ips(models.Model):  
     id = models.AutoField(primary_key=True)  
-    ip = models.CharField(max_length=15,unique=True,on_update=models.CASCADE) 
+    ip = models.CharField(max_length=15,unique=True) 
     ip_seccion = models.ForeignKey(tipo_secciones,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_seccion')
     ip_nivel_firewall = models.ForeignKey(niveles_firewall,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_nivel')    
     tipo_equipo = models.ForeignKey(tipo_equipos_informaticos,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_tipo_equipo')    
