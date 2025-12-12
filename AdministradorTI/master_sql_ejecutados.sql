@@ -365,3 +365,16 @@ insert into tipo_software (nombre_tipo,descripcion_tipo) values('Drivers','Drive
 insert into tipo_software (nombre_tipo,descripcion_tipo) values('Drive','Software para drive de informacion en la nube');
 insert into tipo_software (nombre_tipo,descripcion_tipo) values('TI','Software especial permitido para el area de TI');
 insert into tipo_software (nombre_tipo,descripcion_tipo) values('Otros','Otro tipo de software no considerado en categorias existentes');
+
+
+--Agregar cascade a mis campos
+ALTER TABLE public.lista_colaboradores 
+    DROP CONSTRAINT lista_colaboradores_ip_colaborador_id_8cc74a8f_fk_lista_ips_ip;
+	
+ALTER TABLE public.lista_colaboradores
+    ADD CONSTRAINT lista_colaboradores_ip_colaborador_id_8cc74a8f_fk_lista_ips_ip
+    FOREIGN KEY (ip_colaborador_id)  -- ¡CORREGIDO: Ahora incluye _id!
+    REFERENCES public.lista_ips (ip)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+    DEFERRABLE INITIALLY DEFERRED;
