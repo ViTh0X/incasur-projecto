@@ -10,7 +10,12 @@
                     <div class="contenedor-campos">
                         <div class="campo">
                             <label class="campo--label">IP :</label>
-                            <label class="campo--data">{{ ip.ip }}</label>
+                            <div class="campos__formulario--listbox">
+                                {{ formulario.ip }}
+                                {{ formulario.ip.errors }}
+                            </div> 
+                            <!--<label class="campo--label">IP :</label>
+                            <label class="campo--data">{{ ip.ip }}</label>-->
                         </div>
                         <div class="campo">
                             <label class="campo--label">Nombre :</label>
@@ -18,7 +23,7 @@
                         </div>
                         <div class="campo">
                             <label class="campo--label">Seccion :</label>
-                             <div class="campos__formulario--listbox">
+                            <div class="campos__formulario--listbox">
                                 {{ formulario.ip_seccion }}
                                 {{ formulario.ip_seccion.errors }}
                             </div> 

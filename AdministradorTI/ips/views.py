@@ -35,7 +35,7 @@ def editar_ip(request,pk):
         formulario = ipForm(instance=ip)        
         data_usuario = lista_colaboradores.objects.filter(ip_colaborador=ip).first()
         print(data_usuario)                                
-    return render(request,'ips/editar_ip.html',{'formulario':formulario,'ip':ip,'data_usuario':data_usuario})
+    return render(request,'ips/editar_ip.html',{'formulario':formulario,'data_usuario':data_usuario})
 
 
 @login_required(login_url="pagina_login")

@@ -100,4 +100,4 @@ class historial_accionForm(forms.ModelForm):
 class ipForm(forms.ModelForm):
     class Meta:
         model = lista_ips
-        fields = ['ip_seccion','ip_nivel_firewall','tipo_equipo','marca_equipo','modelo_equipo','oficina']            
+        fields = ['ip','ip_seccion','ip_nivel_firewall','tipo_equipo','marca_equipo','modelo_equipo','oficina']            
