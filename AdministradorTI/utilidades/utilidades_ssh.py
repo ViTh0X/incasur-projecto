@@ -55,7 +55,7 @@ class SSHManager(logArchivos):
         try:            
             self.canalSFTP = self.conexionSSH.open_sftp()            
             print("El canal SFTP creado con exito")                   
-            self.canalSFTP.put(ruta_archivo_destino_cliente,ruta_archivo_destino_cliente)
+            self.canalSFTP.put(ruta_archivo_origen_servidor,ruta_archivo_destino_cliente)
             #self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)
             print("Archivo inventario copiado")
         except paramiko.SFTPError as sftpE:
