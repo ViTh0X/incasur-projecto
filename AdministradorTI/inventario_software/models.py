@@ -33,7 +33,7 @@ class inventario_software(models.Model):
     id_inventario_s = models.AutoField(primary_key=True)
     ip = models.ForeignKey(lista_ips,on_delete=models.CASCADE,to_field='ip')
     tipo_software = models.ForeignKey(tipo_software,on_delete=models.CASCADE)
-    nombre_software = models.CharField(max_length=100)
+    nombre_software = models.CharField(max_length=120)
     fecha_modificacion = models.DateField(auto_now=True)
     
     class Meta:
