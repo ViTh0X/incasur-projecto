@@ -47,13 +47,16 @@ class SSHManager(logArchivos):
         except Exception as e:
             print("Error al ejecutar el archivo no lo encontro")
         time.sleep(5)
-        ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
-        ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
-        # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"        
+        ruta_archivo_origen_servidor = "/root/inventario_hardware.exe" 
+        ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
+        #ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
+        #ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
+        #ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"        
         try:            
             self.canalSFTP = self.conexionSSH.open_sftp()            
             print("El canal SFTP creado con exito")                   
-            self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)
+            self.canalSFTP.put(ruta_archivo_destino_cliente,ruta_archivo_destino_cliente)
+            #self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)
             print("Archivo inventario copiado")
         except paramiko.SFTPError as sftpE:
             print(f"error sftp  {sftpE}")
@@ -120,6 +123,7 @@ class SSHManager(logArchivos):
         stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
         stdout.read()
         stderr.read() 
+        time.sleep(5)
         print("Inventario_software ejecutado con exito")
         ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/software/{self.hostname}-software.txt"
         ruta_archivo_local = f"/root/Inventarios/{self.hostname}-software.txt"
