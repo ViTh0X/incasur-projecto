@@ -25,7 +25,7 @@ class SSHManager(logArchivos):
             self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=3,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
             return True 
         except Exception as e:            
-            print(f"No Se conecto Error : {e}")
+            print(f"No Se conecto Error : {self.hostname} - {e}")
             return False
         finally:
             if self.conexionSSH:
