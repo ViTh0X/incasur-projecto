@@ -18,15 +18,15 @@ class estado_colaboradores(models.Model):
 
 class lista_colaboradores(models.Model):
     codigo_colaborador = models.AutoField(primary_key=True)
-    nombre_colaborador = models.CharField(max_length=150,unique=False)
+    nombre_colaborador = models.CharField(max_length=150,unique=True)
     ip_colaborador = models.ForeignKey(lista_ips,on_delete=models.CASCADE, to_field='ip')
     usuario_sistema = models.CharField(max_length=25,default='SIN ACCESO AL SISTEMA')
-    correo = models.CharField(max_length=50,unique=False)
+    correo = models.CharField(max_length=50,unique=True)
     usuario_sentinel = models.CharField(max_length=15,default="SIN SENTINEL")
     usuario_sbs = models.CharField(max_length=15,default="SIN SBS")
     usuario_windows = models.CharField(max_length=15,default="SIN WINDOWS")
     usuario_reloj_control = models.CharField(max_length=15,default="SIN MARCACION")
-    codigo_impresion_colaborador = models.CharField(max_length=20,unique=False)    
+    codigo_impresion_colaborador = models.CharField(max_length=20,unique=True)    
     cargo_colaborador = models.CharField(max_length=70)    
     estado_colaboradores = models.ForeignKey(estado_colaboradores,on_delete=models.CASCADE)    
     fecha_modificacion = models.DateTimeField(auto_now=True)
