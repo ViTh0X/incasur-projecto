@@ -50,17 +50,16 @@ def ejecutar_inventario_software():
                                 nombre_software =software                                
                             )
                             modelado_inventario_software.save()                            
-                            print("Crea el inventario en DB")
-                    try:
-                        faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                    except Exception as e:
-                        print(f"NO puedo eliminarlo de faltantases {e}")
+                    print("Crea el inventario en DB")                    
+                    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    print("Elimino duplicados")
                 else:
                     faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                     ip_filtrada = lista_ips.objects.get(ip=string_ip)
                     faltantes_hardware = faltantes_inventario_software(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
                     faltantes_hardware.save()                      
-            except:                
+            except Exception as e:
+                print(f"Error {e}")                
                 faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                 ip_filtrada = lista_ips.objects.get(ip=string_ip)
                 faltantes_hardware = faltantes_inventario_software(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
