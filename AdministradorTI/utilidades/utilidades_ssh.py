@@ -21,7 +21,7 @@ class SSHManager(logArchivos):
     def revisarConexionSSH(self):
         try:
             self.conexionSSH = paramiko.SSHClient()
-            self.conexionSSH.set_missing_host_key_policy(paramiko.RejectPolicy())
+            self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=3,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
             return True 
         except Exception as e:            
@@ -35,7 +35,7 @@ class SSHManager(logArchivos):
         try:
             with paramiko.SSHClient() as conexionSSH:
                 self.conexionSSH = conexionSSH
-                self.conexionSSH.set_missing_host_key_policy(paramiko.RejectPolicy())
+                self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
                 try:                  
                     comando = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
@@ -118,7 +118,7 @@ class SSHManager(logArchivos):
         try:            
             with paramiko.SSHClient() as conexionSSH:
                 self.conexionSSH = conexionSSH
-                self.conexionSSH.set_missing_host_key_policy(paramiko.RejectPolicy())
+                self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
                         
                 comando = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"
@@ -228,7 +228,7 @@ class SSHManager(logArchivos):
         self.rutaArchivo = self.crearArchivo(self.hostname)
         try:                        
             self.conexionSSH = paramiko.SSHClient()            
-            self.conexionSSH.set_missing_host_key_policy(paramiko.RejectPolicy())            
+            self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())            
             mensaje = f"Intentando Realizar conexion a {self.hostname} con el usuario {self.username}."
             self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
             self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                    
