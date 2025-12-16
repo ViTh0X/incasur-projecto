@@ -21,7 +21,7 @@ class SSHManager(logArchivos):
     def revisarConexionSSH(self):
         try:
             self.conexionSSH = paramiko.SSHClient()
-            self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            self.conexionSSH.set_missing_host_key_policy(paramiko.RejectPolicy())
             self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=3,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
             return True 
         except Exception as e:            
@@ -33,37 +33,39 @@ class SSHManager(logArchivos):
                 
     def ejecuta_inventario_hardware(self):                       
         try:
-            self.conexionSSH = paramiko.SSHClient()
-            self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                        
-        except Exception as e:              
-            print(f"No Se conecto {self.hostname} -- {e}") 
-        try:                  
-            comando = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
-            stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
-            stdout.read()
-            stderr.read() 
-            print("Inventario_hardware ejecutado con exito")
+            with paramiko.SSHClient() as conexionSSH:
+                self.conexionSSH = conexionSSH
+                self.conexionSSH.set_missing_host_key_policy(paramiko.RejectPolicy())
+                self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
+                try:                  
+                    comando = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
+                    stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
+                    stdout.read()
+                    stderr.read() 
+                    print("Inventario_hardware ejecutado con exito")
+                except Exception as e:
+                    print("Error al ejecutar el archivo no lo encontro")
+                time.sleep(5)
+                #ruta_archivo_origen_servidor = "/root/inventario_hardware.exe" 
+                #ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
+                ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
+                ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
+                #ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"        
+                try:            
+                    self.canalSFTP = self.conexionSSH.open_sftp()            
+                    print("El canal SFTP creado con exito")                   
+                    #self.canalSFTP.put(ruta_archivo_origen_servidor,ruta_archivo_destino_cliente)
+                    self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)
+                    print("Archivo inventario copiado")
+                    #print("Copiado con exito")
+                except paramiko.SFTPError as sftpE:
+                    print(f"error sftp  {sftpE}")
+                except Exception as e:
+                    print(f"Ubo un error no creo el canal sftp{e}")
+                    self.canalSFTP.close()
+                    self.conexionSSH.close()                        
         except Exception as e:
-            print("Error al ejecutar el archivo no lo encontro")
-        time.sleep(5)
-        #ruta_archivo_origen_servidor = "/root/inventario_hardware.exe" 
-        #ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
-        ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
-        ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
-        #ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"        
-        try:            
-            self.canalSFTP = self.conexionSSH.open_sftp()            
-            print("El canal SFTP creado con exito")                   
-            #self.canalSFTP.put(ruta_archivo_origen_servidor,ruta_archivo_destino_cliente)
-            self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)
-            print("Archivo inventario copiado")
-        except paramiko.SFTPError as sftpE:
-            print(f"error sftp  {sftpE}")
-        except Exception as e:
-            print(f"Ubo un error no creo el canal sftp{e}")                        
-        self.canalSFTP.close()
-        self.conexionSSH.close()
+            print(f"Error General {e}")
         
                        
         
@@ -113,28 +115,32 @@ class SSHManager(logArchivos):
     
     
     def ejecuta_inventario_software(self):                       
-        try:
-            self.conexionSSH = paramiko.SSHClient()
-            self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
-        except Exception as e:              
-            print(f"No Se conecto {self.hostname}")            
-        comando = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"
-        stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
-        stdout.read()
-        stderr.read() 
-        time.sleep(5)
-        print("Inventario_software ejecutado con exito")
-        ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/software/{self.hostname}-software.txt"
-        ruta_archivo_local = f"/root/Inventarios/{self.hostname}-software.txt"
-        # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-software.txt"
-        try:
-            self.canalSFTP = self.conexionSSH.open_sftp()                   
-        except paramiko.SFTPError as sftpE:
-            print(f"error sftp  {sftpE}")
-        self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)        
-        self.canalSFTP.close()
-        self.conexionSSH.close()
+        try:            
+            with paramiko.SSHClient() as conexionSSH:
+                self.conexionSSH = conexionSSH
+                self.conexionSSH.set_missing_host_key_policy(paramiko.RejectPolicy())
+                self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
+                        
+                comando = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"
+                stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
+                stdout.read()
+                stderr.read() 
+                time.sleep(5)
+                print("Inventario_software ejecutado con exito")
+                ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/software/{self.hostname}-software.txt"
+                ruta_archivo_local = f"/root/Inventarios/{self.hostname}-software.txt"
+                # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-software.txt"
+                try:
+                    self.canalSFTP = self.conexionSSH.open_sftp()                   
+                    self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)
+                except paramiko.SFTPError as sftpE:
+                    print(f"error sftp  {sftpE}")
+                except Exception as e:
+                    print(f"Ubo un error no creo el canal sftp{e}")
+                    self.canalSFTP.close()
+                    self.conexionSSH.close() 
+        except Exception as e:
+            print(f"Error general {e}")                            
         
                        
         
@@ -222,7 +228,7 @@ class SSHManager(logArchivos):
         self.rutaArchivo = self.crearArchivo(self.hostname)
         try:                        
             self.conexionSSH = paramiko.SSHClient()            
-            self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())            
+            self.conexionSSH.set_missing_host_key_policy(paramiko.RejectPolicy())            
             mensaje = f"Intentando Realizar conexion a {self.hostname} con el usuario {self.username}."
             self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
             self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                    
