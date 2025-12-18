@@ -21,7 +21,7 @@ class inventario_hardware(models.Model):
     ip = models.ForeignKey(lista_ips,on_delete=models.CASCADE,to_field='ip')
     nombre_colaborador = models.ForeignKey(lista_colaboradores,on_delete=models.CASCADE,to_field='nombre_colaborador')
     nombre_equipo = models.CharField(max_length=50,blank=True,null=True)
-    placa = models.CharField(max_length=60,blank=True,null=True)
+    placa = models.CharField(max_length=100,blank=True,null=True)
     procesador = models.CharField(max_length=100,blank=True,null=True)
     ram = models.CharField(max_length=6,blank=True,null=True)
     video_integrada = models.CharField(max_length=100,blank=True,null=True)
