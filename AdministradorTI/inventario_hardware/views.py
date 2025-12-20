@@ -9,7 +9,7 @@ from .models import inventario_hardware,faltantes_inventario_hardware
 
 #Haciendo uso de Celery
 from celery.result import AsyncResult
-from .task  import ejecutar_inventario_hardware,ejecutar_faltantes_inventario_hardware
+from .task  import ejecutar_inventario_hardware,ejecutar_faltantes_inventario_hardware, actualizar_ejecutable
 # Create your views here.
 
 from django.contrib.auth.decorators  import login_required
@@ -34,6 +34,14 @@ def listar_inventario_hardware(request):
 def iniciar_inventario_hardware(request):
     if request.method == 'POST':
         tarea = ejecutar_inventario_hardware.delay()
+        
+        return JsonResponse({'task_id':tarea.id})
+    return redirect('listar_inventario_hardware')
+
+@login_required(login_url="pagina_login")
+def actualizar_ejecutable_h(request):
+    if request.method == 'POST':
+        tarea = actualizar_ejecutable.delay()
         
         return JsonResponse({'task_id':tarea.id})
     return redirect('listar_inventario_hardware')

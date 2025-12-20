@@ -31,6 +31,52 @@ class SSHManager(logArchivos):
             if self.conexionSSH:
                 self.conexionSSH.close()
                 
+    def actualizar_ejecutable_hardware(self):                
+        try:
+            with paramiko.SSHClient() as conexionSSH:
+                self.conexionSSH = conexionSSH
+                self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
+                time.sleep(5)
+                ruta_archivo_origen_servidor = "/root/inventario_hardware.exe" 
+                ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"                
+                try:            
+                    self.canalSFTP = self.conexionSSH.open_sftp()            
+                    print("El canal SFTP creado con exito")                   
+                    self.canalSFTP.put(ruta_archivo_origen_servidor,ruta_archivo_destino_cliente)                                        
+                    print("Copiado con exito")
+                except paramiko.SFTPError as sftpE:
+                    print(f"error sftp  {sftpE}")
+                except Exception as e:
+                    print(f"Ubo un error no creo el canal sftp{e}")
+                    self.canalSFTP.close()
+                    self.conexionSSH.close()                        
+        except Exception as e:
+            print(f"Error General {e}")   
+    
+    def actualizar_ejecutable_software(self):                
+        try:
+            with paramiko.SSHClient() as conexionSSH:
+                self.conexionSSH = conexionSSH
+                self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
+                time.sleep(5)
+                ruta_archivo_origen_servidor = "/root/inventario_software.exe" 
+                ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"                
+                try:            
+                    self.canalSFTP = self.conexionSSH.open_sftp()            
+                    print("El canal SFTP creado con exito")                   
+                    self.canalSFTP.put(ruta_archivo_origen_servidor,ruta_archivo_destino_cliente)                                        
+                    print("Copiado con exito")
+                except paramiko.SFTPError as sftpE:
+                    print(f"error sftp  {sftpE}")
+                except Exception as e:
+                    print(f"Ubo un error no creo el canal sftp{e}")
+                    self.canalSFTP.close()
+                    self.conexionSSH.close()                        
+        except Exception as e:
+            print(f"Error General {e}")               
+                            
     def ejecuta_inventario_hardware(self):                       
         try:
             with paramiko.SSHClient() as conexionSSH:
@@ -45,17 +91,15 @@ class SSHManager(logArchivos):
                     print("Inventario_hardware ejecutado con exito")
                 except Exception as e:
                     print("Error al ejecutar el archivo no lo encontro")
-                time.sleep(5)
-                ruta_archivo_origen_servidor = "/root/inventario_hardware.exe" 
-                ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
-                #ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
-                #ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
+                time.sleep(5)                
+                ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
+                ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
                 #ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"        
-                try:            
+                try:
+                    print(self.hostname)            
                     self.canalSFTP = self.conexionSSH.open_sftp()            
-                    print("El canal SFTP creado con exito")                   
-                    self.canalSFTP.put(ruta_archivo_origen_servidor,ruta_archivo_destino_cliente)
-                    #self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)
+                    print("El canal SFTP creado con exito")                                       
+                    self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)
                     print("Archivo inventario copiado")
                     print("Copiado con exito")
                 except paramiko.SFTPError as sftpE:
@@ -131,6 +175,7 @@ class SSHManager(logArchivos):
                 ruta_archivo_local = f"/root/Inventarios/{self.hostname}-software.txt"
                 # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-software.txt"
                 try:
+                    print(self.hostname)            
                     self.canalSFTP = self.conexionSSH.open_sftp()                   
                     self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)
                 except paramiko.SFTPError as sftpE:

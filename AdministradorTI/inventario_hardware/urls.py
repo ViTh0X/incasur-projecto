@@ -10,4 +10,5 @@ urlpatterns = [
     path('actualizar-tabla/',views.actualizar_tabla,name='actualizar_tabla'),
     path('generar-excel-all-inventario-h',views.generar_excell_all_h,name='generar_excell_all_h'),
     path('listar-logs-h',views.listar_logs,name='listar_logs_h'),
+    path('actualizar-ejecutable-h/',views.actualizar_ejecutable_h,name='actualizar_ejecutable_h'),
 ]

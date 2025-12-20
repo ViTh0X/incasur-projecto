@@ -151,3 +151,42 @@ def ejecutar_faltantes_inventario_hardware():
         )                                
         logs_inventario_hardware.save()
         return "ERROR FALTANTES INVENTARIO HARDWARE"        
+    
+    
+@shared_task
+def actualizar_ejecutable():
+    try:
+        estado_ips = get_object_or_404(tipo_estado_ips,pk=1)
+        laptop = get_object_or_404(tipo_equipos_informaticos,pk=1)
+        pc = get_object_or_404(tipo_equipos_informaticos,pk=2)
+        nombres_a_filtrar = [laptop.nombre_tipo_equipo, pc.nombre_tipo_equipo]        
+        lista_ips_ocupadas = lista_ips.objects.filter(codigo_estado=estado_ips,tipo_equipo__in=nombres_a_filtrar).values('ip')        
+        for ip in lista_ips_ocupadas:
+            string_ip = ip['ip']
+            username = "Administrador"
+            puerto = os.getenv('SSH_PORT')
+            keyfile = os.getenv('SSH_KEYFILE')
+            passphrase = os.getenv('SSH_PASSPHRASE')            
+            SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
+            esta_en_linea = SSH_instancia.revisarConexionSSH()
+            try:
+                if esta_en_linea:
+                    print("Equipo en linea")
+                    SSH_instancia.actualizar_ejecutable_hardware()               
+                    print("Actualizacion Finalizada")                                                
+                else:
+                    print(f"{string_ip} No esta en linea")
+            except Exception as e:
+                print(f"{string_ip} No esta en linea")    
+        logs_inventario_hardware = logs_actividades_celery(
+            mensaje = 'Actualizo los exe de hardware con exito.'
+        )                                
+        logs_inventario_hardware.save()
+        return "ACTUALIZACION DE EJECUTABLES HARDWARE TERMINARDA"
+
+    except Exception as e:
+        logs_inventario_hardware = logs_actividades_celery(
+            mensaje = f"Error{e}"
+        )                                
+        logs_inventario_hardware.save()
+        return "ERROR AL ACTUALIZAR LOS EJECUTABLES HARDWARE"

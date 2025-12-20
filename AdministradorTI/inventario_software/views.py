@@ -8,7 +8,7 @@ from colaboradores.models import lista_colaboradores
 from home.models import logs_actividades_celery
 
 from celery.result import AsyncResult
-from .task import ejecutar_faltantes_inventario_software,ejecutar_inventario_software
+from .task import ejecutar_faltantes_inventario_software,ejecutar_inventario_software, actualizar_ejecutable
 
 from django.contrib.auth.decorators import login_required
 
@@ -122,6 +122,14 @@ def iniciar_inventario_software(request):
         return JsonResponse({'task_id':tarea.id})
     return redirect('listar_inventario_hardware')
 
+
+@login_required(login_url="pagina_login")
+def actualizar_ejecutable_s(request):
+    if request.method == 'POST':
+        tarea = actualizar_ejecutable.delay()
+        
+        return JsonResponse({'task_id':tarea.id})
+    return redirect('listar_inventario_hardware')
 
 @login_required(login_url="pagina_login")
 def verificar_estado_tarea(request,task_id):
