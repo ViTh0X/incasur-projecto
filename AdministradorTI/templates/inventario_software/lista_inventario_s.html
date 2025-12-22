@@ -38,131 +38,133 @@
                 </div> 
                 
             </div>
-            <table class="table" id="tabla_inventario_h">
-                <thead>
-                    <tr>
-                        <th>Colaborado</th>                        
-                        <th>Office</th>
-                        <th>Acceso Remoto</th>
-                        <th>Editores Texto</th>
-                        <th>Data Base</th>
-                        <th>PDF</th>
-                        <th>FTIA</th>
-                        <th>Impresoras</th>
-                        <th>Navegadores</th>
-                        <th>Compresores</th>
-                        <th>Drivers</th>
-                        <th>Drive</th>
-                        <th>TI</th>
-                        <th>Otros</th>
-                        <!-- <th>Ultimo Realizado</th>                         -->
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in lista_inventarios %}
-                    <tr>
-                        <td>
-                            <ul>
-                                <li>•{{ item.ip }}</li>
-                                <li>•{{ item.nombre_colaborador }}</li>
-                            </ul>                                             
-                        </td>
-                        <td>
-                            <ul>
-                                {% for office in item.Office %}
-                                <li>•{{ office }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for office in item.Acceso_Remoto %}
-                                <li>•{{ office }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for office in item.Editores_Texto %}
-                                <li>•{{ office }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for office in item.Base_Datos %}
-                                <li>•{{ office }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for office in item.PDF %}
-                                <li>•{{ office }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for office in item.FTIA %}
-                                <li>•{{ office }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for office in item.Impresoras %}
-                                <li>•{{ office }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for office in item.Navegadores %}
-                                <li>•{{ office }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for office in item.Compresores %}
-                                <li>•{{ office }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for office in item.Drivers %}
-                                <li>•{{ office }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for office in item.Drive %}
-                                <li>•{{ office }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for office in item.TI %}
-                                <li>•{{ office }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                {% for office in item.Otros %}
-                                <li>•{{ office }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <!-- <td>{{ item.fecha|date:"m-Y" }}</td>                                                                                                  -->
-                    </tr>
-                    {% endfor %}                    
-                </tbody> 
-            </table>
+            <div class="table_container">
+                <table class="table" id="tabla_inventario_h">
+                    <thead>
+                        <tr>
+                            <th>Colaborado</th>                        
+                            <th>Office</th>
+                            <th>Acceso Remoto</th>
+                            <th>Editores Texto</th>
+                            <th>Data Base</th>
+                            <th>PDF</th>
+                            <th>FTIA</th>
+                            <th>Impresoras</th>
+                            <th>Navegadores</th>
+                            <th>Compresores</th>
+                            <th>Drivers</th>
+                            <th>Drive</th>
+                            <th>TI</th>
+                            <th>Otros</th>
+                            <!-- <th>Ultimo Realizado</th>                         -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in lista_inventarios %}
+                        <tr>
+                            <td>
+                                <ul>
+                                    <li>•{{ item.ip }}</li>
+                                    <li>•{{ item.nombre_colaborador }}</li>
+                                </ul>                                             
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.Office %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.Acceso_Remoto %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.Editores_Texto %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.Base_Datos %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.PDF %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.FTIA %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.Impresoras %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.Navegadores %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.Compresores %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.Drivers %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.Drive %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.TI %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.Otros %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <!-- <td>{{ item.fecha|date:"m-Y" }}</td>                                                                                                  -->
+                        </tr>
+                        {% endfor %}                    
+                    </tbody> 
+                </table>
+            </div>            
         </div>
         <script>
             const csrftoken = "{{ csrf_token }}";
