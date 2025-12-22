@@ -162,45 +162,59 @@ h1{
     border-collapse: collapse;    
 }
 
-.tabla_s th:nth-child(1){
+.tabla_s td:nth-child(1),
+.tabla_s th:nth-child(1) {
     width: 2rem;    
 }
+.tabla_s td:nth-child(2),
 .tabla_s th:nth-child(2){
     width: 2rem;   
 }
+.tabla_s td:nth-child(3),
 .tabla_s th:nth-child(3){
     width: 2rem;    
 }
+.tabla_s td:nth-child(4),
 .tabla_s th:nth-child(4){
     width: 2rem;    
 }
+.tabla_s td:nth-child(5),
 .tabla_s th:nth-child(5){
     width: 2rem;    
 }
+.tabla_s td:nth-child(6),
 .tabla_s th:nth-child(6){
     width: 2rem;    
 }
+.tabla_s td:nth-child(7),
 .tabla_s th:nth-child(7){
     width: 2rem;    
 }
+.tabla_s td:nth-child(8),
 .tabla_s th:nth-child(8){
     width: 2rem;    
 }
+.tabla_s td:nth-child(9),
 .tabla_s th:nth-child(9){
     width: 2rem;    
 }
+.tabla_s td:nth-child(10),
 .tabla_s th:nth-child(10){
     width: 2rem;    
 }
+.tabla_s td:nth-child(11),
 .tabla_s th:nth-child(11){
     width: 2rem;    
 }
+.tabla_s td:nth-child(12),
 .tabla_s th:nth-child(12){
     width: 2rem;    
 }
+.tabla_s td:nth-child(13),
 .tabla_s th:nth-child(13){
     width: 2rem;    
 }
+.tabla_s td:nth-child(14),
 .tabla_s th:nth-child(14){
     width: 2rem;    
 }
