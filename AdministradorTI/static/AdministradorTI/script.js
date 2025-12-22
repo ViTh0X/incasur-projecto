@@ -145,7 +145,7 @@ const botonActualizar_s = document.getElementById('actualizar_ejecutable_s');
 
 if(botonActualizar_s){
     botonActualizar_s.addEventListener('click',function(){
-        fetch('/inventario-hardware/actualizar-ejecutable-s/',{
+        fetch('/inventario-software/actualizar-ejecutable-s/',{
             method:'POST',
             headers:{'X-CSRFToken': csrftoken }
         })
@@ -155,7 +155,7 @@ if(botonActualizar_s){
             if(taskID){
                 /*Verificacion constante el estado */
                 const intervalos = setInterval(()=>{
-                    fetch(`/inventario-hardware/status/${taskID}/`)
+                    fetch(`/inventario-software/status/${taskID}/`)
                     .then(response => response.json())
                     .then(estadoData =>{
                         if(estadoData.estado === 'SUCCESS'){
