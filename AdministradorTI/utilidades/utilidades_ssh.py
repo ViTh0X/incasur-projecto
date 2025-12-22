@@ -323,55 +323,68 @@ class SSHManager(logArchivos):
         return listaRutasLocales
     
     
-    def creaRutasRemotas(self,usuario:str,listaRutaLocales:list):        
+    def creaRutasRemotas(self,usuario:str,listaRutaLocales:list,ip:str):        
         lsRutaBKUP = []
         rBaseRemoC = "C:/Users/"        
         try:
-            for rLocal in listaRutaLocales:            
-                lsR = {}
-                rutaTexto = str(rLocal)
-                if "Documentos" in rutaTexto:                    
-                    ruta = Path(rBaseRemoC)/usuario/"Documents"                    
-                    lsR[rLocal] = ruta
-                    lsRutaBKUP.append(lsR)                    
-                elif "Descargas" in rutaTexto:                    
-                    ruta = Path(rBaseRemoC)/usuario/"Downloads"
-                    lsR[rLocal] = ruta
-                    lsRutaBKUP.append(lsR)                    
-                elif "Escritorio" in rutaTexto:                    
-                    ruta = Path(rBaseRemoC)/usuario/"Desktop"
-                    lsR[rLocal] = ruta
-                    lsRutaBKUP.append(lsR)                    
-                elif "Discos" in rutaTexto:                    
-                    ruta ="D:/"
-                    local = Path(rLocal)/"Disco_D"
-                    lsR[local] = ruta
-                    lsRutaBKUP.append(lsR)
+            if ip == "192.168.1.36":
+                for rLocal in listaRutaLocales:
+                    if "Discos" in rutaTexto:                                
+                        lsR = {}                    
+                        ruta ="C:\Patrick"
+                        local = Path(rLocal)/"Disco_D"
+                        lsR[local] = ruta
+                        lsRutaBKUP.append(lsR)
+                        lsR = {}
+                mensaje = "Las rutas iniciales fueron preparadas con exito"
+                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+                return lsRutaBKUP
+            else:
+                for rLocal in listaRutaLocales:            
                     lsR = {}
-                    '''
-                    ruta ="E:/"
-                    local = Path(rLocal)/"Disco_E"
-                    lsR[local] = ruta
-                    lsRutaBKUP.append(lsR)
-                    lsR = {}
-                    ruta ="F:/"
-                    local = Path(rLocal)/"Disco_F"
-                    lsR[local] = ruta
-                    lsRutaBKUP.append(lsR)
-                    lsR = {}
-                    ruta ="G:/"
-                    local = Path(rLocal)/"Disco_G"
-                    lsR[local] = ruta
-                    lsRutaBKUP.append(lsR)
-                    lsR = {}
-                    ruta ="H:/"
-                    local = Path(rLocal)/"Disco_H"
-                    lsR[local] = ruta
-                    lsRutaBKUP.append(lsR)
-                    lsR = {}   '''                 
-            mensaje = "Las rutas iniciales fueron preparadas con exito"
-            self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
-            return lsRutaBKUP
+                    rutaTexto = str(rLocal)
+                    if "Documentos" in rutaTexto:                    
+                        ruta = Path(rBaseRemoC)/usuario/"Documents"                    
+                        lsR[rLocal] = ruta
+                        lsRutaBKUP.append(lsR)                    
+                    elif "Descargas" in rutaTexto:                    
+                        ruta = Path(rBaseRemoC)/usuario/"Downloads"
+                        lsR[rLocal] = ruta
+                        lsRutaBKUP.append(lsR)                    
+                    elif "Escritorio" in rutaTexto:                    
+                        ruta = Path(rBaseRemoC)/usuario/"Desktop"
+                        lsR[rLocal] = ruta
+                        lsRutaBKUP.append(lsR)                    
+                    elif "Discos" in rutaTexto:                    
+                        ruta ="D:/"
+                        local = Path(rLocal)/"Disco_D"
+                        lsR[local] = ruta
+                        lsRutaBKUP.append(lsR)
+                        lsR = {}
+                        '''
+                        ruta ="E:/"
+                        local = Path(rLocal)/"Disco_E"
+                        lsR[local] = ruta
+                        lsRutaBKUP.append(lsR)
+                        lsR = {}
+                        ruta ="F:/"
+                        local = Path(rLocal)/"Disco_F"
+                        lsR[local] = ruta
+                        lsRutaBKUP.append(lsR)
+                        lsR = {}
+                        ruta ="G:/"
+                        local = Path(rLocal)/"Disco_G"
+                        lsR[local] = ruta
+                        lsRutaBKUP.append(lsR)
+                        lsR = {}
+                        ruta ="H:/"
+                        local = Path(rLocal)/"Disco_H"
+                        lsR[local] = ruta
+                        lsRutaBKUP.append(lsR)
+                        lsR = {}   '''                 
+                mensaje = "Las rutas iniciales fueron preparadas con exito"
+                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+                return lsRutaBKUP
         except Exception as e:
             mensaje = f"Error preparando las rutas : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)

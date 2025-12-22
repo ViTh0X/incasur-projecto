@@ -38,7 +38,7 @@ def ejecutar_backup_informacion():
                 if esta_en_linea:
                     SSH_instancia.realizarConSSH()
                     SSH_instancia.crearCanalSFTP()                    
-                    listaRutasLocales = SSH_instancia.rutasIniciales(["Documentos","Escritorio","Descargas","Discos"])
+                    listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"],string_ip)
                     listaRutas = SSH_instancia.creaRutasRemotas(username,listaRutasLocales)
                     print("Inicio la ejecucion del Backup Espere...")
                     for rutas in listaRutas:
