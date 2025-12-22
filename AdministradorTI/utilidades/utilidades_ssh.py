@@ -329,8 +329,8 @@ class SSHManager(logArchivos):
         try:
             if ip == "192.168.1.36":
                 for rLocal in listaRutaLocales:
-                    if "Discos" in rutaTexto:                                
-                        lsR = {}                    
+                    lsR = {}
+                    if "Discos" in rutaTexto:                                                                            
                         ruta ="C:\Patrick"
                         local = Path(rLocal)/"Disco_D"
                         lsR[local] = ruta
