@@ -167,9 +167,17 @@ class SSHManager(logArchivos):
                 try:                        
                     comando = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"
                     stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
-                    stdout.read()
-                    stderr.read()                 
+                    #stdout.read()
+                    #stderr.read()                 
                     print("Inventario_software ejecutado con exito")
+                    # Es CRUCIAL leer las salidas para que el proceso termine
+                    salida = stdout.read().decode('latin-1')
+                    errores = stderr.read().decode('latin-1')
+
+                    if errores:
+                        print(f"Errores encontrados: {errores}")
+                    if salida:
+                        print(f"Salida del programa: {salida}")
                 except Exception as e:
                     print("Error al ejecutar el archivo no lo encontro")
                 time.sleep(10)
