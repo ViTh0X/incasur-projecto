@@ -34,12 +34,13 @@ def ejecutar_inventario_hardware():
             año_actual = datetime.now().year
             try:
                 if esta_en_linea:
-                    print("Ingreso al if")
+                    print(f"Equipo en linea {string_ip}")
+                    SSH_instancia.actualizar_ejecutable_hardware()               
+                    print("Actualizacion Finalizada")  
                     SSH_instancia.ejecuta_inventario_hardware()               
                     print("Ejecuto inventario hardware")                                
                     inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                    print("Elimino duplicados")
-                    ##################################
+                    print("Elimino duplicados")                    
                     diccionario_inventario_hardware = SSH_instancia.guardar_inventario_hardware()                
                     print("Guardo el inventario")
                     modelado_inventario_hardware = inventario_hardware(
@@ -107,11 +108,14 @@ def ejecutar_faltantes_inventario_hardware():
             año_actual = datetime.now().year
             try:
                 if esta_en_linea:
-                    print("Ingreso al if")
+                    print(f"Equipo en linea {string_ip}")
+                    SSH_instancia.actualizar_ejecutable_hardware()               
+                    print("Actualizacion Finalizada")  
                     SSH_instancia.ejecuta_inventario_hardware()               
                     inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                    ##################################
-                    diccionario_inventario_hardware = SSH_instancia.guardar_inventario_hardware()                
+                    print("Elimino duplicados")
+                    diccionario_inventario_hardware = SSH_instancia.guardar_inventario_hardware()
+                    print("Guardo el Inventario")                                    
                     modelado_inventario_hardware = inventario_hardware(
                         ip = ip_filtrada,
                         nombre_colaborador = nombre_colab_filtrado,
@@ -126,6 +130,7 @@ def ejecutar_faltantes_inventario_hardware():
                         puertas_enlace = diccionario_inventario_hardware['puerta_enlace']                             
                     )
                     modelado_inventario_hardware.save()
+                    print("Guardo Informacion en la BD")
                     faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()                                   
                 else:
                     faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
@@ -171,7 +176,7 @@ def actualizar_ejecutable():
             esta_en_linea = SSH_instancia.revisarConexionSSH()
             try:
                 if esta_en_linea:
-                    print("Equipo en linea")
+                    print(f"Equipo en linea {string_ip}")
                     SSH_instancia.actualizar_ejecutable_hardware()               
                     print("Actualizacion Finalizada")                                                
                 else:

@@ -35,6 +35,9 @@ def ejecutar_inventario_software():
             año_actual = datetime.now().year                    
             try:
                 if esta_en_linea:
+                    print(f"Equipo en linea {string_ip}")
+                    SSH_instancia.actualizar_ejecutable_software()               
+                    print("Actualizacion Finalizada")
                     SSH_instancia.ejecuta_inventario_software()
                     print("Ejecuto inventario software")    
                     inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
@@ -103,10 +106,14 @@ def ejecutar_faltantes_inventario_software():
             año_actual = datetime.now().year                    
             try:
                 if esta_en_linea:
+                    print(f"Equipo en linea {string_ip}")
+                    SSH_instancia.actualizar_ejecutable_software()               
+                    print("Actualizacion Finalizada")
                     SSH_instancia.ejecuta_inventario_software()
                     inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                    ##################################
+                    print("Elimino Duplicados")
                     diccionario_inventario_software = SSH_instancia.guardar_inventario_software()
+                    print("Guardo el Inventario")
                     for codigo_categoria, lista_software in diccionario_inventario_software.items():
                         categoria = tipo_software.objects.get(id=codigo_categoria)
                         for software in lista_software:
@@ -161,9 +168,9 @@ def actualizar_ejecutable():
             esta_en_linea = SSH_instancia.revisarConexionSSH()
             try:
                 if esta_en_linea:
-                    print("Ingreso al if")
+                    print(f"Equipo en linea {string_ip}")
                     SSH_instancia.actualizar_ejecutable_software()               
-                    print("Actualizacion Finalizada")                                                
+                    print("Actualizacion Finalizada")                                              
                 else:
                     print(f"{string_ip} No esta en linea")
             except Exception as e:
