@@ -39,14 +39,11 @@ class SSHManager(logArchivos):
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
                 time.sleep(5)
                 ruta_archivo_origen_servidor = "/root/inventario_hardware.exe" 
-                ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
-                ruta_archivo_origen_servidor_s = "/root/inventario_software.exe" 
-                ruta_archivo_destino_cliente_s = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"                               
+                ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"                
                 try:            
                     self.canalSFTP = self.conexionSSH.open_sftp()            
                     print("El canal SFTP creado con exito")                   
-                    self.canalSFTP.put(ruta_archivo_origen_servidor,ruta_archivo_destino_cliente)                                       
-                    self.canalSFTP.put(ruta_archivo_origen_servidor_s,ruta_archivo_destino_cliente_s)                
+                    self.canalSFTP.put(ruta_archivo_origen_servidor,ruta_archivo_destino_cliente)                                                                          
                     print("Copiado con exito")
                 except paramiko.SFTPError as sftpE:
                     print(f"error sftp  {sftpE}")
@@ -64,12 +61,12 @@ class SSHManager(logArchivos):
                 self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
                 time.sleep(5)
-                ruta_archivo_origen_servidor_s = "/root/inventario_software.exe" 
-                ruta_archivo_destino_cliente_s = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"                
+                ruta_archivo_origen_servidor = "/root/inventario_software.exe" 
+                ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"                
                 try:            
                     self.canalSFTP = self.conexionSSH.open_sftp()            
                     print("El canal SFTP creado con exito")                   
-                    #self.canalSFTP.put(ruta_archivo_origen_servidor,ruta_archivo_destino_cliente)                                        
+                    self.canalSFTP.put(ruta_archivo_origen_servidor,ruta_archivo_destino_cliente)                                        
                     print("Copiado con exito")
                 except paramiko.SFTPError as sftpE:
                     print(f"error sftp  {sftpE}")
