@@ -37,6 +37,9 @@ class SSHManager(logArchivos):
                 self.conexionSSH = conexionSSH
                 self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
+                comando = 'taskkill /f /im inventario_hardware.exe /t 2>nul & "C:\\Users\\Administrador\\Documents\\TI\\hardware\\inventario_hardware.exe"'
+                stdin, stdout, stderr = self.conexionSSH.exec_command(comando)
+                print("Todos los procesos se eliminaron")                
                 time.sleep(5)
                 ruta_archivo_origen_servidor = "/root/inventario_hardware.exe" 
                 ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"                
@@ -60,6 +63,9 @@ class SSHManager(logArchivos):
                 self.conexionSSH = conexionSSH
                 self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
+                comando = 'taskkill /f /im inventario_software.exe /t 2>nul & "C:\\Users\\Administrador\\Documents\\TI\\software\\inventario_software.exe"'
+                stdin, stdout, stderr = self.conexionSSH.exec_command(comando)
+                print("Todos los procesos se eliminaron")
                 time.sleep(5)
                 ruta_archivo_origen_servidor = "/root/inventario_software.exe" 
                 ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"                
@@ -83,9 +89,7 @@ class SSHManager(logArchivos):
                 self.conexionSSH = conexionSSH
                 self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
-                try:                                      
-                    comando = 'taskkill /f /im inventario_hardware.exe /t 2>nul & "C:\\Users\\Administrador\\Documents\\TI\\hardware\\inventario_hardware.exe"'
-                    stdin, stdout, stderr = self.conexionSSH.exec_command(comando)
+                try:                                                          
                     comando = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
                     stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
                     stdout.read()
@@ -167,10 +171,7 @@ class SSHManager(logArchivos):
                 self.conexionSSH = conexionSSH
                 self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
-                try:                                            
-                    comando = 'taskkill /f /im inventario_software.exe /t 2>nul & "C:\\Users\\Administrador\\Documents\\TI\\software\\inventario_software.exe"'
-                    stdin, stdout, stderr = self.conexionSSH.exec_command(comando)
-                    
+                try:                                                                
                     comando = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"
                     stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
                     stdout.read()
