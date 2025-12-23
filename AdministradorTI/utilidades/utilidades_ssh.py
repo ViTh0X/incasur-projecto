@@ -90,8 +90,9 @@ class SSHManager(logArchivos):
                     stderr.read() 
                     print("Inventario_hardware ejecutado con exito")
                 except Exception as e:
-                    print("Error al ejecutar el archivo no lo encontro")
+                    print(f"Error al ejecutar el archivo no lo encontro *** {e}")                                        
                 time.sleep(5)                
+                
                 ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
                 ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
                 #ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"        
@@ -167,17 +168,9 @@ class SSHManager(logArchivos):
                 try:                        
                     comando = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"
                     stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
-                    #stdout.read()
-                    #stderr.read()                 
-                    print("Inventario_software ejecutado con exito")
-                    # Es CRUCIAL leer las salidas para que el proceso termine
-                    salida = stdout.read().decode('latin1')
-                    errores = stderr.read().decode('latin-1')
-
-                    if errores:
-                        print(f"Errores encontrados: {errores}")
-                    #if salida:
-                    #    print(f"Salida del programa: {salida}")
+                    stdout.read()
+                    stderr.read()                 
+                    print("Inventario_software ejecutado con exito")                    
                 except Exception as e:
                     print(f"Error al ejecutar el archivo no lo encontro **** {e}")
                 time.sleep(10)
