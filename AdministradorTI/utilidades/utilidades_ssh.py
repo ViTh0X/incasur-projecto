@@ -22,7 +22,7 @@ class SSHManager(logArchivos):
         try:
             self.conexionSSH = paramiko.SSHClient()
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=3,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=10,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
             return True 
         except Exception as e:            
             print(f"No Se conecto Error : {self.hostname} - {e}")
@@ -30,6 +30,7 @@ class SSHManager(logArchivos):
         finally:
             if self.conexionSSH:
                 self.conexionSSH.close()
+                
                 
     def actualizar_ejecutable_hardware(self):                
         try:
@@ -39,8 +40,7 @@ class SSHManager(logArchivos):
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
                 comando = 'taskkill /f /im inventario_hardware.exe /t 2>nul & "C:\\Users\\Administrador\\Documents\\TI\\hardware\\inventario_hardware.exe"'
                 stdin, stdout, stderr = self.conexionSSH.exec_command(comando)
-                print("Todos los procesos se eliminaron")                
-                time.sleep(5)
+                print("Todos los procesos se eliminaron")                                
                 ruta_archivo_origen_servidor = "/root/inventario_hardware.exe" 
                 ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"                
                 try:            
@@ -65,8 +65,7 @@ class SSHManager(logArchivos):
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
                 comando = 'taskkill /f /im inventario_software.exe /t 2>nul & "C:\\Users\\Administrador\\Documents\\TI\\software\\inventario_software.exe"'
                 stdin, stdout, stderr = self.conexionSSH.exec_command(comando)
-                print("Todos los procesos se eliminaron")
-                time.sleep(5)
+                print("Todos los procesos se eliminaron")                
                 ruta_archivo_origen_servidor = "/root/inventario_software.exe" 
                 ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"                
                 try:            
@@ -97,7 +96,7 @@ class SSHManager(logArchivos):
                     print("Inventario_hardware ejecutado con exito")
                 except Exception as e:
                     print(f"Error al ejecutar el archivo no lo encontro *** {e}")                                        
-                time.sleep(5)                
+                #time.sleep(5)                
                 
                 ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
                 ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
@@ -179,12 +178,11 @@ class SSHManager(logArchivos):
                     print("Inventario_software ejecutado con exito")                    
                 except Exception as e:
                     print(f"Error al ejecutar el archivo no lo encontro **** {e}")
-                time.sleep(10)
+                #time.sleep(10)
                 ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/software/{self.hostname}-software.txt"
                 ruta_archivo_local = f"/root/Inventarios/{self.hostname}-software.txt"
                 # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-software.txt"
-                try:
-                    print(self.hostname)            
+                try:                                
                     self.canalSFTP = self.conexionSSH.open_sftp()                   
                     self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)
                 except paramiko.SFTPError as sftpE:

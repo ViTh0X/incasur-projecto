@@ -35,8 +35,8 @@ def ejecutar_inventario_hardware():
             try:
                 if esta_en_linea:
                     print(f"Equipo en linea {string_ip}")
-                    SSH_instancia.actualizar_ejecutable_hardware()               
-                    print("Actualizacion Finalizada")  
+                    #SSH_instancia.actualizar_ejecutable_hardware()               
+                    #print("Actualizacion Finalizada")  
                     SSH_instancia.ejecuta_inventario_hardware()               
                     print("Ejecuto inventario hardware")                                
                     inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
@@ -109,8 +109,8 @@ def ejecutar_faltantes_inventario_hardware():
             try:
                 if esta_en_linea:
                     print(f"Equipo en linea {string_ip}")
-                    SSH_instancia.actualizar_ejecutable_hardware()               
-                    print("Actualizacion Finalizada")  
+                    #SSH_instancia.actualizar_ejecutable_hardware()               
+                    #print("Actualizacion Finalizada")  
                     SSH_instancia.ejecuta_inventario_hardware()               
                     inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                     print("Elimino duplicados")
