@@ -87,12 +87,7 @@ class SSHManager(logArchivos):
                 self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
                 transporte = self.conexionSSH.get_transport()
-                transporte.set_keepalive(20)
-                comando = 'taskkill /f /im inventario_software.exe /t 2>nul & "C:\\Users\\Administrador\\Documents\\TI\\hardware\\inventario_hardware.exe"'
-                stdin, stdout, stderr = self.conexionSSH.exec_command(comando)
-                stdout.read()
-                stderr.read() 
-                exit_status = stdout.channel.recv_exit_status()
+                transporte.set_keepalive(20)                
                 try:                                                          
                     comando = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
                     stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
@@ -177,12 +172,7 @@ class SSHManager(logArchivos):
                 self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
                 transporte = self.conexionSSH.get_transport()
-                transporte.set_keepalive(20)
-                comando = 'taskkill /f /im inventario_software.exe /t 2>nul & "C:\\Users\\Administrador\\Documents\\TI\\software\\inventario_software.exe"'
-                stdin, stdout, stderr = self.conexionSSH.exec_command(comando)
-                stdout.read()
-                stderr.read() 
-                exit_status = stdout.channel.recv_exit_status()
+                transporte.set_keepalive(20)                
                 try:                                                                
                     comando = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"
                     stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
