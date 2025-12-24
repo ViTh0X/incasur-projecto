@@ -22,7 +22,7 @@ class SSHManager(logArchivos):
         try:
             self.conexionSSH = paramiko.SSHClient()
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=10,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=5,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
             return True 
         except Exception as e:            
             print(f"No Se conecto Error : {self.hostname} - {e}")
@@ -40,7 +40,9 @@ class SSHManager(logArchivos):
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
                 comando = 'taskkill /f /im inventario_hardware.exe /t 2>nul & "C:\\Users\\Administrador\\Documents\\TI\\hardware\\inventario_hardware.exe"'
                 stdin, stdout, stderr = self.conexionSSH.exec_command(comando)
-                print("Todos los procesos se eliminaron")                                
+                print("Todos los procesos se eliminaron") 
+                transporte = self.conexionSSH.get_transport()
+                transporte.set_keepalive(20)                               
                 ruta_archivo_origen_servidor = "/root/inventario_hardware.exe" 
                 ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"                
                 try:            
@@ -66,6 +68,8 @@ class SSHManager(logArchivos):
                 comando = 'taskkill /f /im inventario_software.exe /t 2>nul & "C:\\Users\\Administrador\\Documents\\TI\\software\\inventario_software.exe"'
                 stdin, stdout, stderr = self.conexionSSH.exec_command(comando)
                 print("Todos los procesos se eliminaron")                
+                transporte = self.conexionSSH.get_transport()
+                transporte.set_keepalive(20)
                 ruta_archivo_origen_servidor = "/root/inventario_software.exe" 
                 ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"                
                 try:            
@@ -88,6 +92,8 @@ class SSHManager(logArchivos):
                 self.conexionSSH = conexionSSH
                 self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
+                transporte = self.conexionSSH.get_transport()
+                transporte.set_keepalive(20)
                 try:                                                          
                     comando = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
                     stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
@@ -170,6 +176,8 @@ class SSHManager(logArchivos):
                 self.conexionSSH = conexionSSH
                 self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
+                transporte = self.conexionSSH.get_transport()
+                transporte.set_keepalive(20)
                 try:                                                                
                     comando = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"
                     stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
