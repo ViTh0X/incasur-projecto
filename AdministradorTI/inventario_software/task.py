@@ -38,6 +38,7 @@ def ejecutar_inventario_software():
                 #print(f"Equipo en linea {string_ip}")
                 #SSH_instancia.actualizar_ejecutable_software()               
                 #print("Actualizacion Finalizada")
+                print(f"********TRABAJANDO IP {string_ip}*********")
                 ejecucion_correcta = SSH_instancia.ejecuta_inventario_software()
                 if ejecucion_correcta:
                     print("Ejecuto inventario software")    
@@ -110,6 +111,7 @@ def ejecutar_faltantes_inventario_software():
                 #print(f"Equipo en linea {string_ip}")
                 #SSH_instancia.actualizar_ejecutable_software()               
                 #print("Actualizacion Finalizada")
+                print(f"********TRABAJANDO IP {string_ip}*********")
                 ejecucion_correcta = SSH_instancia.ejecuta_inventario_software()
                 if ejecucion_correcta:
                     inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
@@ -171,7 +173,7 @@ def actualizar_ejecutable():
             try:
                 #if esta_en_linea:
                 #    print(f"Equipo en linea {string_ip}")
-                
+                print(f"********TRABAJANDO IP {string_ip}*********")
                 SSH_instancia.actualizar_ejecutable_software()               
                 print("Actualizacion Finalizada")                                              
                 #else:

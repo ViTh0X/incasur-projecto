@@ -35,7 +35,8 @@ def ejecutar_inventario_hardware():
             try:
                 #if esta_en_linea:                
                 #SSH_instancia.actualizar_ejecutable_hardware()               
-                #print("Actualizacion Finalizada")  
+                #print("Actualizacion Finalizada")
+                print(f"********TRABAJANDO IP {string_ip}*********")  
                 ejecucion_correcta = SSH_instancia.ejecuta_inventario_hardware()               
                 if ejecucion_correcta:
                     print("Ejecuto inventario hardware")                                
@@ -110,7 +111,8 @@ def ejecutar_faltantes_inventario_hardware():
                 #if esta_en_linea:
                 #print(f"Equipo en linea {string_ip}")
                 #SSH_instancia.actualizar_ejecutable_hardware()               
-                #print("Actualizacion Finalizada")  
+                #print("Actualizacion Finalizada")
+                print(f"********TRABAJANDO IP {string_ip}*********")  
                 ejecucion_correcta = SSH_instancia.ejecuta_inventario_hardware()               
                 if ejecucion_correcta:
                     print("Ejecuto inventario hardware")
@@ -179,6 +181,7 @@ def actualizar_ejecutable():
             try:
                 #if esta_en_linea:
                 #print(f"Equipo en linea {string_ip}")
+                print(f"********TRABAJANDO IP {string_ip}*********")
                 SSH_instancia.actualizar_ejecutable_hardware()               
                 print("Actualizacion Finalizada")                                                
                 #else:
