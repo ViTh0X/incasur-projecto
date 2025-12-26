@@ -54,7 +54,8 @@ class SSHManager(logArchivos):
                     self.canalSFTP.close()
                     self.conexionSSH.close()                        
         except Exception as e:
-            print(f"Error General {e}")   
+            print(f"Error General {e}") 
+              
     
     def actualizar_ejecutable_software(self):                
         try:
@@ -77,8 +78,10 @@ class SSHManager(logArchivos):
                     print(f"Ubo un error no creo el canal sftp{e}")
                     self.canalSFTP.close()
                     self.conexionSSH.close()                        
-        except Exception as e:
+            return True
+        except Exception as e:            
             print(f"Error General {e}")               
+            return False
                             
     def ejecuta_inventario_hardware(self):                       
         try:
@@ -116,9 +119,12 @@ class SSHManager(logArchivos):
                 except Exception as e:
                     print(f"Ubo un error no creo el canal sftp{e}")
                     self.canalSFTP.close()
-                    self.conexionSSH.close()                        
-        except Exception as e:
+                    self.conexionSSH.close() 
+            return True
+                               
+        except Exception as e:            
             print(f"Error General {e}")
+            return False
         
                        
         

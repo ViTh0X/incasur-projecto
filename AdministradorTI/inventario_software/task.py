@@ -38,29 +38,30 @@ def ejecutar_inventario_software():
                 print(f"Equipo en linea {string_ip}")
                 #SSH_instancia.actualizar_ejecutable_software()               
                 #print("Actualizacion Finalizada")
-                SSH_instancia.ejecuta_inventario_software()
-                print("Ejecuto inventario software")    
-                inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                print("Elimino duplicados")
-                ##################################                    
-                diccionario_inventario_software = SSH_instancia.guardar_inventario_software()                    
-                for codigo_categoria, lista_software in diccionario_inventario_software.items():
-                    categoria = tipo_software.objects.get(id=codigo_categoria)
-                    for software in lista_software:
-                        modelado_inventario_software = inventario_software(
-                            ip = ip_filtrada,
-                            tipo_software = categoria,
-                            nombre_software =software                                
-                        )
-                        modelado_inventario_software.save()                            
-                print("Crea el inventario en DB")                    
-                faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                print("Elimino duplicados")
-                #else:
-                    #faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                    #ip_filtrada = lista_ips.objects.get(ip=string_ip)
-                    #faltantes_hardware = faltantes_inventario_software(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
-                    #faltantes_hardware.save()                      
+                ejecucion_correcta = SSH_instancia.ejecuta_inventario_software()
+                if ejecucion_correcta:
+                    print("Ejecuto inventario software")    
+                    inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    print("Elimino duplicados")
+                    ##################################                    
+                    diccionario_inventario_software = SSH_instancia.guardar_inventario_software()                    
+                    for codigo_categoria, lista_software in diccionario_inventario_software.items():
+                        categoria = tipo_software.objects.get(id=codigo_categoria)
+                        for software in lista_software:
+                            modelado_inventario_software = inventario_software(
+                                ip = ip_filtrada,
+                                tipo_software = categoria,
+                                nombre_software =software                                
+                            )
+                            modelado_inventario_software.save()                            
+                    print("Crea el inventario en DB")                    
+                    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    print("Elimino duplicados")
+                else:
+                    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    ip_filtrada = lista_ips.objects.get(ip=string_ip)
+                    faltantes_hardware = faltantes_inventario_software(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
+                    faltantes_hardware.save()                                          
             except Exception as e:
                 print(f"Error {e}")                
                 faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
@@ -109,26 +110,27 @@ def ejecutar_faltantes_inventario_software():
                 print(f"Equipo en linea {string_ip}")
                 #SSH_instancia.actualizar_ejecutable_software()               
                 #print("Actualizacion Finalizada")
-                SSH_instancia.ejecuta_inventario_software()
-                inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                print("Elimino Duplicados")
-                diccionario_inventario_software = SSH_instancia.guardar_inventario_software()
-                print("Guardo el Inventario")
-                for codigo_categoria, lista_software in diccionario_inventario_software.items():
-                    categoria = tipo_software.objects.get(id=codigo_categoria)
-                    for software in lista_software:
-                        modelado_inventario_software = inventario_software(
-                            ip = ip_filtrada,
-                            tipo_software = categoria,
-                            nombre_software =software                                
-                        )
-                        modelado_inventario_software.save()
-                faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                #else:
-                #    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                #    ip_filtrada = lista_ips.objects.get(ip=string_ip)
-                #    faltantes_hardware = faltantes_inventario_software(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
-                #    faltantes_hardware.save()                      
+                ejecucion_correcta = SSH_instancia.ejecuta_inventario_software()
+                if ejecucion_correcta:
+                    inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    print("Elimino Duplicados")
+                    diccionario_inventario_software = SSH_instancia.guardar_inventario_software()
+                    print("Guardo el Inventario")
+                    for codigo_categoria, lista_software in diccionario_inventario_software.items():
+                        categoria = tipo_software.objects.get(id=codigo_categoria)
+                        for software in lista_software:
+                            modelado_inventario_software = inventario_software(
+                                ip = ip_filtrada,
+                                tipo_software = categoria,
+                                nombre_software =software                                
+                            )
+                            modelado_inventario_software.save()
+                    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                else:                    
+                    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    ip_filtrada = lista_ips.objects.get(ip=string_ip)
+                    faltantes_hardware = faltantes_inventario_software(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
+                    faltantes_hardware.save()                                          
             except Exception as e:
                 print(f"Error_ssh {e}")
                 faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()

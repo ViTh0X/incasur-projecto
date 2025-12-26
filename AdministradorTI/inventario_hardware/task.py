@@ -33,38 +33,38 @@ def ejecutar_inventario_hardware():
             mes_actual = datetime.now().month
             año_actual = datetime.now().year
             try:
-                #if esta_en_linea:
-                print(f"Equipo en linea {string_ip}")
+                #if esta_en_linea:                
                 #SSH_instancia.actualizar_ejecutable_hardware()               
                 #print("Actualizacion Finalizada")  
-                SSH_instancia.ejecuta_inventario_hardware()               
-                print("Ejecuto inventario hardware")                                
-                inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                print("Elimino duplicados")                    
-                diccionario_inventario_hardware = SSH_instancia.guardar_inventario_hardware()                
-                print("Guardo el inventario")
-                modelado_inventario_hardware = inventario_hardware(
-                    ip = ip_filtrada,
-                    nombre_colaborador = nombre_colab_filtrado,
-                    nombre_equipo = diccionario_inventario_hardware['nombre_pc'],
-                    placa = diccionario_inventario_hardware['placa'],
-                    procesador = diccionario_inventario_hardware['procesador'],
-                    ram = diccionario_inventario_hardware['ram'],
-                    video_integrada = diccionario_inventario_hardware['tarjeta_integrada'],
-                    video_dedicada = diccionario_inventario_hardware['tarjeta_dedicada'],
-                    so = diccionario_inventario_hardware['sistema_operativo'],
-                    almacenamiento = diccionario_inventario_hardware['almacenamiento'],
-                    puertas_enlace = diccionario_inventario_hardware['puerta_enlace']                             
-                )
-                modelado_inventario_hardware.save()
-                print("Crea el inventario en DB")
-                faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()                                   
-                print("Elimino duplicados")                                   
-                #else:
-                #    faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                #    ip_filtrada = lista_ips.objects.get(ip=string_ip)
-                #    faltantes_hardware = faltantes_inventario_hardware(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
-                #    faltantes_hardware.save()
+                ejecucion_correcta = SSH_instancia.ejecuta_inventario_hardware()               
+                if ejecucion_correcta:
+                    print("Ejecuto inventario hardware")                                
+                    inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    print("Elimino duplicados")                    
+                    diccionario_inventario_hardware = SSH_instancia.guardar_inventario_hardware()                
+                    print("Guardo el inventario")
+                    modelado_inventario_hardware = inventario_hardware(
+                        ip = ip_filtrada,
+                        nombre_colaborador = nombre_colab_filtrado,
+                        nombre_equipo = diccionario_inventario_hardware['nombre_pc'],
+                        placa = diccionario_inventario_hardware['placa'],
+                        procesador = diccionario_inventario_hardware['procesador'],
+                        ram = diccionario_inventario_hardware['ram'],
+                        video_integrada = diccionario_inventario_hardware['tarjeta_integrada'],
+                        video_dedicada = diccionario_inventario_hardware['tarjeta_dedicada'],
+                        so = diccionario_inventario_hardware['sistema_operativo'],
+                        almacenamiento = diccionario_inventario_hardware['almacenamiento'],
+                        puertas_enlace = diccionario_inventario_hardware['puerta_enlace']                             
+                    )
+                    modelado_inventario_hardware.save()
+                    print("Crea el inventario en DB")
+                    faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()                                   
+                    print("Elimino duplicados")                                   
+                else:
+                    faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    ip_filtrada = lista_ips.objects.get(ip=string_ip)
+                    faltantes_hardware = faltantes_inventario_hardware(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
+                    faltantes_hardware.save()
             except Exception as e:
                 print(f"Error {e}")
                 faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
@@ -111,32 +111,34 @@ def ejecutar_faltantes_inventario_hardware():
                 print(f"Equipo en linea {string_ip}")
                 #SSH_instancia.actualizar_ejecutable_hardware()               
                 #print("Actualizacion Finalizada")  
-                SSH_instancia.ejecuta_inventario_hardware()               
-                inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                print("Elimino duplicados")
-                diccionario_inventario_hardware = SSH_instancia.guardar_inventario_hardware()
-                print("Guardo el Inventario")                                    
-                modelado_inventario_hardware = inventario_hardware(
-                    ip = ip_filtrada,
-                    nombre_colaborador = nombre_colab_filtrado,
-                    nombre_equipo = diccionario_inventario_hardware['nombre_pc'],
-                    placa = diccionario_inventario_hardware['placa'],
-                    procesador = diccionario_inventario_hardware['procesador'],
-                    ram = diccionario_inventario_hardware['ram'],
-                    video_integrada = diccionario_inventario_hardware['tarjeta_integrada'],
-                    video_dedicada = diccionario_inventario_hardware['tarjeta_dedicada'],
-                    so = diccionario_inventario_hardware['sistema_operativo'],
-                    almacenamiento = diccionario_inventario_hardware['almacenamiento'],
-                    puertas_enlace = diccionario_inventario_hardware['puerta_enlace']                             
-                )
-                modelado_inventario_hardware.save()
-                print("Guardo Informacion en la BD")
-                faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()                                   
-                #else:
-                #    faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                #    ip_filtrada = lista_ips.objects.get(ip=string_ip)
-                #    faltantes_hardware = faltantes_inventario_hardware(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
-                #    faltantes_hardware.save()
+                ejecucion_correcta = SSH_instancia.ejecuta_inventario_hardware()               
+                if ejecucion_correcta:
+                    print("Ejecuto inventario hardware")
+                    inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    print("Elimino duplicados")
+                    diccionario_inventario_hardware = SSH_instancia.guardar_inventario_hardware()
+                    print("Guardo el Inventario")                                    
+                    modelado_inventario_hardware = inventario_hardware(
+                        ip = ip_filtrada,
+                        nombre_colaborador = nombre_colab_filtrado,
+                        nombre_equipo = diccionario_inventario_hardware['nombre_pc'],
+                        placa = diccionario_inventario_hardware['placa'],
+                        procesador = diccionario_inventario_hardware['procesador'],
+                        ram = diccionario_inventario_hardware['ram'],
+                        video_integrada = diccionario_inventario_hardware['tarjeta_integrada'],
+                        video_dedicada = diccionario_inventario_hardware['tarjeta_dedicada'],
+                        so = diccionario_inventario_hardware['sistema_operativo'],
+                        almacenamiento = diccionario_inventario_hardware['almacenamiento'],
+                        puertas_enlace = diccionario_inventario_hardware['puerta_enlace']                             
+                    )
+                    modelado_inventario_hardware.save()
+                    print("Guardo Informacion en la BD")
+                    faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()                                   
+                else:
+                    faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    ip_filtrada = lista_ips.objects.get(ip=string_ip)
+                    faltantes_hardware = faltantes_inventario_hardware(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
+                    faltantes_hardware.save()
             except Exception as e:
                 print(f"Error_ssh {e}")
                 faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
