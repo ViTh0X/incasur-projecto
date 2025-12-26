@@ -54,7 +54,7 @@ class SSHManager(logArchivos):
                     self.canalSFTP.close()
                     self.conexionSSH.close()                        
         except Exception as e:
-            print(f"Error General {e}") 
+            print(f"{self.hostname} Error General {e}") 
               
     
     def actualizar_ejecutable_software(self):                
@@ -79,7 +79,7 @@ class SSHManager(logArchivos):
                     self.canalSFTP.close()
                     self.conexionSSH.close()                                    
         except Exception as e:            
-            print(f"Error General {e}")                           
+            print(f"{self.hostname} Error General {e}")                           
                             
     def ejecuta_inventario_hardware(self):                       
         try:
@@ -121,7 +121,7 @@ class SSHManager(logArchivos):
             return True
                                
         except Exception as e:            
-            print(f"Error General {e}")
+            print(f"{self.hostname} Error General {e}")
             return False
         
                        
@@ -209,7 +209,7 @@ class SSHManager(logArchivos):
                     self.conexionSSH.close()
             return True 
         except Exception as e:
-            print(f"Error general {e}")                            
+            print(f"{self.hostname} Error general {e}")                            
             return False
         
                        
