@@ -77,11 +77,9 @@ class SSHManager(logArchivos):
                 except Exception as e:
                     print(f"Ubo un error no creo el canal sftp{e}")
                     self.canalSFTP.close()
-                    self.conexionSSH.close()                        
-            return True
+                    self.conexionSSH.close()                                    
         except Exception as e:            
-            print(f"Error General {e}")               
-            return False
+            print(f"Error General {e}")                           
                             
     def ejecuta_inventario_hardware(self):                       
         try:
@@ -202,15 +200,17 @@ class SSHManager(logArchivos):
                     self.canalSFTP.put(ruta_archivo_origen_servidor,ruta_archivo_destino_cliente)                                    
                     print("Ejecutable Actualizado")
                     self.canalSFTP.get(ruta_inventario_hardware,ruta_archivo_local)
-                    
+                    print("Archivo inventario software guardado")
                 except paramiko.SFTPError as sftpE:
                     print(f"error sftp  {sftpE}")
                 except Exception as e:
                     print(f"Ubo un error no creo el canal sftp{e}")
                     self.canalSFTP.close()
-                    self.conexionSSH.close() 
+                    self.conexionSSH.close()
+            return True 
         except Exception as e:
             print(f"Error general {e}")                            
+            return False
         
                        
         

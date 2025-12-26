@@ -35,7 +35,7 @@ def ejecutar_inventario_software():
             año_actual = datetime.now().year                    
             try:
                 #if esta_en_linea:
-                print(f"Equipo en linea {string_ip}")
+                #print(f"Equipo en linea {string_ip}")
                 #SSH_instancia.actualizar_ejecutable_software()               
                 #print("Actualizacion Finalizada")
                 ejecucion_correcta = SSH_instancia.ejecuta_inventario_software()
@@ -107,7 +107,7 @@ def ejecutar_faltantes_inventario_software():
             año_actual = datetime.now().year                    
             try:
                 #if esta_en_linea:
-                print(f"Equipo en linea {string_ip}")
+                #print(f"Equipo en linea {string_ip}")
                 #SSH_instancia.actualizar_ejecutable_software()               
                 #print("Actualizacion Finalizada")
                 ejecucion_correcta = SSH_instancia.ejecuta_inventario_software()
