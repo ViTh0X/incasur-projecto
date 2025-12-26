@@ -30,7 +30,7 @@ def ejecutar_inventario_software():
             ip_filtrada = lista_ips.objects.get(ip=string_ip)
             #Filtrando el objeto nombre Trabajador
             nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)
-            print(f"{string_ip} - El equipo esta en linea")            
+            #print(f"{string_ip} - El equipo esta en linea")            
             mes_actual = datetime.now().month
             año_actual = datetime.now().year                    
             try:
