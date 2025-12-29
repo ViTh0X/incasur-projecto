@@ -178,7 +178,7 @@ class SSHManager(logArchivos):
                 self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)            
                 transporte = self.conexionSSH.get_transport()
-                transporte.set_keepalive(20)                
+                transporte.set_keepalive(20)                                
                 try:                                                                
                     comando = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"
                     stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
@@ -301,23 +301,23 @@ class SSHManager(logArchivos):
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())            
             mensaje = f"Intentando Realizar conexion a {self.hostname} con el usuario {self.username}."
             self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
-            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                    
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
             transport = self.conexionSSH.get_transport()
             if transport:
                 transport.set_keepalive(60)
-            return True , self.rutaArchivo                   
+            return True 
         except paramiko.AuthenticationException as sshE:            
             mensaje = f"Error al establecer conexion SSH a host {self.hostname} al usuario {self.username}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
             if self.conexionSSH:
                 self.conexionSSH.close()
-            return False , self.rutaArchivo            
+            return False
         except Exception as e:
             mensaje = f"Ocurrio un error inesperado : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
             if self.conexionSSH:
                 self.conexionSSH.close()
-            return False , self.rutaArchivo
+            return False
         # finally:
         #     if self.conexionSSH:
         #         self.conexionSSH.close()        

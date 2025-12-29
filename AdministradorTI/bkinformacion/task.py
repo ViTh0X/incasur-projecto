@@ -26,7 +26,7 @@ def ejecutar_backup_informacion():
             keyfile = os.getenv('SSH_KEYFILE')
             passphrase = os.getenv('SSH_PASSPHRASE')
             SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
-            esta_en_linea = SSH_instancia.revisarConexionSSH()
+            #esta_en_linea = SSH_instancia.revisarConexionSSH()
             #Filtrando el objeto ip
             ip_filtrada = lista_ips.objects.get(ip=string_ip)
             mes_actual = datetime.now().month
@@ -35,11 +35,12 @@ def ejecutar_backup_informacion():
             #Filtrando el objeto nombre Trabajador
             nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)                        
             try:
-                if esta_en_linea:
-                    SSH_instancia.realizarConSSH()
+                #if esta_en_linea:
+                equipo_conectado = SSH_instancia.realizarConSSH()
+                if equipo_conectado:
                     SSH_instancia.crearCanalSFTP()                    
-                    listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"],string_ip)
-                    listaRutas = SSH_instancia.creaRutasRemotas(username,listaRutasLocales)
+                    listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"])
+                    listaRutas = SSH_instancia.creaRutasRemotas(username,listaRutasLocales,string_ip)
                     print("Inicio la ejecucion del Backup Espere...")
                     for rutas in listaRutas:
                         llave, valor = list(rutas.items())[0]
@@ -97,7 +98,7 @@ def ejecutar_faltantes_backup_informacion():
             keyfile = os.getenv('SSH_KEYFILE')
             passphrase = os.getenv('SSH_PASSPHRASE')
             SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
-            esta_en_linea = SSH_instancia.revisarConexionSSH()
+            #esta_en_linea = SSH_instancia.revisarConexionSSH()
             #Filtrando el objeto ip
             ip_filtrada = lista_ips.objects.get(ip=string_ip)
             #Filtrando el objeto nombre Trabajador
@@ -105,8 +106,9 @@ def ejecutar_faltantes_backup_informacion():
             mes_actual = datetime.now().month
             año_actual = datetime.now().year
             try:
-                if esta_en_linea:
-                    SSH_instancia.realizarConSSH()
+                #if esta_en_linea:
+                equipo_conectado = SSH_instancia.realizarConSSH()
+                if equipo_conectado:
                     SSH_instancia.crearCanalSFTP()
                     lista_backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
                     listaRutasLocales = SSH_instancia.rutasIniciales(["Documentos","Escritorio","Descargas","Discos"])
