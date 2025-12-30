@@ -417,7 +417,7 @@ class SSHManager(logArchivos):
             
             
             
-    def realizarBKUP(self,rBaseRemo:str,rBaseLocal:str,nombreCarpeta:str):
+    def realizarBKUP(self,rBaseRemo:str,rBaseLocal:str,nombreCarpeta:str):        
         if nombreCarpeta != "":
             rBaseRemoR = f"{rBaseRemo}/{nombreCarpeta}"
             rBaseLocalR = f"{rBaseLocal}/{nombreCarpeta}"
@@ -429,71 +429,78 @@ class SSHManager(logArchivos):
             nombreArchivo = ""         
             for archivo in listaArchivos:            
                 nombreArchivo = archivo.filename
-                if stat.S_ISDIR(archivo.st_mode):                    
-                    creaRutaLocal = f"{rBaseLocalR}/{nombreArchivo}"
-                    os.makedirs(creaRutaLocal,exist_ok=True)
-                    mensaje = f"Se creo la carpeta {nombreCarpeta}"
-                    self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                            
-                    self.realizarBKUP(rBaseRemoR,rBaseLocalR,nombreArchivo)                                            
-                else:                            
-                    rutaCopiarLocal = f"{rBaseLocalR}/{nombreArchivo}"
-                    rutaCopiarRemoto = f"{rBaseRemoR}/{nombreArchivo}"                    
-                    existeLocal = os.path.exists(rutaCopiarLocal)
-                    try:
-                        if not existeLocal:
-                            mensaje = f"Copiando archivo {nombreArchivo}"
-                            self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
-                            mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
-                            self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                        
-                            self.canalSFTP.get(rutaCopiarRemoto,rutaCopiarLocal)
-                            mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
-                            self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
-                        else:    
-                            tamañoRemoto = archivo.st_size
-                            tamañoLocal = os.path.getsize(rutaCopiarLocal)                            
-                            if tamañoRemoto != tamañoLocal:
+                if nombreArchivo.startswith("~"):
+                    print(f"Archivo {nombreArchivo} ignorado")
+                    continue
+                else:
+                    if nombreArchivo == "System Volume Information":
+                        print(f"Ignorando Carpeta System Volume Information y su contenido")
+                        continue
+                    elif stat.S_ISDIR(archivo.st_mode):                    
+                        creaRutaLocal = f"{rBaseLocalR}/{nombreArchivo}"
+                        os.makedirs(creaRutaLocal,exist_ok=True)
+                        mensaje = f"Se creo la carpeta {nombreCarpeta}"
+                        self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                            
+                        self.realizarBKUP(rBaseRemoR,rBaseLocalR,nombreArchivo)                                            
+                    else:                            
+                        rutaCopiarLocal = f"{rBaseLocalR}/{nombreArchivo}"
+                        rutaCopiarRemoto = f"{rBaseRemoR}/{nombreArchivo}"                    
+                        existeLocal = os.path.exists(rutaCopiarLocal)
+                        try:
+                            if not existeLocal:
                                 mensaje = f"Copiando archivo {nombreArchivo}"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                                 mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                        
                                 self.canalSFTP.get(rutaCopiarRemoto,rutaCopiarLocal)
                                 mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
-                                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
-                            else:
-                                mensaje = f"El archivo {nombreArchivo} ya fue guardado de manera local"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
-                    except FileNotFoundError as e:                        
-                        print(f"Error posiblemente el archivo no existe : {e} -{rutaCopiarRemoto}")
-                        mensaje = f"Error posiblemente el archivo no existe : {e} -{rutaCopiarRemoto}"
-                        self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                        
-                    except Exception as e:                        
-                        print(f"Ocurrio un error inesperado : {e} bucle 1 -{rutaCopiarRemoto}")
-                        mensaje = f"Ocurrio un error inesperado : {e} -{rutaCopiarRemoto}"
-                        self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                                                                                                                                               
+                            else:    
+                                tamañoRemoto = archivo.st_size
+                                tamañoLocal = os.path.getsize(rutaCopiarLocal)                            
+                                if tamañoRemoto != tamañoLocal:
+                                    mensaje = f"Copiando archivo {nombreArchivo}"
+                                    self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
+                                    mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
+                                    self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                        
+                                    self.canalSFTP.get(rutaCopiarRemoto,rutaCopiarLocal)
+                                    mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
+                                    self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+                                else:
+                                    mensaje = f"El archivo {nombreArchivo} ya fue guardado de manera local"
+                                    self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
+                        except FileNotFoundError as e:                        
+                            print(f"Error posiblemente el archivo no existe : {e} -{rutaCopiarRemoto}")
+                            mensaje = f"Error posiblemente el archivo no existe : {e} -{rutaCopiarRemoto}"
+                            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                        
+                        except Exception as e:                        
+                            print(f"Ocurrio un error inesperado : {e} bucle 1 -{rutaCopiarRemoto}")
+                            mensaje = f"Ocurrio un error inesperado : {e} -{rutaCopiarRemoto}"
+                            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                                                                                                                                               
         except SFTPError as e:            
             print(f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}")
             mensaje = f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
-            if self.canalSFTP:
-                self.canalSFTP.close()
-            if self.conexionSSH:
-                self.conexionSSH.close()                  
+            #if self.canalSFTP:
+            #    self.canalSFTP.close()
+            #if self.conexionSSH:
+            #    self.conexionSSH.close()                  
         except FileExistsError as e:            
             print(f"Error en ruta {rBaseRemoR} posiblemente no existe : {e}")
             mensaje = f"Error en ruta {rBaseRemoR} posiblemente no existe : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                              
-            if self.canalSFTP:
-                self.canalSFTP.close()
-            if self.conexionSSH:
-                self.conexionSSH.close()
+            #if self.canalSFTP:
+            #    self.canalSFTP.close()
+            #if self.conexionSSH:
+            # self.conexionSSH.close()
         except Exception as e:                        
             print(f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}")
             mensaje = f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname) 
-            if self.canalSFTP:
-                self.canalSFTP.close()
-            if self.conexionSSH:
-                self.conexionSSH.close()                            
+            #if self.canalSFTP:
+            #    self.canalSFTP.close()
+            #if self.conexionSSH:
+            #    self.conexionSSH.close()                            
                 
     def cerrarConexiones(self):
         self.canalSFTP.close()

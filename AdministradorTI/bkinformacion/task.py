@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from utilidades.utilidades_ssh import SSHManager
 
-@shared_task(max_retries=0)
+@shared_task()
 def ejecutar_backup_informacion():
     try:
         estado_ips = get_object_or_404(tipo_estado_ips,pk=1)
@@ -84,7 +84,7 @@ def ejecutar_backup_informacion():
         logs_inventario_hardware.save()
         return "ERROR REALIZANDO EL BACKUP DE INFORMACION"
     
-@shared_task(autoretry_for=(Exception,), max_retries=0)
+@shared_task()
 def ejecutar_faltantes_backup_informacion():
     try:
         try:
@@ -155,3 +155,70 @@ def ejecutar_faltantes_backup_informacion():
         )                                
         logs_inventario_hardware.save()
         return "ERROR REALIZANDO EL FALTANTES BACKUP DE INFORMACION"        
+
+
+@shared_task()
+def ejecutar_backup_individual(ip):
+    try:
+        username = "Administrador"
+        puerto = os.getenv('SSH_PORT')
+        keyfile = os.getenv('SSH_KEYFILE')
+        passphrase = os.getenv('SSH_PASSPHRASE')
+        SSH_instancia = SSHManager(ip,username,puerto,keyfile,passphrase)
+        #esta_en_linea = SSH_instancia.revisarConexionSSH()
+        #Filtrando el objeto ip
+        ip_filtrada = lista_ips.objects.get(ip=ip)
+        mes_actual = datetime.now().month
+        año_actual = datetime.now().year
+        lista_backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+        #Filtrando el objeto nombre Trabajador
+        nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=ip)                        
+        try:
+            #if esta_en_linea:
+            equipo_conectado = SSH_instancia.realizarConSSH()
+            if equipo_conectado:
+                SSH_instancia.crearCanalSFTP()                    
+                listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"])
+                listaRutas = SSH_instancia.creaRutasRemotas(username,listaRutasLocales,ip)
+                print("Inicio la ejecucion del Backup Espere...")
+                for rutas in listaRutas:
+                    llave, valor = list(rutas.items())[0]
+                    SSH_instancia.realizarBKUP(str(valor),str(llave),"")
+                print("Termino La ejecucion del Backup")
+                SSH_instancia.cerrarConexiones()                    
+                existen_errores = SSH_instancia.verificar_archivos_logs(host=ip)
+                if existen_errores:
+                    detalle_backup = "Parece que aparecieron unos errores revise el log."                        
+                else:
+                    detalle_backup = "El backup termino exitosamente sin errores."
+                modelado_backup_informacion = lista_backups_informacion(
+                    ip = ip_filtrada,
+                    nombre_colaborador = nombre_colab_filtrado,
+                    detalle = detalle_backup
+                )                    
+                modelado_backup_informacion.save()
+                faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+            else:
+                faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                ip_filtrada = lista_ips.objects.get(ip=ip)
+                faltantes_hardware = faltantes_backup_informacion(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
+                faltantes_hardware.save()
+        except Exception as e:
+            print(f"Error_ssh {e}")
+            faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+            ip_filtrada = lista_ips.objects.get(ip=ip)
+            faltantes_hardware = faltantes_backup_informacion(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
+            faltantes_hardware.save()
+        
+        logs_inventario_hardware = logs_actividades_celery(            
+            mensaje = f'La ejecucion de {ip} backup de informacion termino sin interrupciones.'
+        )                                
+        logs_inventario_hardware.save()
+        return f"TAREA BACKUP {ip} DE INFORMACION TERMINARDA"
+    except Exception as e:
+        logs_inventario_hardware = logs_actividades_celery(
+            mensaje = f"Error{e}"
+            # mensaje = 'Ubo un error en la ejecucion de inventario de hardware no se completo.'
+        )                                
+        logs_inventario_hardware.save()
+        return f"ERROR REALIZANDO EL BACKUP DE INFORMACION {ip}"    

@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.http.response import HttpResponse
 from django.conf import settings
 from celery.result import AsyncResult
-from .task import ejecutar_faltantes_backup_informacion,ejecutar_backup_informacion
+from .task import ejecutar_faltantes_backup_informacion,ejecutar_backup_informacion,ejecutar_backup_individual
 
 from datetime import datetime
 from .models import lista_backups_informacion,faltantes_backup_informacion
@@ -39,7 +39,8 @@ def listar_faltantes_backup(request):
 @login_required(login_url="pagina_login")
 def listar_logs(request):
     lista_logs = logs_actividades_celery.objects.all().order_by('-tiempo_creacion')
-    return render(request,'logs/listar_logs_bk.html',{'lista_logs':lista_logs})
+    return render(request,'logs/listar_logs_bk.html',{'lista_logs':lista_logs})    
+    
 
 @login_required(login_url="pagina_login")
 def iniciar_backup_informacion(request):
@@ -80,3 +81,12 @@ def descargar_logs_errores(request,pk):
     response = HttpResponse(contenido,content_type='text/plain')
     response['Content-Disposition'] = f'attachment; filename="{nombre_archivo_completo}"'
     return response
+
+@login_required
+def iniciar_backup_individual(request,pk):
+    backup_ip = get_object_or_404(lista_backups_informacion,pk=pk)
+    ip_bk = backup_ip.ip.ip    
+    if request.method == 'POST':
+        tarea = ejecutar_backup_individual.delay(ip=ip_bk)
+        return JsonResponse({'task_id':tarea.id})
+    return redirect('listar_inventario_hardware')
