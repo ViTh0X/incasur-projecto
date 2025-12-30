@@ -87,6 +87,6 @@ def iniciar_backup_individual(request,pk):
     backup_ip = get_object_or_404(lista_backups_informacion,pk=pk)
     ip_bk = backup_ip.ip.ip    
     if request.method == 'GET':
-        tarea = ejecutar_backup_individual.delay(ip=ip_bk)
-        return JsonResponse({'task_id':tarea.id})
+        ejecutar_backup_individual.delay(ip=ip_bk)
+        return redirect('listar_backup_informacion')
     return redirect('listar_backup_informacion')
