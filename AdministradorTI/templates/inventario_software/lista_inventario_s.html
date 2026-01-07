@@ -48,13 +48,13 @@
                             <th>Editores Texto</th>
                             <th>Data Base</th>
                             <th>PDF</th>
-                            <th>FTIA</th>
+                            <!--<th>FTIA</th>-->
                             <th>Impresoras</th>
                             <th>Navegadores</th>
                             <th>Compresores</th>
                             <!--<th>Drivers</th>-->
                             <th>Nube</th>
-                            <!--<th>TI</th>-->
+                            <th>TI</th>
                             <th>Otros</th>
                             <!-- <th>Ultimo Realizado</th>                         -->
                         </tr>
@@ -103,13 +103,13 @@
                                     {% endfor %}
                                 </ul>
                             </td>
-                            <td>
+                            <!--<td>
                                 <ul>
                                     {% for office in item.FTIA %}
                                     <li>•{{ office }}</li>
                                     {% endfor %}
                                 </ul>
-                            </td>
+                            </td>-->
                             <td>
                                 <ul>
                                     {% for office in item.Impresoras %}
@@ -137,18 +137,20 @@
                                     <li>•{{ office }}</li>
                                     {% endfor %}
                                 </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for office in item.TI %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
                             </td>                            
                             <td>
                                 <ul>
                                     {% for office in item.Otros %}
                                     <li>•{{ office }}</li>
                                     {% endfor %}
-                                </ul>
-                                <ul>
-                                    {% for office in item.TI %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
+                                </ul>                                
                                 <ul>
                                     {% for office in item.Drivers %}
                                     <li>•{{ office }}</li>

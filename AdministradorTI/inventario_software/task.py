@@ -24,22 +24,17 @@ def ejecutar_inventario_software():
             puerto = os.getenv('SSH_PORT')
             keyfile = os.getenv('SSH_KEYFILE')
             passphrase = os.getenv('SSH_PASSPHRASE')
-            SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
-            #esta_en_linea = SSH_instancia.revisarConexionSSH()
+            SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)            
             #Filtrando el objeto ip
             ip_filtrada = lista_ips.objects.get(ip=string_ip)
             #Filtrando el objeto nombre Trabajador
-            nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)
-            #print(f"{string_ip} - El equipo esta en linea")            
+            nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)                     
             mes_actual = datetime.now().month
             año_actual = datetime.now().year                    
             try:
-                #if esta_en_linea:
-                #print(f"Equipo en linea {string_ip}")
-                #SSH_instancia.actualizar_ejecutable_software()               
-                #print("Actualizacion Finalizada")
+                
                 print(f"********TRABAJANDO IP {string_ip}*********")
-                ejecucion_correcta = SSH_instancia.ejecuta_inventario_software()
+                ejecucion_correcta = SSH_instancia.ejecuta_inventario_software()                
                 if ejecucion_correcta:
                     print("Ejecuto inventario software")    
                     inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
@@ -98,19 +93,14 @@ def ejecutar_faltantes_inventario_software():
             puerto = os.getenv('SSH_PORT')
             keyfile = os.getenv('SSH_KEYFILE')
             passphrase = os.getenv('SSH_PASSPHRASE')
-            SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
-            #esta_en_linea = SSH_instancia.revisarConexionSSH()
+            SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)            
             #Filtrando el objeto ip
             ip_filtrada = lista_ips.objects.get(ip=string_ip)
             #Filtrando el objeto nombre Trabajador
             nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)            
             mes_actual = datetime.now().month
             año_actual = datetime.now().year                    
-            try:
-                #if esta_en_linea:
-                #print(f"Equipo en linea {string_ip}")
-                #SSH_instancia.actualizar_ejecutable_software()               
-                #print("Actualizacion Finalizada")
+            try:                
                 print(f"********TRABAJANDO IP {string_ip}*********")
                 ejecucion_correcta = SSH_instancia.ejecuta_inventario_software()
                 if ejecucion_correcta:
@@ -168,16 +158,11 @@ def actualizar_ejecutable():
             puerto = os.getenv('SSH_PORT')
             keyfile = os.getenv('SSH_KEYFILE')
             passphrase = os.getenv('SSH_PASSPHRASE')            
-            SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
-            #esta_en_linea = SSH_instancia.revisarConexionSSH()
-            try:
-                #if esta_en_linea:
-                #    print(f"Equipo en linea {string_ip}")
+            SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)            
+            try:                
                 print(f"********TRABAJANDO IP {string_ip}*********")
                 SSH_instancia.actualizar_ejecutable_software()               
-                print("Actualizacion Finalizada")                                              
-                #else:
-                #print(f"{string_ip} No esta en linea")
+                print("Actualizacion Finalizada")                                                              
             except Exception as e:
                 print(f"{string_ip} No esta en linea")    
         logs_inventario_hardware = logs_actividades_celery(
