@@ -27,7 +27,7 @@ select * from tipo_estado_ips
 select * from 
 select * from lista_ips where codigo_estado_id = 2
 --Poner en libre una ip
--- update lista_ips set codigo_estado_id = 2 where id = 41  
+-- update lista_ips set codigo_estado_id = 2 where id = 254  
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(1,'192.168.1.1',CURRENT_DATE);
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(2,'192.168.1.2',CURRENT_DATE);
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(3,'192.168.1.3',CURRENT_DATE);
@@ -278,6 +278,10 @@ INSERT INTO lista_ips (id,ip,fecha_modificacion) values(247,'192.168.1.247',CURR
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(248,'192.168.1.248',CURRENT_DATE);
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(249,'192.168.1.249',CURRENT_DATE);
 INSERT INTO lista_ips (id,ip,fecha_modificacion) values(250,'192.168.1.250',CURRENT_DATE);
+INSERT INTO lista_ips (id,ip,fecha_modificacion) values(251,'192.168.1.251',CURRENT_DATE);
+INSERT INTO lista_ips (id,ip,fecha_modificacion) values(252,'192.168.1.252',CURRENT_DATE);
+INSERT INTO lista_ips (id,ip,fecha_modificacion) values(253,'192.168.1.253',CURRENT_DATE);
+INSERT INTO lista_ips (id,ip,fecha_modificacion) values(254,'192.168.1.254',CURRENT_DATE);
 
 
 select * from niveles_firewall
@@ -309,7 +313,12 @@ insert into tipo_equipos_informaticos (id,nombre_tipo_equipo, descripcion_tipo_e
 insert into tipo_equipos_informaticos (id,nombre_tipo_equipo, descripcion_tipo_equipo) values (9,'Impresora','Impresoras dentro de la empresa');
 insert into tipo_equipos_informaticos (id,nombre_tipo_equipo, descripcion_tipo_equipo) values (10,'Reloj Control','Relojes para el control de asistencia del personal');
 insert into tipo_equipos_informaticos (id,nombre_tipo_equipo, descripcion_tipo_equipo) values (11,'Servidor Fisico','Servidores fisicos instalados');
-insert into tipo_equipos_informaticos (id,nombre_tipo_equipo, descripcion_tipo_equipo) values (12,'Servidor Virutal','Servidores virutales instalados');
+select * from tipo_equipos_informaticos where id = 12
+
+select * from lista_ips where ip_nivel_firewall_id = 'Servidores' and marca_equipo = 'VIRTUAL'
+update lista_ips set tipo_equipo_id = 'Servidor Virtual' where ip_nivel_firewall_id = 'Servidores' and marca_equipo = 'VIRTUAL'
+update tipo_equipos_informaticos set nombre_tipo_equipo = 'Servidor Virtual' where id = 12
+insert into tipo_equipos_informaticos (id,nombre_tipo_equipo, descripcion_tipo_equipo) values (12,'Servidor Virtual','Servidores virutales instalados');
 insert into tipo_equipos_informaticos (id,nombre_tipo_equipo, descripcion_tipo_equipo) values (13,'Switch','Switches administrables de la red');
 insert into tipo_equipos_informaticos (id,nombre_tipo_equipo, descripcion_tipo_equipo) values (14,'Acces Point','Equipos para brindar wifi en la empresa');
 
