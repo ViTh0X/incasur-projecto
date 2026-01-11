@@ -32,8 +32,7 @@ def ejecutar_inventario_hardware():
             nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)
             mes_actual = datetime.now().month
             año_actual = datetime.now().year
-            try:
-                #agregando esta linea
+            try:                
                 #if esta_en_linea:                
                 #SSH_instancia.actualizar_ejecutable_hardware()               
                 #print("Actualizacion Finalizada")
