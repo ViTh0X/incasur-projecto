@@ -33,6 +33,7 @@ def ejecutar_inventario_hardware():
             mes_actual = datetime.now().month
             año_actual = datetime.now().year
             try:
+                #agregando esta linea
                 #if esta_en_linea:                
                 #SSH_instancia.actualizar_ejecutable_hardware()               
                 #print("Actualizacion Finalizada")
