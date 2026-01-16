@@ -38,6 +38,7 @@ def ejecutar_backup_informacion():
                 #if esta_en_linea:
                 equipo_conectado = SSH_instancia.realizarConSSH()
                 if equipo_conectado:
+                    print(f"Trabajando IP {ip_filtrada}")
                     SSH_instancia.crearCanalSFTP()                    
                     listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"])
                     listaRutas = SSH_instancia.creaRutasRemotas(username,listaRutasLocales,string_ip)
@@ -109,6 +110,7 @@ def ejecutar_faltantes_backup_informacion():
             año_actual = datetime.now().year
             try:
                 #if esta_en_linea:
+                print(f"Trabajando IP {ip_filtrada}")
                 equipo_conectado = SSH_instancia.realizarConSSH()
                 if equipo_conectado:
                     SSH_instancia.crearCanalSFTP()
@@ -177,6 +179,7 @@ def ejecutar_backup_individual(ip):
         nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=ip)                        
         try:
             #if esta_en_linea:
+            print(f"Trabajando IP {ip_filtrada}")
             equipo_conectado = SSH_instancia.realizarConSSH()
             if equipo_conectado:
                 SSH_instancia.crearCanalSFTP()                    
