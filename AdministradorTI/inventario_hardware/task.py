@@ -89,8 +89,10 @@ def ejecutar_inventario_hardware():
 @shared_task
 def ejecutar_faltantes_inventario_hardware():
     try:
-        try:    
-            lista_faltantes = get_list_or_404(faltantes_inventario_hardware.objects.all())
+        try:
+            año_actual = datetime.now().year
+            mes_actual = datetime.now().month    
+            lista_faltantes = get_list_or_404(faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual))
         except:
             return "NO HAY FALTANTES TAREA TERMINADA"
         for ip_faltantes in lista_faltantes:

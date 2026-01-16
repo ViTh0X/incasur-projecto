@@ -84,7 +84,9 @@ def ejecutar_inventario_software():
 def ejecutar_faltantes_inventario_software():
     try:
         try:
-            lista_faltantes = get_list_or_404(faltantes_inventario_software.objects.all())            
+            año_actual = datetime.now().year
+            mes_actual = datetime.now().month
+            lista_faltantes = get_list_or_404(faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual))            
         except:
             return "NO HAY FALTANTES TAREA TERMINADA"        
         for ip_faltantes in lista_faltantes:

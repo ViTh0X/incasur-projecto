@@ -88,7 +88,9 @@ def ejecutar_backup_informacion():
 def ejecutar_faltantes_backup_informacion():
     try:
         try:
-            lista_faltantes = get_list_or_404(faltantes_backup_informacion.objects.all())            
+            año_actual = datetime.now().year
+            mes_actual = datetime.now().month
+            lista_faltantes = get_list_or_404(faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual))            
         except:
             return "NO HAY FALTANTES TAREA TERMINADA"
         for ip_faltantes in lista_faltantes:
