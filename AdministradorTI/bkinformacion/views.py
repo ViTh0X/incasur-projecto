@@ -30,7 +30,9 @@ def listar_backup_informacion(request):
 
 @login_required(login_url="pagina_login")
 def listar_faltantes_backup(request):
-    lista_faltantes = faltantes_backup_informacion.objects.all()
+    mes_actual = datetime.now().month
+    año_actual = datetime.now().year
+    lista_faltantes = faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual)
     if not lista_faltantes:
         return render(request,'bkinformacion/no_tiene_faltantes.html')
     else:
@@ -38,7 +40,9 @@ def listar_faltantes_backup(request):
 
 @login_required(login_url="pagina_login")
 def listar_logs(request):
-    lista_logs = logs_actividades_celery.objects.all().order_by('-tiempo_creacion')
+    mes_actual = datetime.now().month
+    año_actual = datetime.now().year
+    lista_logs = logs_actividades_celery.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual).order_by('-tiempo_creacion')
     return render(request,'logs/listar_logs_bk.html',{'lista_logs':lista_logs})    
     
 

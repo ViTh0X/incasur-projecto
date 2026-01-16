@@ -102,7 +102,9 @@ def listar_inventario_software(request):
 
 @login_required(login_url="pagina_login")
 def listar_faltantes_software(request):
-    lista_faltantes = faltantes_inventario_software.objects.all()
+    año_actual = datetime.now().year
+    mes_actual = datetime.now().month
+    lista_faltantes = faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual)
     if not lista_faltantes:
         return render(request,'inventario_software/no_tiene_faltantes.html')
     else:
@@ -110,7 +112,9 @@ def listar_faltantes_software(request):
 
 @login_required(login_url="pagina_login")    
 def listar_logs_s(request):
-    lista_logs = logs_actividades_celery.objects.all().order_by('-tiempo_creacion')
+    año_actual = datetime.now().year
+    mes_actual = datetime.now().month
+    lista_logs = logs_actividades_celery.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual).order_by('-tiempo_creacion')
     return render(request,'logs/listar_logs_is.html',{'lista_logs':lista_logs})
 
 
