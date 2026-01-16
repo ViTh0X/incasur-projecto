@@ -46,7 +46,7 @@
                             <th>Office</th>
                             <th>Acceso Remoto</th>
                             <th>Editores Texto</th>
-                            <th>Data Base</th>
+                            <!--<th>Data Base</th>-->
                             <th>PDF</th>
                             <!--<th>FTIA</th>-->
                             <th>Impresoras</th>
@@ -89,13 +89,13 @@
                                     {% endfor %}
                                 </ul>
                             </td>
-                            <td>
+                            <!--<td>
                                 <ul>
                                     {% for office in item.Base_Datos %}
                                     <li>•{{ office }}</li>
                                     {% endfor %}
                                 </ul>
-                            </td>
+                            </td>-->
                             <td>
                                 <ul>
                                     {% for office in item.PDF %}
@@ -141,6 +141,16 @@
                             <td>
                                 <ul>
                                     {% for office in item.TI %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                                <ul>
+                                    {% for office in item.FTIA %}
+                                    <li>•{{ office }}</li>
+                                    {% endfor %}
+                                </ul>
+                                <ul>
+                                    {% for office in item.Base_Datos %}
                                     <li>•{{ office }}</li>
                                     {% endfor %}
                                 </ul>
