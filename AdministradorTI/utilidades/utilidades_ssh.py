@@ -449,7 +449,8 @@ class SSHManager(logArchivos):
                     else:
                         rutaCopiarNormal = f"{rBaseLocalR}/{nombreArchivo}"
                         rutaCopiarLocal = os.path.normpath(rutaCopiarNormal.strip())                                                    
-                        rutaCopiarRemoto = f"{rBaseRemoR}/{nombreArchivo}"                    
+                        rutaCopiarNormalR = f"{rBaseRemoR}/{nombreArchivo}"
+                        rutaCopiarRemoto = rutaCopiarNormalR.strip()                 
                         existeLocal = os.path.exists(rutaCopiarLocal)
                         try:
                             if not existeLocal:
