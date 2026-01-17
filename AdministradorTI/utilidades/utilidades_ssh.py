@@ -386,7 +386,7 @@ class SSHManager(logArchivos):
                         lsR[rLocal] = ruta
                         lsRutaBKUP.append(lsR)                    
                     elif "Discos" in rutaTexto:                    
-                        ruta ="D:/"
+                        ruta ="D:"
                         local = Path(rLocal)/"Disco_D"
                         lsR[local] = ruta
                         lsRutaBKUP.append(lsR)
@@ -446,8 +446,9 @@ class SSHManager(logArchivos):
                         mensaje = f"Se creo la carpeta {nombreCarpeta}"
                         self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                            
                         self.realizarBKUP(rBaseRemoR,rBaseLocalR,nombreArchivo)                                            
-                    else:                            
-                        rutaCopiarLocal = f"{rBaseLocalR}/{nombreArchivo}"
+                    else:
+                        rutaCopiarNormal = f"{rBaseLocalR}/{nombreArchivo}"
+                        rutaCopiarLocal = os.path.normpath(rutaCopiarNormal.strip())                                                    
                         rutaCopiarRemoto = f"{rBaseRemoR}/{nombreArchivo}"                    
                         existeLocal = os.path.exists(rutaCopiarLocal)
                         try:
@@ -455,7 +456,10 @@ class SSHManager(logArchivos):
                                 mensaje = f"Copiando archivo {nombreArchivo}"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                                 mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
-                                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                        
+                                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+                                os.chmod(rutaCopiarLocal, stat.S_IWRITE)
+                                if os.path.getsize(rutaCopiarLocal) == 0:
+                                    os.remove(rutaCopiarLocal)                                                        
                                 self.canalSFTP.get(rutaCopiarRemoto,rutaCopiarLocal)
                                 mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
@@ -466,7 +470,10 @@ class SSHManager(logArchivos):
                                     mensaje = f"Copiando archivo {nombreArchivo}"
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                                     mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
-                                    self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                        
+                                    self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+                                    os.chmod(rutaCopiarLocal, stat.S_IWRITE)
+                                    if os.path.getsize(rutaCopiarLocal) == 0:
+                                        os.remove(rutaCopiarLocal)                                                                                            
                                     self.canalSFTP.get(rutaCopiarRemoto,rutaCopiarLocal)
                                     mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
