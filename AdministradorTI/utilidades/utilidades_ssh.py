@@ -386,7 +386,7 @@ class SSHManager(logArchivos):
                         lsR[rLocal] = ruta
                         lsRutaBKUP.append(lsR)                    
                     elif "Discos" in rutaTexto:                    
-                        ruta ="/D:"
+                        ruta =Path("D:/")
                         local = Path(rLocal)/"Disco_D"
                         lsR[local] = ruta
                         lsRutaBKUP.append(lsR)
@@ -423,11 +423,13 @@ class SSHManager(logArchivos):
             
     def realizarBKUP(self,rBaseRemo:str,rBaseLocal:str,nombreCarpeta:str):        
         if nombreCarpeta != "":
-            rBaseRemoR = f"{rBaseRemo}/{nombreCarpeta}"
-            rBaseLocalR = f"{rBaseLocal}/{nombreCarpeta}"
+            baseR = Path(rBaseRemo)
+            rBaseRemoR = baseR / nombreCarpeta
+            baseL = Path(rBaseLocal)
+            rBaseLocalR = baseL / nombreCarpeta
         else:
-            rBaseRemoR = rBaseRemo
-            rBaseLocalR = rBaseLocal        
+            rBaseRemoR = Path(rBaseRemo)
+            rBaseLocalR = Path(rBaseLocal)
         try:                
             listaArchivos = list(self.canalSFTP.listdir_iter(rBaseRemoR))
             nombreArchivo = ""         
@@ -440,16 +442,15 @@ class SSHManager(logArchivos):
                     if nombreArchivo == "System Volume Information" or nombreArchivo == "$RECYCLE.BIN":
                         print(f"Ignorando Carpeta System Volume Information y su contenido")
                         continue
-                    elif stat.S_ISDIR(archivo.st_mode):                    
-                        creaRutaLocal = f"{rBaseLocalR}/{nombreArchivo}"
+                    elif stat.S_ISDIR(archivo.st_mode):                                            
+                        creaRutaLocal = rBaseLocalR / nombreArchivo
                         os.makedirs(creaRutaLocal,exist_ok=True)
                         mensaje = f"Se creo la carpeta {nombreCarpeta}"
                         self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                            
                         self.realizarBKUP(rBaseRemoR,rBaseLocalR,nombreArchivo)                                            
-                    else:
-                        rutaCopiarNormal = f"{rBaseLocalR}/{nombreArchivo}"
-                        rutaCopiarLocal = os.path.normpath(rutaCopiarNormal.strip())                                                                            
-                        rutaCopiarRemoto = f"{rBaseRemoR}/{nombreArchivo}"                 
+                    else:                        
+                        rutaCopiarLocal = rBaseLocalR / nombreArchivo                          
+                        rutaCopiarRemoto = rBaseRemoR / nombreArchivo 
                         existeLocal = os.path.exists(rutaCopiarLocal)
                         try:
                             if not existeLocal:
