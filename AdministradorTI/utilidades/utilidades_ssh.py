@@ -431,7 +431,7 @@ class SSHManager(logArchivos):
             rBaseRemoR = Path(rBaseRemo)
             rBaseLocalR = Path(rBaseLocal)
         try:                
-            listaArchivos = list(self.canalSFTP.listdir_iter(rBaseRemoR))
+            listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))
             nombreArchivo = ""         
             for archivo in listaArchivos:            
                 nombreArchivo = archivo.filename
@@ -451,14 +451,14 @@ class SSHManager(logArchivos):
                     else:                        
                         rutaCopiarLocal = rBaseLocalR / nombreArchivo                          
                         rutaCopiarRemoto = rBaseRemoR / nombreArchivo 
-                        existeLocal = os.path.exists(rutaCopiarLocal)
+                        existeLocal = os.path.exists(str(rutaCopiarLocal))
                         try:
                             if not existeLocal:
                                 mensaje = f"Copiando archivo {nombreArchivo}"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                                 mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                                                        
-                                self.canalSFTP.get(rutaCopiarRemoto,rutaCopiarLocal)
+                                self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))
                                 mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                             else:    
@@ -472,7 +472,7 @@ class SSHManager(logArchivos):
                                     #os.chmod(rutaCopiarLocal, stat.S_IWRITE)
                                     #if os.path.getsize(rutaCopiarLocal) == 0:
                                     #    os.remove(rutaCopiarLocal)                                                                                            
-                                    self.canalSFTP.get(rutaCopiarRemoto,rutaCopiarLocal)
+                                    self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))
                                     mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
                                 else:
