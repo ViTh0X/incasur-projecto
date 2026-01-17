@@ -387,7 +387,7 @@ class SSHManager(logArchivos):
                         lsRutaBKUP.append(lsR)                    
                     elif "Discos" in rutaTexto:                    
                         ruta =Path("D:/")
-                        local = Path(rLocal)/"D:"
+                        local = Path(rLocal)/"Disco_D"
                         lsR[local] = ruta
                         lsRutaBKUP.append(lsR)
                         lsR = {}
