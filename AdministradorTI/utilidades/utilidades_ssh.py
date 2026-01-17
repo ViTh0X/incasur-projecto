@@ -386,7 +386,7 @@ class SSHManager(logArchivos):
                         lsR[rLocal] = ruta
                         lsRutaBKUP.append(lsR)                    
                     elif "Discos" in rutaTexto:                    
-                        ruta ="D:/"
+                        ruta ="/D:/"
                         local = Path(rLocal)/"Disco_D"
                         lsR[local] = ruta
                         lsRutaBKUP.append(lsR)
@@ -482,11 +482,11 @@ class SSHManager(logArchivos):
                                     mensaje = f"El archivo {nombreArchivo} ya fue guardado de manera local"
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                         except FileNotFoundError as e:                        
-                            print(f"Error posiblemente el archivo no existe : {e} -{rutaCopiarRemoto}")
-                            mensaje = f"Error posiblemente el archivo no existe : {e} -{rutaCopiarRemoto}"
+                            print(f"Error posiblemente el archivo no existe : {e} - {rutaCopiarRemoto}")
+                            mensaje = f"Error posiblemente el archivo no existe : {e} - {rutaCopiarRemoto}"
                             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                        
                         except Exception as e:                        
-                            print(f"Ocurrio un error inesperado : {e} bucle 1 -{rutaCopiarRemoto}")
+                            print(f"Ocurrio un error inesperado : {e} bucle 1 - {rutaCopiarRemoto}")
                             mensaje = f"Ocurrio un error inesperado : {e} -{rutaCopiarRemoto}"
                             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                                                                                                                                               
         except SFTPError as e:            
