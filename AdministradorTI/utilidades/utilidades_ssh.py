@@ -386,7 +386,7 @@ class SSHManager(logArchivos):
                         lsR[rLocal] = ruta
                         lsRutaBKUP.append(lsR)                    
                     elif "Discos" in rutaTexto:                    
-                        ruta =Path("D:/")
+                        ruta =Path("/D:/")
                         local = Path(rLocal)/"Disco_D"
                         lsR[local] = ruta
                         lsRutaBKUP.append(lsR)
@@ -452,8 +452,8 @@ class SSHManager(logArchivos):
                         rutaCopiarLocal = rBaseLocalR / nombreArchivo                          
                         rutaCopiarRemoto = rBaseRemoR / nombreArchivo 
                         existeLocal = os.path.exists(str(rutaCopiarLocal))
-                        try:
-                            if not existeLocal:
+                        try:                            
+                            if not existeLocal:                                
                                 mensaje = f"Copiando archivo {nombreArchivo}"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                                 mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
