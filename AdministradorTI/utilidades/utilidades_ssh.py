@@ -448,9 +448,8 @@ class SSHManager(logArchivos):
                         self.realizarBKUP(rBaseRemoR,rBaseLocalR,nombreArchivo)                                            
                     else:
                         rutaCopiarNormal = f"{rBaseLocalR}/{nombreArchivo}"
-                        rutaCopiarLocal = os.path.normpath(rutaCopiarNormal.strip())                                                    
-                        rutaCopiarNormalR = f"{rBaseRemoR}/{nombreArchivo}"
-                        rutaCopiarRemoto = rutaCopiarNormalR.strip()                 
+                        rutaCopiarLocal = os.path.normpath(rutaCopiarNormal.strip())                                                                            
+                        rutaCopiarRemoto = f"{rBaseRemoR}/{nombreArchivo}"                 
                         existeLocal = os.path.exists(rutaCopiarLocal)
                         try:
                             if not existeLocal:
