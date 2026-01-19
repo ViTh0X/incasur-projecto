@@ -39,10 +39,8 @@ def listar_faltantes_backup(request):
         return render(request,'bkinformacion/lista_faltantes_bk.html',{'lista_faltantes':lista_faltantes})
 
 @login_required(login_url="pagina_login")
-def listar_logs(request):
-    mes_actual = datetime.now().month
-    año_actual = datetime.now().year
-    lista_logs = logs_actividades_celery.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual).order_by('-tiempo_creacion')
+def listar_logs(request):    
+    lista_logs = logs_actividades_celery.objects.all()
     return render(request,'logs/listar_logs_bk.html',{'lista_logs':lista_logs})    
     
 

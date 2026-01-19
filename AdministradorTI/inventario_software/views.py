@@ -111,10 +111,8 @@ def listar_faltantes_software(request):
         return render(request,'inventario_software/lista_faltantes_s.html',{'lista_faltantes':lista_faltantes})
 
 @login_required(login_url="pagina_login")    
-def listar_logs_s(request):
-    año_actual = datetime.now().year
-    mes_actual = datetime.now().month
-    lista_logs = logs_actividades_celery.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual).order_by('-tiempo_creacion')
+def listar_logs_s(request):    
+    lista_logs = logs_actividades_celery.objects.all()
     return render(request,'logs/listar_logs_is.html',{'lista_logs':lista_logs})
 
 
