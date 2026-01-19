@@ -422,20 +422,17 @@ class SSHManager(logArchivos):
             
             
             
-    def realizarBKUP(self,rBaseRemo:str,rBaseLocal:str,nombreCarpeta:str):
-        
-        remoto_limpio = str(rBaseRemo).lstrip('/')
-                        
+    def realizarBKUP(self,rBaseRemo:str,rBaseLocal:str,nombreCarpeta:str):                                        
         if nombreCarpeta != "":
-            #baseR = Path(rBaseRemo)
-            rBaseRemoR = f"{remoto_limpio.rstrip('/')}/{nombreCarpeta}"
+            baseR = Path(rBaseRemo)
+            rBaseRemoR = baseR / nombreCarpeta
             baseL = Path(rBaseLocal)
             rBaseLocalR = baseL / nombreCarpeta
-        else:
-            rBaseRemoR = remoto_limpio
+        else:            
+            rBaseRemoR = Path(rBaseRemo)
             rBaseLocalR = Path(rBaseLocal)
         try:                
-            listaArchivos = list(self.canalSFTP.listdir_iter(rBaseRemoR))
+            listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))
             nombreArchivo = ""         
             for archivo in listaArchivos:            
                 nombreArchivo = archivo.filename
