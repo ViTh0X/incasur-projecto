@@ -446,7 +446,7 @@ class SSHManager(logArchivos):
                     elif stat.S_ISDIR(archivo.st_mode):                                            
                         creaRutaLocal = rBaseLocalR / nombreArchivo
                         os.makedirs(creaRutaLocal,exist_ok=True)
-                        mensaje = f"Se creo la carpeta {nombreCarpeta}"
+                        mensaje = f"Se creo la carpeta {nombreCarpeta} - Ruta {creaRutaLocal}"
                         self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                            
                         self.realizarBKUP(rBaseRemoR,rBaseLocalR,nombreArchivo)                                            
                     else:                        
