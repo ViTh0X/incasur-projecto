@@ -440,7 +440,7 @@ class SSHManager(logArchivos):
                     print(f"Archivo {nombreArchivo} ignorado")
                     continue
                 else:
-                    if nombreArchivo == "System Volume Information" or nombreArchivo == "$RECYCLE.BIN" or nombreArchivo == "Plantillas Personalizadas de Office":
+                    if nombreArchivo == "System Volume Information" or nombreArchivo == "$RECYCLE.BIN" or nombreArchivo == "Plantillas personalizadas de Office":
                         print(f"Ignorando Carpeta System Volume Information, RECYCLE,Plantillas y su contenido")
                         continue
                     elif stat.S_ISDIR(archivo.st_mode):                                            
