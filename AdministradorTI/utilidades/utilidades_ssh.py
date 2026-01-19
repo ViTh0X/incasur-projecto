@@ -445,7 +445,10 @@ class SSHManager(logArchivos):
                         continue
                     elif stat.S_ISDIR(archivo.st_mode):                                            
                         creaRutaLocal = rBaseLocalR / nombreArchivo
-                        os.makedirs(creaRutaLocal,exist_ok=True)
+                        try:
+                            os.makedirs(creaRutaLocal,exist_ok=True)
+                        except Exception as e:
+                            print(f"Error en la carpeta {nombreArchivo} - {e}")
                         mensaje = f"Se creo la carpeta {nombreArchivo} - Ruta {creaRutaLocal}"
                         self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                            
                         self.realizarBKUP(rBaseRemoR,rBaseLocalR,nombreArchivo)                                            
