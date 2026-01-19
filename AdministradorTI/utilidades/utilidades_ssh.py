@@ -457,12 +457,17 @@ class SSHManager(logArchivos):
                         rutaCopiarRemoto = rBaseRemoR / nombreArchivo 
                         existeLocal = os.path.exists(str(rutaCopiarLocal))
                         try:                            
-                            if not existeLocal:                                
+                            if not existeLocal:
+                                print(f"archivo {nombreArchivo} no existe en local entro a copiar")                                
                                 mensaje = f"Copiando archivo {nombreArchivo}"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                                 mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
-                                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                                                        
-                                self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))
+                                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)  
+                                try:                                                                                      
+                                    self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))
+                                    print(f"Copio el archivo {nombreArchivo}")
+                                except Exception as e:
+                                    print("No copio el archivo")
                                 mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                             else:    
