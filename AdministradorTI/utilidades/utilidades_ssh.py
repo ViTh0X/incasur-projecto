@@ -434,7 +434,7 @@ class SSHManager(logArchivos):
         try:                
             listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))
             nombreArchivo = ""         
-            for archivo in listaArchivos:            
+            for archivo in listaArchivos:                
                 nombreArchivo = archivo.filename
                 if nombreArchivo.startswith("~"):
                     print(f"Archivo {nombreArchivo} ignorado")
@@ -446,7 +446,7 @@ class SSHManager(logArchivos):
                     elif stat.S_ISDIR(archivo.st_mode):                                            
                         creaRutaLocal = rBaseLocalR / nombreArchivo
                         os.makedirs(creaRutaLocal,exist_ok=True)
-                        mensaje = f"Se creo la carpeta {nombreCarpeta} - Ruta {creaRutaLocal}"
+                        mensaje = f"Se creo la carpeta {nombreArchivo} - Ruta {creaRutaLocal}"
                         self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                            
                         self.realizarBKUP(rBaseRemoR,rBaseLocalR,nombreArchivo)                                            
                     else:                        
