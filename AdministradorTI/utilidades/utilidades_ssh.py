@@ -440,8 +440,8 @@ class SSHManager(logArchivos):
                     print(f"Archivo {nombreArchivo} ignorado")
                     continue
                 else:
-                    if nombreArchivo == "System Volume Information" or nombreArchivo == "$RECYCLE.BIN":
-                        print(f"Ignorando Carpeta System Volume Information y su contenido")
+                    if nombreArchivo == "System Volume Information" or nombreArchivo == "$RECYCLE.BIN" or nombreArchivo == "Plantillas Personalizadas de Office":
+                        print(f"Ignorando Carpeta System Volume Information, RECYCLE,Plantillas y su contenido")
                         continue
                     elif stat.S_ISDIR(archivo.st_mode):                                            
                         creaRutaLocal = rBaseLocalR / nombreArchivo
