@@ -479,6 +479,7 @@ class SSHManager(logArchivos):
                                 except IOError as e:
                                     mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
                                     self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
+                                    continue
                                 except Exception as e:
                                     print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
                                     if "Socket is closed" in str(e):
@@ -498,6 +499,7 @@ class SSHManager(logArchivos):
                                     except IOError as e:
                                         mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
                                         self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
+                                        continue
                                     except Exception as e:
                                         print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
                                         if "Socket is closed" in str(e):
