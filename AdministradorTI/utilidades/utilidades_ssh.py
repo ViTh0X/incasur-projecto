@@ -442,7 +442,8 @@ class SSHManager(logArchivos):
             rBaseLocalR = Path(rBaseLocal)
         try:                
             listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))                     
-            for archivo in listaArchivos:                
+            for archivo in listaArchivos:    
+                print("****************"*2)            
                 print(f"*****{archivo}*****")                
                 nombreArchivo = archivo.filename
                 if nombreArchivo.startswith("~"):
@@ -476,7 +477,7 @@ class SSHManager(logArchivos):
                                 except IOError as e:
                                     mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
                                     self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
-                                    break
+                                    continue
                                 except Exception as e:
                                     print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
                                     if "Socket is closed" in str(e):
