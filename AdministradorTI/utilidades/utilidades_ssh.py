@@ -361,7 +361,20 @@ class SSHManager(logArchivos):
         lsRutaBKUP = []
         rBaseRemoC = "C:/Users/"        
         try:
-            if ip == "192.168.1.36":
+            if ip == "192.168.1.32":
+                for rLocal in listaRutaLocales:
+                    lsR = {}
+                    rutaTexto = str(rLocal)
+                    if "Discos" in rutaTexto:                                                                            
+                        ruta ="D:\JSALASBACKUP"
+                        local = Path(rLocal)/"Disco_D"
+                        lsR[local] = ruta
+                        lsRutaBKUP.append(lsR)
+                        lsR = {}
+                mensaje = "Las rutas iniciales fueron preparadas con exito"
+                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+                return lsRutaBKUP            
+            elif ip == "192.168.1.36":
                 for rLocal in listaRutaLocales:
                     lsR = {}
                     rutaTexto = str(rLocal)
