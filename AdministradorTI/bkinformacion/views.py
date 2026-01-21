@@ -73,10 +73,8 @@ def iniciar_faltantes_backup(request):
 @login_required(login_url="pagina_login")
 def descargar_logs_errores(request,pk):    
     backup_ip = get_object_or_404(lista_backups_informacion,pk=pk)
-    ip_bk = backup_ip.ip.ip
-    mes_bk = backup_ip.fecha_modificacion.month
-    año_bk = backup_ip.fecha_modificacion.year
-    nombre_archivo_completo = f"LogErrores-{ip_bk}-{año_bk}-{mes_bk}.txt"
+    ip_bk = backup_ip.ip.ip           
+    nombre_archivo_completo = f"LogErrores-{ip_bk}.txt"
     ruta_archivo = os.path.join(settings.MEDIA_ROOT,'logs_errores',nombre_archivo_completo)
     with open(ruta_archivo, 'rb') as archivo:
         contenido = archivo.read()

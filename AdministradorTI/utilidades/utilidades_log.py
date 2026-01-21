@@ -7,9 +7,10 @@ class logArchivos():
     def crearArchivo(self,host:str):        
         rutaBaseLog = f"/backupcolaboradores/Logs/{host}"
         os.makedirs(rutaBaseLog,exist_ok=True)
+        dd = datetime.now().day
         mm =  datetime.now().month
-        yyyy = datetime.now().year
-        rutaArchivo = f"{rutaBaseLog}/Log-{host}-{yyyy}-{mm}.txt"
+        yyyy = datetime.now().year        
+        rutaArchivo = f"{rutaBaseLog}/Log-{host}-{yyyy}-{mm}-{dd}.txt"
         
         with open(rutaArchivo,'w') as archivoLog:
             titulo = f"***********LOG DE BACKP UP HOST (IP): {host} FECHA {yyyy} - {mm}\n"
@@ -26,10 +27,11 @@ class logArchivos():
     def verificar_archivos_logs(self,host:str):
         termino_con_errores = False
         rutaBaseLog = f"/backupcolaboradores/Logs/{host}"
+        dd = datetime.now().day        
         mm =  datetime.now().month
         yyyy = datetime.now().year
-        rutaArchivo_buscado = f"{rutaBaseLog}/Log-{host}-{yyyy}-{mm}.txt"
-        nombre_archivo = f"LogErrores-{host}-{yyyy}-{mm}.txt"        
+        rutaArchivo_buscado = f"{rutaBaseLog}/Log-{host}-{yyyy}-{mm}-{dd}.txt"
+        nombre_archivo = f"LogErrores-{host}.txt"        
         nombre_archivo_err = os.path.join(settings.MEDIA_ROOT,'logs_errores',nombre_archivo)
         with open(nombre_archivo_err,'w') as archivo_log_errores:
             pass
