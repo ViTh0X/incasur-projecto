@@ -477,6 +477,7 @@ class SSHManager(logArchivos):
                                 except IOError as e:
                                     mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
                                     self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
+                                    print("Imprimio un return el primero")
                                     return
                                 except Exception as e:
                                     print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
@@ -497,6 +498,7 @@ class SSHManager(logArchivos):
                                     except IOError as e:
                                         mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
                                         self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
+                                        print("Imprimio un return el segundo")
                                         return
                                     except Exception as e:
                                         print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
