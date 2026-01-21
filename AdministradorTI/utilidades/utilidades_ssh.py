@@ -475,12 +475,11 @@ class SSHManager(logArchivos):
                                 except IOError as e:
                                     mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
                                     self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
-                                    print("Imprimio un return el primero")
-                                    return
+                                    self.cerrarConexiones()                                    
                                 except Exception as e:
                                     print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
                                     if "Socket is closed" in str(e):
-                                        return
+                                        self.cerrarConexiones()
                                 mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                             else:    
@@ -496,12 +495,11 @@ class SSHManager(logArchivos):
                                     except IOError as e:
                                         mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
                                         self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
-                                        print("Imprimio un return el segundo")
-                                        return
+                                        self.cerrarConexiones()
                                     except Exception as e:
                                         print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
                                         if "Socket is closed" in str(e):
-                                            return                                   
+                                            self.cerrarConexiones()                                 
                                     mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
                                 else:
