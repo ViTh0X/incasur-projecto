@@ -305,11 +305,16 @@ class SSHManager(logArchivos):
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())            
             mensaje = f"Intentando Realizar conexion a {self.hostname} con el usuario {self.username}."
             self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
-            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
+            self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,banner_timeout=30,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
             transport = self.conexionSSH.get_transport()
             if transport:
-                transport.set_keepalive(60)
-            return True 
+                transport.set_keepalive(30)
+            return True
+        except paramiko.SSHException as e:
+            self.registrarLog(f"Error de protocolo SSH: {e}","ERR",self.rutaArchivo,self.hostname) 
+            if self.conexionSSH:
+                self.conexionSSH.close()
+            return False
         except paramiko.AuthenticationException as sshE:            
             mensaje = f"Error al establecer conexion SSH a host {self.hostname} al usuario {self.username}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
@@ -423,6 +428,10 @@ class SSHManager(logArchivos):
             
             
     def realizarBKUP(self,rBaseRemo:str,rBaseLocal:str,nombreCarpeta:str):                                        
+        # --- VALIDACIÓN CRÍTICA ---
+        if self.conexionSSH is None or not self.conexionSSH.get_transport().is_active():
+            self.registrarLog("CONEXIÓN CERRADA: Abortando rama de backup.", "ERR", self.rutaArchivo, self.hostname)
+            return
         if nombreCarpeta != "":
             baseR = Path(rBaseRemo)
             rBaseRemoR = baseR / nombreCarpeta
@@ -467,8 +476,13 @@ class SSHManager(logArchivos):
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)  
                                 try:                                                                                      
                                     self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))                                    
+                                except IOError as e:
+                                    mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
+                                    self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
                                 except Exception as e:
                                     print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
+                                    if "Socket is closed" in str(e):
+                                        return
                                 mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                             else:    
@@ -481,8 +495,13 @@ class SSHManager(logArchivos):
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                                                                              
                                     try:                                                                                      
                                         self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))
+                                    except IOError as e:
+                                        mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
+                                        self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
                                     except Exception as e:
-                                        print(f"No copio el archivo {e} - {rutaCopiarRemoto}")                                    
+                                        print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
+                                        if "Socket is closed" in str(e):
+                                            return                                   
                                     mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
                                 else:
