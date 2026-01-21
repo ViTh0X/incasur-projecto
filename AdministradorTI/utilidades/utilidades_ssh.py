@@ -443,8 +443,7 @@ class SSHManager(logArchivos):
         try:                
             listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))                     
             for archivo in listaArchivos:                
-                print(f"******{archivo}******")
-                contador += 1
+                print(f"******{archivo}******")                
                 nombreArchivo = archivo.filename
                 if nombreArchivo.startswith("~"):
                     print(f"Archivo {nombreArchivo} ignorado")
