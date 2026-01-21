@@ -368,6 +368,7 @@ class SSHManager(logArchivos):
                     if "Discos" in rutaTexto:                                                                            
                         ruta ="D:\JSALASBACKUP"
                         local = Path(rLocal)/"Disco_D"
+                        os.makedirs(local,exist_ok=True)
                         lsR[local] = ruta
                         lsRutaBKUP.append(lsR)
                         lsR = {}
@@ -381,6 +382,7 @@ class SSHManager(logArchivos):
                     if "Discos" in rutaTexto:                                                                            
                         ruta ="C:\Patrick"
                         local = Path(rLocal)/"Disco_D"
+                        os.makedirs(local,exist_ok=True)
                         lsR[local] = ruta
                         lsRutaBKUP.append(lsR)
                         lsR = {}
