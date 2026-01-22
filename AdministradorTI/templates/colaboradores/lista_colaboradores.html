@@ -35,7 +35,7 @@
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>IP asignada</th>
+                        <!--<th>IP asignada</th>-->
                         <th>Codigo FTIA</th>
                         <th>Correo Empresarial</th>
                         <th>Usuario Sentinel</th>
@@ -48,7 +48,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for colaborador in colaboradores %}
+                    {% for colaborador in lista_colaboradores %}
                     <tr>
                         <td>{{ colaborador.nombre_colaborador }}</td>
                         <td>{{ colaborador.ip_colaborador }}</td>

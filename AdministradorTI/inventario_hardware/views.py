@@ -78,11 +78,11 @@ def listar_faltantes_hardware(request):
 def generar_excell_all_h(request):
     fecha_hora = datetime.now()
     inventarios_hardware = inventario_hardware.objects.all()
-    data_df = inventarios_hardware.values('ip','nombre_colaborador','nombre_equipo','placa','procesador','ram','video_integrada','video_dedicada','so','almacenamiento','puertas_enlace','fecha_modificacion')
+    data_df = inventarios_hardware.values('codigo_ip','codigo_colaborador','nombre_equipo','placa','procesador','ram','video_integrada','video_dedicada','so','almacenamiento','puertas_enlace','fecha_modificacion')
     df = pd.DataFrame(list(data_df))
     df = df.rename(columns={
-        'ip':'IP',
-        'nombre_colaborador':'Nombre Colaborador',
+        'codigo_ip':'IP',
+        'codigo_colaborador':'Nombre Colaborador',
         'nombre_equipo':'Nombre del Equipo',
         'placa':'Info Placa',
         'procesador':'Info Procesador',        
@@ -101,7 +101,7 @@ def generar_excell_all_h(request):
 
 @login_required(login_url="pagina_login")
 def listar_logs(request):    
-    lista_logs = logs_actividades_celery.objects.all()
+    lista_logs = logs_actividades_celery.objects.all
     return render(request,'logs/listar_logs_ih.html',{'lista_logs':lista_logs})
 
 @login_required(login_url="pagina_login")

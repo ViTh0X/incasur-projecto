@@ -53,8 +53,8 @@
                 <tbody>
                     {% for inventario in inventarios_hardware %}
                     <tr>
-                        <td>{{ inventario.ip }}</td>
-                        <td>{{ inventario.nombre_colaborador }}</td>
+                        <td>{{ inventario.codigo_ip.ip }}</td>
+                        <td>{{ inventario.codigo_colaborador.nombre_colaborador }}</td>
                         <td>{{ inventario.nombre_equipo }}</td>
                         <td>{{ inventario.placa }}</td>
                         <td>{{ inventario.procesador }}</td>

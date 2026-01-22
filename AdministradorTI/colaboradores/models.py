@@ -16,7 +16,7 @@ class estado_colaboradores(models.Model):
         return self.nombre_estado
 
 
-class lista_colaboradores(models.Model):
+class colaboradores(models.Model):
     codigo_colaborador = models.AutoField(primary_key=True)
     nombre_colaborador = models.CharField(max_length=150,unique=True)
     #ip_colaborador = models.ForeignKey(lista_ips,on_delete=models.CASCADE, to_field='ip')
@@ -32,7 +32,7 @@ class lista_colaboradores(models.Model):
     fecha_modificacion = models.DateTimeField(auto_now=True)
     
     class Meta:
-        db_table = 'lista_colaboradores'
+        db_table = 'colaboradores'
     
     def __str__(self):
         return self.nombre_colaborador        
@@ -41,5 +41,10 @@ class lista_colaboradores(models.Model):
     
 class colaboradorForm(forms.ModelForm):
     class Meta:
-        model = lista_colaboradores
+        model = colaboradores
+        fields = ['ip_colaborador','nombre_colaborador','usuario_sistema','correo','usuario_sentinel','usuario_sbs','usuario_windows','usuario_reloj_control','codigo_impresion_colaborador','cargo_colaborador']
+        
+class colaboradorForm_editar(forms.ModelForm):
+    class Meta:
+        model = colaboradores
         fields = ['nombre_colaborador','usuario_sistema','correo','usuario_sentinel','usuario_sbs','usuario_windows','usuario_reloj_control','codigo_impresion_colaborador','cargo_colaborador']

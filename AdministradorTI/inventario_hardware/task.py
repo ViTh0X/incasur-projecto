@@ -2,8 +2,8 @@ from celery import shared_task
 from django.shortcuts import get_object_or_404, get_list_or_404
 from .models import inventario_hardware, faltantes_inventario_hardware
 from home.models import logs_actividades_celery
-from ips.models import tipo_estado_ips, lista_ips,tipo_equipos_informaticos
-from colaboradores.models import lista_colaboradores
+from ips.models import tipo_estado_ips, ips,tipo_equipos_informaticos
+#from colaboradores.models import colaboradores
 from datetime import datetime
 import os
 from dotenv import load_dotenv
@@ -17,7 +17,7 @@ def ejecutar_inventario_hardware():
         laptop = get_object_or_404(tipo_equipos_informaticos,pk=1)
         pc = get_object_or_404(tipo_equipos_informaticos,pk=2)
         nombres_a_filtrar = [laptop.nombre_tipo_equipo, pc.nombre_tipo_equipo]        
-        lista_ips_ocupadas = lista_ips.objects.filter(codigo_estado=estado_ips,tipo_equipo__in=nombres_a_filtrar).values('ip')        
+        lista_ips_ocupadas = ips.objects.filter(codigo_estado=estado_ips,tipo_equipo__in=nombres_a_filtrar).values('ip')        
         for ip in lista_ips_ocupadas:
             string_ip = ip['ip']
             username = "Administrador"
@@ -27,9 +27,9 @@ def ejecutar_inventario_hardware():
             SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
             #esta_en_linea = SSH_instancia.revisarConexionSSH()
             #Filtrando el objeto ip
-            ip_filtrada = lista_ips.objects.get(ip=string_ip)
+            ip_filtrada = ips.objects.get(ip=string_ip)
             #Filtrando el objeto nombre Trabajador
-            nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)
+            #nombre_colab_filtrado = ips.objects.get(colaborador_asignado=string_ip)
             mes_actual = datetime.now().month
             año_actual = datetime.now().year
             try:                
@@ -45,8 +45,8 @@ def ejecutar_inventario_hardware():
                     diccionario_inventario_hardware = SSH_instancia.guardar_inventario_hardware()                
                     print("Guardo el inventario")
                     modelado_inventario_hardware = inventario_hardware(
-                        ip = ip_filtrada,
-                        nombre_colaborador = nombre_colab_filtrado,
+                        codigo_ip = ip_filtrada,
+                        codigo_colaborador = ip_filtrada.colaborador_asignado,
                         nombre_equipo = diccionario_inventario_hardware['nombre_pc'],
                         placa = diccionario_inventario_hardware['placa'],
                         procesador = diccionario_inventario_hardware['procesador'],
@@ -63,14 +63,14 @@ def ejecutar_inventario_hardware():
                     print("Elimino duplicados")                                   
                 else:
                     faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                    ip_filtrada = lista_ips.objects.get(ip=string_ip)
-                    faltantes_hardware = faltantes_inventario_hardware(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
+                    ip_filtrada = ips.objects.get(ip=string_ip)
+                    faltantes_hardware = faltantes_inventario_hardware(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                     faltantes_hardware.save()
             except Exception as e:
                 print(f"Error {e}")
                 faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                ip_filtrada = lista_ips.objects.get(ip=string_ip)
-                faltantes_hardware = faltantes_inventario_hardware(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
+                ip_filtrada = ips.objects.get(ip=string_ip)
+                faltantes_hardware = faltantes_inventario_hardware(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                 faltantes_hardware.save()
         
         logs_inventario_hardware = logs_actividades_celery(
@@ -104,9 +104,9 @@ def ejecutar_faltantes_inventario_hardware():
             SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
             #esta_en_linea = SSH_instancia.revisarConexionSSH()
             #Filtrando el objeto ip
-            ip_filtrada = lista_ips.objects.get(ip=string_ip)
+            ip_filtrada = ips.objects.get(ip=string_ip)
             #Filtrando el objeto nombre Trabajador
-            nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)
+            #nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)
             mes_actual = datetime.now().month
             año_actual = datetime.now().year
             try:
@@ -123,8 +123,8 @@ def ejecutar_faltantes_inventario_hardware():
                     diccionario_inventario_hardware = SSH_instancia.guardar_inventario_hardware()
                     print("Guardo el Inventario")                                    
                     modelado_inventario_hardware = inventario_hardware(
-                        ip = ip_filtrada,
-                        nombre_colaborador = nombre_colab_filtrado,
+                        codigo_ip = ip_filtrada,
+                        codigo_colaborador = ip_filtrada.colaborador_asignado,
                         nombre_equipo = diccionario_inventario_hardware['nombre_pc'],
                         placa = diccionario_inventario_hardware['placa'],
                         procesador = diccionario_inventario_hardware['procesador'],
@@ -140,14 +140,14 @@ def ejecutar_faltantes_inventario_hardware():
                     faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()                                   
                 else:
                     faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                    ip_filtrada = lista_ips.objects.get(ip=string_ip)
-                    faltantes_hardware = faltantes_inventario_hardware(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
+                    ip_filtrada = ips.objects.get(ip=string_ip)
+                    faltantes_hardware = faltantes_inventario_hardware(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                     faltantes_hardware.save()
             except Exception as e:
                 print(f"Error_ssh {e}")
                 faltantes_inventario_hardware.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
-                ip_filtrada = lista_ips.objects.get(ip=string_ip)
-                faltantes_hardware = faltantes_inventario_hardware(ip=ip_filtrada,nombre_colaborador=nombre_colab_filtrado)
+                ip_filtrada = ips.objects.get(ip=string_ip)
+                faltantes_hardware = faltantes_inventario_hardware(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                 faltantes_hardware.save()
         
         logs_inventario_hardware = logs_actividades_celery(
@@ -171,7 +171,7 @@ def actualizar_ejecutable():
         laptop = get_object_or_404(tipo_equipos_informaticos,pk=1)
         pc = get_object_or_404(tipo_equipos_informaticos,pk=2)
         nombres_a_filtrar = [laptop.nombre_tipo_equipo, pc.nombre_tipo_equipo]        
-        lista_ips_ocupadas = lista_ips.objects.filter(codigo_estado=estado_ips,tipo_equipo__in=nombres_a_filtrar).values('ip')        
+        lista_ips_ocupadas = ips.objects.filter(codigo_estado=estado_ips,tipo_equipo__in=nombres_a_filtrar).values('ip')        
         for ip in lista_ips_ocupadas:
             string_ip = ip['ip']
             username = "Administrador"

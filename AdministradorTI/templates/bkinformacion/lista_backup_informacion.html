@@ -25,10 +25,10 @@
                 <tbody>
                     {% for item in lista_backup %}
                     <tr>
-                        <td>{{ item.ip }}</td>
-                        <td>{{ item.nombre_colaborador }}</td>
+                        <td>{{ item.codigo_ip.ip }}</td>
+                        <td>{{ item.codigo_colaborador.nombre_colaborador }}</td>
                         <td>{{ item.detalle }}</td>
-                        <td>{{ item.fecha_modificacion|date:'m-Y' }}</td>
+                        <td>{{ item.fecha_modificacion|date:'d-m-Y' }}</td>
                         <td>
                             <a href="{% url 'descargar_logs_errores' pk=item.id %}">
                                 <svg

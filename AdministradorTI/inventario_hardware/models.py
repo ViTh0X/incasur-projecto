@@ -1,12 +1,12 @@
 from django.db import models
-from ips.models import lista_ips
-from colaboradores.models import lista_colaboradores
+from ips.models import ips
+from colaboradores.models import colaboradores
 # Create your models here.
 
 class faltantes_inventario_hardware(models.Model):
     id = models.AutoField(primary_key=True)
-    ip = models.ForeignKey(lista_ips,on_delete=models.CASCADE,to_field='ip')
-    nombre_colaborador = models.ForeignKey(lista_colaboradores,on_delete=models.CASCADE,to_field='nombre_colaborador')
+    codigo_ip = models.ForeignKey(ips,on_delete=models.CASCADE)
+    codigo_colaborador = models.ForeignKey(colaboradores,on_delete=models.CASCADE)
     fecha_modificacion = models.DateField(auto_now=True)
     
     class Meta:
@@ -18,8 +18,8 @@ class faltantes_inventario_hardware(models.Model):
 
 class inventario_hardware(models.Model):
     id_inventario_h = models.AutoField(primary_key=True)
-    ip = models.ForeignKey(lista_ips,on_delete=models.CASCADE,to_field='ip')
-    nombre_colaborador = models.ForeignKey(lista_colaboradores,on_delete=models.CASCADE,to_field='nombre_colaborador')
+    codigo_ip = models.ForeignKey(ips,on_delete=models.CASCADE)
+    codigo_colaborador = models.ForeignKey(colaboradores,on_delete=models.CASCADE)
     nombre_equipo = models.CharField(max_length=50,blank=True,null=True)
     placa = models.CharField(max_length=100,blank=True,null=True)
     procesador = models.CharField(max_length=100,blank=True,null=True)

@@ -6,7 +6,7 @@ from celery.result import AsyncResult
 from .task import ejecutar_faltantes_backup_informacion,ejecutar_backup_informacion,ejecutar_backup_individual
 
 from datetime import datetime
-from .models import lista_backups_informacion,faltantes_backup_informacion
+from .models import backups_informacion,faltantes_backup_informacion
 from home.models import logs_actividades_celery
 
 from django.contrib.auth.decorators  import login_required
@@ -18,7 +18,7 @@ import os
 def listar_backup_informacion(request):
     mes_actual = datetime.now().month
     año_actual = datetime.now().year
-    lista_backup = lista_backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual)
+    lista_backup = backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual)
     if mes_actual < 10:
         fecha_bkup = f"{año_actual} - 0{mes_actual}"
     else:
@@ -72,8 +72,8 @@ def iniciar_faltantes_backup(request):
 
 @login_required(login_url="pagina_login")
 def descargar_logs_errores(request,pk):    
-    backup_ip = get_object_or_404(lista_backups_informacion,pk=pk)
-    ip_bk = backup_ip.ip.ip           
+    backup_ip = get_object_or_404(backups_informacion,pk=pk)
+    ip_bk = backup_ip.codigo_ip.ip           
     nombre_archivo_completo = f"LogErrores-{ip_bk}.txt"
     ruta_archivo = os.path.join(settings.MEDIA_ROOT,'logs_errores',nombre_archivo_completo)
     with open(ruta_archivo, 'rb') as archivo:
@@ -84,8 +84,8 @@ def descargar_logs_errores(request,pk):
 
 @login_required
 def iniciar_backup_individual(request,pk):
-    backup_ip = get_object_or_404(lista_backups_informacion,pk=pk)
-    ip_bk = backup_ip.ip.ip    
+    backup_ip = get_object_or_404(backups_informacion,pk=pk)
+    ip_bk = backup_ip.codigo_ip.ip    
     if request.method == 'GET':
         ejecutar_backup_individual.delay(ip=ip_bk)
         return redirect('listar_backup_informacion')

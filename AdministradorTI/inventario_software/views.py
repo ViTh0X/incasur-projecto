@@ -4,9 +4,9 @@ from django.http.response import JsonResponse
 from django.http import HttpResponse
 from datetime import datetime
 from .models import inventario_software,faltantes_inventario_software
-from colaboradores.models import lista_colaboradores
+#from colaboradores.models import colaboradores
 from home.models import logs_actividades_celery
-
+from ips.models import ips
 from celery.result import AsyncResult
 from .task import ejecutar_faltantes_inventario_software,ejecutar_inventario_software, actualizar_ejecutable
 
@@ -26,8 +26,8 @@ def listar_inventario_software(request):
     else:
         inventario_agrupado = {}   
         for data in data_inventario_software:
-            ip =  data.ip
-            nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=ip)
+            ip =  data.codigo_ip.ip
+            ip_filtrada = ips.objects.get(ip=ip)            
             if ip not in inventario_agrupado:
                 inventario_agrupado[ip] ={
                     'Office' : [],
@@ -44,7 +44,7 @@ def listar_inventario_software(request):
                     'TI' : [],
                     'Otros' : [],
                     'fecha' : data.fecha_modificacion,
-                    'nombre_colaborador' : nombre_colab_filtrado
+                    'nombre_colaborador' : ip_filtrada.colaborador_asignado.nombre_colaborador
                 }
             if data.tipo_software.nombre_tipo == 'Office':
                 inventario_agrupado[ip]['Office'].append(data.nombre_software)
@@ -161,8 +161,9 @@ def generar_excell_all_s(request):
     #data_inventario_software = inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual)
     inventario_agrupado = {}   
     for data in data_inventario_software:
-        ip =  data.ip
-        nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=ip)
+        ip =  data.codigo_ip.ip
+        ip_filtrada = ips.objects.get(ip=ip)
+        #nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=ip)
         if ip not in inventario_agrupado:
             inventario_agrupado[ip] ={
                 'Office' : [],
@@ -179,7 +180,7 @@ def generar_excell_all_s(request):
                 'TI' : [],
                 'Otros' : [],
                 'fecha' : data.fecha_modificacion,
-                'nombre_colaborador' : nombre_colab_filtrado
+                'nombre_colaborador' : ip_filtrada.colaborador_asignado.nombre_colaborador
             }
         if data.tipo_software.nombre_tipo == 'Office':
             inventario_agrupado[ip]['Office'].append(data.nombre_software)

@@ -6,8 +6,8 @@ from colaboradores.models import lista_colaboradores
 
 class faltantes_backup_informacion(models.Model):
     id = models.AutoField(primary_key=True)
-    ip = models.ForeignKey(lista_ips,on_delete=models.CASCADE,to_field='ip')
-    nombre_colaborador = models.ForeignKey(lista_colaboradores,on_delete=models.CASCADE,to_field='nombre_colaborador')
+    codigo_ip = models.ForeignKey(lista_ips,on_delete=models.CASCADE)
+    codigo_colaborador = models.ForeignKey(lista_colaboradores,on_delete=models.CASCADE)
     fecha_modificacion = models.DateField(auto_now=True)
     
     class Meta:
@@ -18,10 +18,10 @@ class faltantes_backup_informacion(models.Model):
         return self.ip
 
 
-class lista_backups_informacion(models.Model):
+class backups_informacion(models.Model):
     id = models.AutoField(primary_key=True)
-    ip = models.ForeignKey(lista_ips,on_delete=models.CASCADE)
-    nombre_colaborador = models.ForeignKey(lista_colaboradores,on_delete=models.CASCADE)
+    codigo_ip = models.ForeignKey(lista_ips,on_delete=models.CASCADE)
+    codigo_colaborador = models.ForeignKey(lista_colaboradores,on_delete=models.CASCADE)
     detalle = models.CharField(max_length=50)
     fecha_modificacion = models.DateField(auto_now=True)
     

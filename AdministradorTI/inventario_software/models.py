@@ -18,8 +18,8 @@ class tipo_software(models.Model):
 
 class faltantes_inventario_software(models.Model):
     id = models.AutoField(primary_key=True)
-    ip = models.ForeignKey(lista_ips,on_delete=models.CASCADE)
-    nombre_colaborador = models.ForeignKey(lista_colaboradores,on_delete=models.CASCADE,to_field='nombre_colaborador')
+    codigo_ip = models.ForeignKey(lista_ips,on_delete=models.CASCADE)
+    codigo_colaborador = models.ForeignKey(lista_colaboradores,on_delete=models.CASCADE)
     fecha_modificacion = models.DateField(auto_now=True)
     
     class Meta:
@@ -31,7 +31,7 @@ class faltantes_inventario_software(models.Model):
     
 class inventario_software(models.Model):
     id_inventario_s = models.AutoField(primary_key=True)
-    ip = models.ForeignKey(lista_ips,on_delete=models.CASCADE,to_field='ip')
+    codigo_ip = models.ForeignKey(lista_ips,on_delete=models.CASCADE)
     tipo_software = models.ForeignKey(tipo_software,on_delete=models.CASCADE)
     nombre_software = models.CharField(max_length=120)
     fecha_modificacion = models.DateField(auto_now=True)

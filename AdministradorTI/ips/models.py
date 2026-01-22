@@ -57,24 +57,24 @@ class oficinas(models.Model):
     def __str__(self):
         return self.nombre_oficina    
         
-class lista_ips(models.Model):  
+class ips(models.Model):  
     id = models.AutoField(primary_key=True)  
     ip = models.CharField(max_length=15,unique=True)
     #Agregar nuevo campo Roll Asignado
     roll_ip = models.CharField(max_length=120,null=True,blank=True)
     #Agregar codigo de colaborador Asignado
     colaborador_asignado = models.ForeignKey(lista_colaboradores,on_delete=models.CASCADE,null=True,blank=True)
-    ip_seccion = models.ForeignKey(tipo_secciones,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_seccion')
-    ip_nivel_firewall = models.ForeignKey(niveles_firewall,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_nivel')    
-    tipo_equipo = models.ForeignKey(tipo_equipos_informaticos,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_tipo_equipo')    
-    marca_equipo = models.CharField(max_length=120,null=True,blank=True)
-    modelo_equipo = models.CharField(max_length=120,null=True,blank=True)
-    oficina = models.ForeignKey(oficinas,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_oficina')
+    seccion = models.ForeignKey(tipo_secciones,on_delete=models.CASCADE,null=True,blank=True)
+    nivel_firewall = models.ForeignKey(niveles_firewall,on_delete=models.CASCADE,null=True,blank=True)    
+    tipo_equipo_asignado = models.ForeignKey(tipo_equipos_informaticos,on_delete=models.CASCADE,null=True,blank=True)    
+    marca_equipo_asignado = models.CharField(max_length=120,null=True,blank=True)
+    modelo_equipo_asignado = models.CharField(max_length=120,null=True,blank=True)
+    oficina = models.ForeignKey(oficinas,on_delete=models.CASCADE,null=True,blank=True)
     codigo_estado = models.ForeignKey(tipo_estado_ips,on_delete=models.CASCADE,null=True,blank=True)
     fecha_modificacion = models.DateField(auto_now=True)
     
     class Meta:
-        db_table = 'lista_ips'
+        db_table = 'ips'
         # Ordena los resultados por el campo 'ip' de forma ascendente
         ordering = ['id']
         
@@ -83,7 +83,7 @@ class lista_ips(models.Model):
     
 class historial_acciones(models.Model):
     id = models.AutoField(primary_key=True)
-    ip_historial = models.ForeignKey(lista_ips,on_delete=models.CASCADE,to_field='ip')
+    ip_historial = models.ForeignKey(ips,on_delete=models.CASCADE)
     nombre_colaborador = models.CharField(max_length=150)
     accion_realizada = models.TextField(max_length=500)
     fecha_realizacion = models.DateTimeField(auto_now=True)
@@ -103,5 +103,5 @@ class historial_accionForm(forms.ModelForm):
     
 class ipForm(forms.ModelForm):
     class Meta:
-        model = lista_ips
-        fields = ['ip','ip_seccion','ip_nivel_firewall','tipo_equipo','marca_equipo','modelo_equipo','oficina']            
+        model = ips
+        fields = ['ip','roll_ip','colaborador_asignado','seccion','ip_nivel_firewall','tipo_equipo_asignado','marca_equipo_asignado','modelo_equipo_asignado','oficina','codigo_estado']            

@@ -7,25 +7,27 @@ import pandas as pd
 import os
 from datetime import datetime
 
-from .models import lista_ips, historial_acciones, ipForm,historial_accionForm
+from .models import historial_acciones, ipForm,historial_accionForm, ips
 from colaboradores.models import lista_colaboradores
+
 
 from django.contrib.auth.decorators import login_required
 
 @login_required(login_url="pagina_login")
 def listar_ips(request):
-    query_sql = """
-    select *,(select nombre_colaborador from lista_colaboradores as c where c.ip_colaborador_id = i.ip and c.estado_colaboradores_id = 1) as nombre_colaborador from lista_ips as i order by id asc
-    """
-    ips = lista_ips.objects.raw(query_sql)
-    resultado = {
-        'ips':ips
-    }
-    return render (request,'ips/lista_ips.html',resultado)
+    #query_sql = """
+    #select *,(select nombre_colaborador from lista_colaboradores as c where c.ip_colaborador_id = i.ip and c.estado_colaboradores_id = 1) as nombre_colaborador from lista_ips as i order by id asc
+    #"""
+    #ips = lista_ips.objects.raw(query_sql)
+    #resultado = {
+    #        'ips':ips
+    #}
+    listado_ips = ips.objects.all()            
+    return render (request,'ips/lista_ips.html',{'listado_ips':listado_ips})
     
 @login_required(login_url="pagina_login")    
 def editar_ip(request,pk):
-    ip = get_object_or_404(lista_ips,pk=pk)         
+    ip = get_object_or_404(ips,pk=pk)         
     if request.method == 'POST':
         formulario = ipForm(request.POST, instance=ip)
         if formulario.is_valid():
@@ -33,21 +35,22 @@ def editar_ip(request,pk):
             return redirect('listar_ips')            
     else:        
         formulario = ipForm(instance=ip)        
-        data_usuario = lista_colaboradores.objects.filter(ip_colaborador=ip).first()
-        print(data_usuario)                                
-    return render(request,'ips/editar_ip.html',{'formulario':formulario,'data_usuario':data_usuario})
+        #data_usuario = lista_colaboradores.objects.filter(ip_colaborador=ip).first()
+        #print(data_usuario)                                
+    return render(request,'ips/editar_ip.html',{'formulario':formulario})
 
 
 @login_required(login_url="pagina_login")
 def reiniciar_data_ip(request,pk):
-    ip = get_object_or_404(lista_ips,pk=pk)
+    ip = get_object_or_404(ips,pk=pk)
     if request.method == 'POST':
-        ip.ip_seccion = None
-        ip.ip_nivel_firewall = None
+        ip.colaborador_asignado = None
+        ip.seccion = None
+        ip.nivel_firewall = None
         ip.tipo_equipo = None
-        ip.marca_equipo = None
-        ip.modelo_equipo = None
-        ip.oficina = None
+        ip.marca_equipo_asignado = None
+        ip.modelo_equipo_asignado = None
+        ip.oficina = None        
         ip.save()
         return redirect('listar_ips')
     
@@ -56,12 +59,19 @@ def reiniciar_data_ip(request,pk):
 @login_required(login_url="pagina_login")
 def generar_excel_ip(request):
     fecha_hora = datetime.now()
-    query_sql = """
-    select *,(select nombre_colaborador from lista_colaboradores as c where c.ip_colaborador_id = i.ip and c.estado_colaboradores_id = 1) as nombre_colaborador from lista_ips as i order by id asc
-    """
-    ips = lista_ips.objects.raw(query_sql)
-    data_list = []
-    for item in ips:
+    listado_ips = ips.objects.all()
+    data_df = listado_ips.values('id','ip','roll_ip','colaborador_asignado','seccion','nivel_firewall','tipo_equipo_asignado','marca_equipo_asignado','modelo_equipo_asignado','oficina','codigo_estado')
+    df = pd.DataFrame(list(data_df))
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename="Lista de IPs {fecha_hora}.xlsx"'
+    df.to_excel(response,index=False,sheet_name='IPs')
+    return response
+    #query_sql = """
+    #select *,(select nombre_colaborador from lista_colaboradores as c where c.#ip_colaborador_id = i.ip and c.estado_colaboradores_id = 1) as #nombre_colaborador from lista_ips as i order by id asc
+    #"""                
+    #ips = ips.objects.raw(query_sql)
+    #data_list = []
+    '''for item in ips:
         data_list.append({
             'ip': item.ip,
             'nombre_colaborador': item.nombre_colaborador,
@@ -85,12 +95,7 @@ def generar_excel_ip(request):
         'tipo_equipo_id': 'Tipo de Equipo',
         'codigo_estado_id':'Estado de la IP',
         'ip_seccion_id' :'Seccion IP'        
-    })
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename="Lista de IPs {fecha_hora}.xlsx"'
-    df.to_excel(response,index=False,sheet_name='IPs')
-    return response
-
+    })'''
 
 @login_required(login_url="pagina_login")
 def agregar_accion(request):
@@ -98,24 +103,25 @@ def agregar_accion(request):
         formulario = historial_accionForm(request.POST)
         if formulario.is_valid():            
             agregar_accion = formulario.save(commit=True)
-            ip_colaborador_f = formulario.cleaned_data['ip_historial']            
+            id_colaborador_f = formulario.cleaned_data['colaborador_asignado']            
             try:                
-                objeto_colaborador = get_object_or_404(lista_colaboradores,ip_colaborador=ip_colaborador_f)            
+                objeto_colaborador = get_object_or_404(lista_colaboradores,id_colaborador=id_colaborador_f)            
                 agregar_accion.nombre_colaborador = objeto_colaborador.nombre_colaborador
             except:
                 agregar_accion.nombre_colaborador = "Sin colaborador asignado"
             agregar_accion.save()
             return redirect('listar_ips')
     else:
-        ip_disponibles = lista_ips.objects.exclude(codigo_estado = 3)
+        ip_disponibles = ips.objects.exclude(codigo_estado = 3)
         formulario =  historial_accionForm()
         formulario.fields['ip_historial'].queryset = ip_disponibles        
     
     return render(request,'ips/agregar_accion.html',{'formulario':formulario})            
 
+
 @login_required(login_url="pagina_login")            
 def ver_historial_acciones(request,pk):    
-    ip_seleccionada = lista_ips.objects.get(pk=pk)
+    ip_seleccionada = ips.objects.get(pk=pk)
     historiales = historial_acciones.objects.filter(ip_historial=ip_seleccionada.ip)
     if not historiales: 
         return render(request,'ips/historial_vacio.html')

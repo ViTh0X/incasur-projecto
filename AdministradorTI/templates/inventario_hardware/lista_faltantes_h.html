@@ -24,9 +24,9 @@
                 <tbody>
                     {% for faltante in lista_faltantes %}
                     <tr>
-                        <td>{{ faltante.ip }}</td>
-                        <td>{{ faltante.nombre_colaborador }}</td>
-                        <td>{{ faltante.fecha_modificacion|date:"m-Y" }}</td>                        
+                        <td>{{ faltante.codigo_ip.ip }}</td>
+                        <td>{{ faltante.codigo_colaborador.nombre_colaborador }}</td>
+                        <td>{{ faltante.fecha_modificacion|date:"d-m-Y" }}</td>                        
                     </tr>
                     {% endfor %}                    
                 </tbody> 
