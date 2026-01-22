@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
 # Create your models here.
-# from colaboradores.models import lista_colaboradores
+from colaboradores.models import lista_colaboradores
 
 class tipo_estado_ips(models.Model):
     codigo_estado = models.AutoField(primary_key=True)
@@ -59,7 +59,11 @@ class oficinas(models.Model):
         
 class lista_ips(models.Model):  
     id = models.AutoField(primary_key=True)  
-    ip = models.CharField(max_length=15,unique=True) 
+    ip = models.CharField(max_length=15,unique=True)
+    #Agregar nuevo campo Roll Asignado
+    roll_ip = models.CharField(max_length=120,null=True,blank=True)
+    #Agregar codigo de colaborador Asignado
+    colaborador_asignado = models.ForeignKey(lista_colaboradores,on_delete=models.CASCADE,null=True,blank=True)
     ip_seccion = models.ForeignKey(tipo_secciones,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_seccion')
     ip_nivel_firewall = models.ForeignKey(niveles_firewall,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_nivel')    
     tipo_equipo = models.ForeignKey(tipo_equipos_informaticos,on_delete=models.CASCADE,null=True,blank=True,to_field='nombre_tipo_equipo')    

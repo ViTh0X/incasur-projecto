@@ -11,6 +11,7 @@ import pandas as pd
 from datetime import datetime
 
 from home.models import cuentas_forticlient
+from inventario_hardware.models import inventario_hardware
 from .models import lista_colaboradores, colaboradorForm, estado_colaboradores
 from ips.models import tipo_estado_ips, lista_ips
 
@@ -33,6 +34,10 @@ def agregar_colaborador(request):
         if formulario.is_valid():
             #Obtenemos un objeto ip de la lista de ips
             ip_colaborador = formulario.cleaned_data['ip_colaborador']
+            #Aqui cambiar la actualioacion de nombre para hardware y tambien para 
+            #ip
+            
+            
             
             #Por medio del formulario obtenemos un objeto de lista_colaboradores
             add_colaborador = formulario.save(commit=False)
