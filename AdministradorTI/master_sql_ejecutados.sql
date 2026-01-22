@@ -387,3 +387,154 @@ ALTER TABLE public.lista_colaboradores
     ON UPDATE CASCADE
     ON DELETE CASCADE
     DEFERRABLE INITIALLY DEFERRED;
+
+select * from historial_acciones where id = 2
+update historial_acciones set accion_realizada = 'Cambio de CPU por un CPU repotenciado y Monitor.' where id = 2 
+
+select * from faltantes_backup_informacion
+delete from faltantes_backup_informacion
+
+select * from tipo_estado_ips 
+select * from lista_ips 
+update lista_ips set codigo_estado_id = 3 where ip = ''
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.43';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.44';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.50';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.58';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.59';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.61';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.62';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.63';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.64';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.65';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.67';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.73';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.74';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.77';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.78';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.79';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.81';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.83';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.84';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.87';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.88';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.89';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.91';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.92';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.93';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.94';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.95';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.96';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.97';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.98';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.100';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.101';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.107';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.108';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.111';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.112';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.121';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.122';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.123';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.124';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.125';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.126';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.127';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.128';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.129';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.130';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.131';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.132';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.133';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.134';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.139';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.140';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.141';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.144';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.150';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.160';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.161';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.162';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.163';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.164';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.165';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.166';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.167';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.168';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.169';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.174';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.175';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.176';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.177';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.178';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.179';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.180';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.181';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.182';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.183';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.184';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.185';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.186';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.187';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.188';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.189';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.190';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.191';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.192';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.193';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.194';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.196';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.197';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.198';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.199';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.200';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.201';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.202';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.204';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.205';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.208';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.209';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.211';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.213';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.214';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.215';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.216';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.217';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.218';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.219';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.220';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.221';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.222';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.223';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.224';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.225';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.226';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.229';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.230';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.231';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.232';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.235';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.236';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.237';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.238';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.239';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.240';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.241';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.242';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.243';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.245';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.246';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.249';
+update lista_ips set codigo_estado_id = 3 where ip = '192.168.1.254';
+select * from lista_ips order by id asc
+select * from lista_colaboradores where codigo_colaborador = 102
+update lista_colaboradores set ip_colaborador_id = NULL where codigo_colaborador = 102
+select * from 
+select * from inventario_hardware where inventario_hardware.nombre_colaborador_id like '%2-Br%'
+delete from inventario_hardware where inventario_hardware.nombre_colaborador_id like '%2-Br%'
+delete from inventario_software where ip_id ='192.168.1.57'
+select * from lista_backups_informacion
+--insert into lista_backups_informacion values(152,'Parece que aparecieron unos errores revise el log.',60,104,'2026-01-21');
+select * from lista_colaboradores where lista_colaboradores.nombre_colaborador like '%Hermo%'
+select * from faltantes_backup_informacion
+delete from faltantes_backup_informacion

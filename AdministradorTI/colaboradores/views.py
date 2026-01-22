@@ -54,9 +54,9 @@ def agregar_colaborador(request):
     else:
         ip_disponibles = lista_ips.objects.filter(codigo_estado=2)
         formulario =  colaboradorForm()
-        formulario.fields['ip_colaborador'].queryset =ip_disponibles
+        #formulario.fields['ip_colaborador'].queryset =ip_disponibles
     
-    return render(request,'colaboradores/agregar_colaborador.html',{'formulario':formulario})
+    return render(request,'colaboradores/agregar_colaborador.html',{'formulario':formulario,'ip_disponibles':ip_disponibles})
 
 @login_required(login_url="pagina_login")
 def generar_excel_nuevocolab(request,pk):
