@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
 
-from ips.models import lista_ips
+#from ips.models import lista_ips
 
 # Create your models here.
 
