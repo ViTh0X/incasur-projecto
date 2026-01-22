@@ -42,4 +42,4 @@ class lista_colaboradores(models.Model):
 class colaboradorForm(forms.ModelForm):
     class Meta:
         model = lista_colaboradores
-        fields = ['nombre_colaborador','ip_colaborador','usuario_sistema','correo','usuario_sentinel','usuario_sbs','usuario_windows','usuario_reloj_control','codigo_impresion_colaborador','cargo_colaborador']
+        fields = ['nombre_colaborador','usuario_sistema','correo','usuario_sentinel','usuario_sbs','usuario_windows','usuario_reloj_control','codigo_impresion_colaborador','cargo_colaborador']
