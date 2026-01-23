@@ -19,11 +19,10 @@
                             <label class="campo--label">IP :</label>
                             <div class="campos__formulario--listbox">
                                 <select name="ip_colaborador">                                
-                                    {% for ip in ip_disponible %}
+                                    {% for ip in ip_disponibles %}
                                     <option value="{{ ip.ip }}">{{ ip.ip }}</option>
                                     {% endfor %}
-                                </select> 
-                                <!--{{ ip_disponibles }}-->
+                                </select>                                 
                             </div>                            
                         </div>
                         <div class="campo">
