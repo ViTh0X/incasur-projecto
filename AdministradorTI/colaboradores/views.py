@@ -32,10 +32,11 @@ def agregar_colaborador(request):
     ip_disponibles = ips.objects.filter(codigo_estado=2)
     if request.method == 'POST':
         formulario = colaboradorForm(request.POST)
-        formulario.fields['ip_colaborador'].queryset = ip_disponibles
+        ip_colaborador_str = request.POST.get('ip_colaborador')
+        #formulario.fields['ip_colaborador'].queryset = ip_disponibles
         if formulario.is_valid():
             #Obtenemos un objeto ip de la lista de ips
-            ip_colaborador = formulario.cleaned_data['ip_colaborador']            
+            #ip_colaborador = formulario.cleaned_data['ip_colaborador']            
             #Aqui cambiar la actualioacion de nombre para hardware y tambien para 
             #ip                                    
             #Por medio del formulario obtenemos un objeto de lista_colaboradores
@@ -46,6 +47,7 @@ def agregar_colaborador(request):
             #Recordar que si es un foreign key, necesitamos pasarle una instancia de el fk estado_colaborador_activo = get_object_or_404(estado_colaboradores,pk=1)  a nuestro formulario para guardar,            
             estado_ip_ocupada = get_object_or_404(tipo_estado_ips,pk=1)
             #id_colaborador = get_object_or_404(colaboradores,pk=add_colaborador.)
+            ip_colaborador = get_object_or_404(ip=ip_colaborador_str)
             ip_colaborador.codigo_estado = estado_ip_ocupada
             ip_colaborador.colaborador_asignado = add_colaborador
             ip_colaborador.save() 
@@ -54,7 +56,7 @@ def agregar_colaborador(request):
             return redirect('listar_colaboradores')
     else:        
         formulario =  colaboradorForm()
-        formulario.fields['ip_colaborador'].queryset = ip_disponibles
+        #formulario.fields['ip_colaborador'].queryset = ip_disponibles
     
     return render(request,'colaboradores/agregar_colaborador.html',{'formulario':formulario,'ip_disponibles':ip_disponibles})
 
