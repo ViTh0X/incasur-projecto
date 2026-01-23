@@ -46,9 +46,10 @@ def agregar_colaborador(request):
             add_colaborador.estado_colaboradores = estado_colaborador_activo
             add_colaborador.save()
             #Recordar que si es un foreign key, necesitamos pasarle una instancia de el fk estado_colaborador_activo = get_object_or_404(estado_colaboradores,pk=1)  a nuestro formulario para guardar,            
-            estado_ip_ocupada = get_object_or_404(tipo_estado_ips,pk=1)
+            
             #id_colaborador = get_object_or_404(colaboradores,pk=add_colaborador.)
-            ip_colaborador = get_object_or_404(ip=ip_colaborador_str)
+            ip_colaborador = get_object_or_404(ips,ip=ip_colaborador_str)
+            estado_ip_ocupada = get_object_or_404(tipo_estado_ips,pk=1)
             ip_colaborador.codigo_estado = estado_ip_ocupada
             ip_colaborador.colaborador_asignado = add_colaborador
             ip_colaborador.save() 
