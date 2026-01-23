@@ -1,5 +1,5 @@
 from django.db import models
-from colaboradores.models import lista_colaboradores
+from colaboradores.models import colaboradores
 
 from django import forms
 
@@ -9,7 +9,7 @@ class cuentas_forticlient(models.Model):
     id = models.AutoField(primary_key=True)
     usuario = models.CharField(max_length=20,unique=True)
     contraseña = models.CharField(max_length=15,unique=True)
-    usuario_asignado = models.ForeignKey(lista_colaboradores,null=True,blank=True,on_delete=models.CASCADE,to_field='nombre_colaborador')
+    usuario_asignado = models.ForeignKey(colaboradores,null=True,blank=True,on_delete=models.CASCADE)
     fecha_modificacion = models.DateField(auto_now=True)    
     class Meta:
         db_table = 'cuentas_forticlient'

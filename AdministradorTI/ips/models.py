@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
 # Create your models here.
-from colaboradores.models import lista_colaboradores
+from colaboradores.models import colaboradores
 
 class tipo_estado_ips(models.Model):
     codigo_estado = models.AutoField(primary_key=True)
@@ -63,7 +63,7 @@ class ips(models.Model):
     #Agregar nuevo campo Roll Asignado
     roll_ip = models.CharField(max_length=120,null=True,blank=True)
     #Agregar codigo de colaborador Asignado
-    colaborador_asignado = models.ForeignKey(lista_colaboradores,on_delete=models.CASCADE,null=True,blank=True)
+    colaborador_asignado = models.ForeignKey(colaboradores,on_delete=models.CASCADE,null=True,blank=True)
     seccion = models.ForeignKey(tipo_secciones,on_delete=models.CASCADE,null=True,blank=True)
     nivel_firewall = models.ForeignKey(niveles_firewall,on_delete=models.CASCADE,null=True,blank=True)    
     tipo_equipo_asignado = models.ForeignKey(tipo_equipos_informaticos,on_delete=models.CASCADE,null=True,blank=True)    

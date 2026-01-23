@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 
 from .models import historial_acciones, ipForm,historial_accionForm, ips
-from colaboradores.models import lista_colaboradores
+from colaboradores.models import colaboradores
 
 
 from django.contrib.auth.decorators import login_required
@@ -105,7 +105,7 @@ def agregar_accion(request):
             agregar_accion = formulario.save(commit=True)
             id_colaborador_f = formulario.cleaned_data['colaborador_asignado']            
             try:                
-                objeto_colaborador = get_object_or_404(lista_colaboradores,id_colaborador=id_colaborador_f)            
+                objeto_colaborador = get_object_or_404(colaboradores,id_colaborador=id_colaborador_f)            
                 agregar_accion.nombre_colaborador = objeto_colaborador.nombre_colaborador
             except:
                 agregar_accion.nombre_colaborador = "Sin colaborador asignado"

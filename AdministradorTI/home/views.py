@@ -5,7 +5,7 @@ from django.conf import settings
 import os
 import datetime
 
-from colaboradores.models import lista_colaboradores, estado_colaboradores
+from colaboradores.models import colaboradores, estado_colaboradores
 from .models import cuentas_forticlient, forms_cuentas_forticlient
 # Create your views here.
 
@@ -68,7 +68,7 @@ def editar_usuario_forti(request,pk):
             return redirect('listar_usuarios_forticlient')
     else:
         estado_colabor_activo = get_object_or_404(estado_colaboradores,codigo_estado=1)
-        usuarios_activos = lista_colaboradores.objects.filter(estado_colaboradores=estado_colabor_activo)
+        usuarios_activos = colaboradores.objects.filter(estado_colaboradores=estado_colabor_activo)
         form = forms_cuentas_forticlient(instance=usuario_forticlient)
         form.fields['usuario_asignado'].queryset = usuarios_activos
     
