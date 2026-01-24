@@ -49,7 +49,7 @@ def agregar_colaborador(request):
             
             #id_colaborador = get_object_or_404(colaboradores,pk=add_colaborador.)
             ip_colaborador = get_object_or_404(ips,ip=ip_colaborador_str)
-            estado_ip_ocupada = get_object_or_404(tipo_estado_ips,pk=1)
+            estado_ip_ocupada = get_object_or_404(tipo_estado_ips,codigo_estado=1)
             ip_colaborador.codigo_estado = estado_ip_ocupada
             ip_colaborador.colaborador_asignado = add_colaborador
             ip_colaborador.save() 
