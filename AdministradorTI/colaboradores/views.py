@@ -176,7 +176,7 @@ def generar_excel_colab(request):
                                          'cargo_colaborador',
                                          'estado_colaboradores__nombre_estado')
     df = pd.DataFrame(list(data_df))
-    df['estado_colaboradores'] = df['estado_colaboradores'].replace({1:'ACTIVO',2:'CESADO'})
+    #df['estado_colaboradores'] = df['estado_colaboradores'].replace({1:'ACTIVO',2:'CESADO'})
     df = df.rename(columns={ 
         'codigo_colaborador' : 'codigo_colaborador',
         'nombre_colaborador': 'Nombre Completo',        
