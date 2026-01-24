@@ -61,7 +61,17 @@ def reiniciar_data_ip(request,pk):
 def generar_excel_ip(request):
     fecha_hora = datetime.now()
     listado_ips = ips.objects.all()
-    data_df = listado_ips.values('id','ip','roll_ip','colaborador_asignado','seccion','nivel_firewall','tipo_equipo_asignado','marca_equipo_asignado','modelo_equipo_asignado','oficina','codigo_estado')
+    data_df = listado_ips.values('id',
+                                 'ip',
+                                 'roll_ip',
+                                 'colaborador_asignado__nombre_colaborador',
+                                 'seccion__nombre_seccion',
+                                 'nivel_firewall__nombre_nivel',
+                                 'tipo_equipo_asignado__nombre_tipo_equipo',
+                                 'marca_equipo_asignado',
+                                 'modelo_equipo_asignado',
+                                 'oficina__nombre_oficina',
+                                 'codigo_estado__nombre_estado')
     df = pd.DataFrame(list(data_df))
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename="Lista de IPs {fecha_hora}.xlsx"'

@@ -165,7 +165,16 @@ def cesar_colaborador(request,pk):
 def generar_excel_colab(request):
     fecha_hora = datetime.now()
     lista_colaboradores = colaboradores.objects.all()
-    data_df = lista_colaboradores.values('codigo_colaborador','nombre_colaborador','usuario_sistema','correo','usuario_sentinel','usuario_windows','usuario_reloj_control','codigo_impresion_colaborador','cargo_colaborador','estado_colaboradores')
+    data_df = lista_colaboradores.values('codigo_colaborador',
+                                         'nombre_colaborador',
+                                         'usuario_sistema',
+                                         'correo',
+                                         'usuario_sentinel',
+                                         'usuario_windows',
+                                         'usuario_reloj_control',
+                                         'codigo_impresion_colaborador',
+                                         'cargo_colaborador',
+                                         'estado_colaboradores__nombre_estado')
     df = pd.DataFrame(list(data_df))
     df['estado_colaboradores'] = df['estado_colaboradores'].replace({1:'ACTIVO',2:'CESADO'})
     df = df.rename(columns={ 
