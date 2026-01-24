@@ -113,13 +113,10 @@ def agregar_accion(request):
     if request.method == 'POST':
         formulario = historial_accionForm(request.POST)
         if formulario.is_valid():            
-            agregar_accion = formulario.save(commit=True)
-            id_colaborador_f = formulario.cleaned_data['colaborador_asignado']            
-            try:                
-                objeto_colaborador = get_object_or_404(colaboradores,id_colaborador=id_colaborador_f)            
-                agregar_accion.nombre_colaborador = objeto_colaborador.nombre_colaborador
-            except:
-                agregar_accion.nombre_colaborador = "Sin colaborador asignado"
+            agregar_accion = formulario.save(commit=False)                                                                
+            ip=formulario.cleaned_data['ip_historial']
+            ip_colaborador = get_object_or_404(ips,id=ip)            
+            agregar_accion.nombre_colaborador = ip_colaborador.colaborador_asignado.nombre_colaborador
             agregar_accion.save()
             return redirect('listar_ips')
     else:
