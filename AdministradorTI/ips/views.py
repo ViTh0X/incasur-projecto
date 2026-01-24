@@ -115,7 +115,7 @@ def agregar_accion(request):
         if formulario.is_valid():            
             agregar_accion = formulario.save(commit=False)                                                                
             ip=formulario.cleaned_data['ip_historial']
-            ip_colaborador = get_object_or_404(ips,id=ip)            
+            ip_colaborador = get_object_or_404(ips,id=ip.id)            
             agregar_accion.nombre_colaborador = ip_colaborador.colaborador_asignado.nombre_colaborador
             agregar_accion.save()
             return redirect('listar_ips')
