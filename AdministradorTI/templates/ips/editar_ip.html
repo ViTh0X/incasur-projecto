@@ -75,6 +75,13 @@
                                 {{ formulario.oficina.errors }}
                             </div> 
                         </div>
+                        <div class="campo">
+                            <label class="campo--label">Oficina :</label>
+                             <div class="campos__formulario--listbox">
+                                {{ formulario.codigo_estado }}
+                                {{ formulario.codigo_estado.errors }}
+                            </div> 
+                        </div>
                         <div class="botones-formularios">
                             <a href="{% url 'listar_ips' %}">Volver a la Lista</a>
                             <button type="submit">Actualizar</button>                
