@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 
 from .models import historial_acciones, ipForm,historial_accionForm, ips
-from colaboradores.models import colaboradores
+from colaboradores.models import colaboradores, estado_colaboradores
 
 
 from django.contrib.auth.decorators import login_required
@@ -34,9 +34,10 @@ def editar_ip(request,pk):
             formulario.save()
             return redirect('listar_ips')            
     else:        
+        trabajador_libre = get_object_or_404(estado_colaboradores,codigo_estado=1)
         formulario = ipForm(instance=ip)        
-        #data_usuario = lista_colaboradores.objects.filter(ip_colaborador=ip).first()
-        #print(data_usuario)                                
+        colaboradores_activos = colaboradores.objects.filter(estado_colaboradores=trabajador_libre)        
+        formulario.fields['colaborador_asignado'].queryset = colaboradores_activos         
     return render(request,'ips/editar_ip.html',{'formulario':formulario})
 
 
