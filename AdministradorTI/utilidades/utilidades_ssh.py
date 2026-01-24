@@ -40,7 +40,7 @@ class SSHManager(logArchivos):
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
                 transporte = self.conexionSSH.get_transport()
                 transporte.set_keepalive(20)                                                           
-                ruta_archivo_origen_servidor = "/root/inventario_hardware.exe" 
+                ruta_archivo_origen_servidor = "/home/deployer/inventario_hardware.exe" 
                 ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"                
                 try:            
                     self.canalSFTP = self.conexionSSH.open_sftp()            
@@ -65,7 +65,7 @@ class SSHManager(logArchivos):
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                                
                 transporte = self.conexionSSH.get_transport()
                 transporte.set_keepalive(20)                                          
-                ruta_archivo_origen_servidor = "/root/inventario_software.exe" 
+                ruta_archivo_origen_servidor = "/home/deployer/inventario_software.exe" 
                 ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"                
                 try:            
                     self.canalSFTP = self.conexionSSH.open_sftp()            
@@ -93,9 +93,9 @@ class SSHManager(logArchivos):
                 #time.sleep(5)                
                 
                 ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/hardware/{self.hostname}-hardware.txt"
-                ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
+                ruta_archivo_local = f"/home/deployer/Inventarios/{self.hostname}-hardware.txt"
                 #ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"        
-                ruta_archivo_origen_servidor = "/root/inventario_hardware.exe" 
+                ruta_archivo_origen_servidor = "/home/deployer/inventario_hardware.exe" 
                 ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/hardware/inventario_hardware.exe"
                 try:
                     self.canalSFTP = self.conexionSSH.open_sftp()  
@@ -131,7 +131,7 @@ class SSHManager(logArchivos):
         
     def guardar_inventario_hardware(self):
         dic_inventario_hardware = {}           
-        ruta_archivo_local = f"/root/Inventarios/{self.hostname}-hardware.txt"
+        ruta_archivo_local = f"/home/deployer/Inventarios/{self.hostname}-hardware.txt"
         # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-hardware.txt"                                    
         with open(ruta_archivo_local,'r',encoding='windows-1252') as inventario_hardware:
             for linea in inventario_hardware:
@@ -185,9 +185,9 @@ class SSHManager(logArchivos):
                 
                 #time.sleep(10)
                 ruta_inventario_hardware = f"C:/Users/Administrador/Documents/TI/software/{self.hostname}-software.txt"
-                ruta_archivo_local = f"/root/Inventarios/{self.hostname}-software.txt"
+                ruta_archivo_local = f"/home/deployer/Inventarios/{self.hostname}-software.txt"
                 # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-software.txt"
-                ruta_archivo_origen_servidor = "/root/inventario_software.exe" 
+                ruta_archivo_origen_servidor = "/home/deployer/inventario_software.exe" 
                 ruta_archivo_destino_cliente = "C:/Users/Administrador/Documents/TI/software/inventario_software.exe"                
                 try:                                
                     self.canalSFTP = self.conexionSSH.open_sftp()
@@ -233,7 +233,7 @@ class SSHManager(logArchivos):
             lista_drive=[]
             lista_TI=[]
             lista_otros=[]                  
-            ruta_archivo_local = f"/root/Inventarios/{self.hostname}-software.txt"
+            ruta_archivo_local = f"/home/deployer/Inventarios/{self.hostname}-software.txt"
             # ruta_archivo_local = f"D:/Inventarios/{self.hostname}-software.txt"                                            
             with open(ruta_archivo_local,'r') as inventario_software:
                 for linea in inventario_software:
