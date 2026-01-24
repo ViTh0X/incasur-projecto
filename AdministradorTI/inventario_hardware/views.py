@@ -78,7 +78,7 @@ def listar_faltantes_hardware(request):
 def generar_excell_all_h(request):
     fecha_hora = datetime.now()
     inventarios_hardware = inventario_hardware.objects.all()
-    data_df = inventarios_hardware.values('codigo_ip','codigo_colaborador','nombre_equipo','placa','procesador','ram','video_integrada','video_dedicada','so','almacenamiento','puertas_enlace','fecha_modificacion')
+    data_df = inventarios_hardware.values('codigo_ip__ip','codigo_colaborador__nombre_colaborador','nombre_equipo','placa','procesador','ram','video_integrada','video_dedicada','so','almacenamiento','puertas_enlace','fecha_modificacion')
     df = pd.DataFrame(list(data_df))
     df = df.rename(columns={
         'codigo_ip':'IP',
