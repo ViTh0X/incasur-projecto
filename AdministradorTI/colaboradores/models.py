@@ -18,7 +18,7 @@ class estado_colaboradores(models.Model):
 
 class colaboradores(models.Model):
     codigo_colaborador = models.AutoField(primary_key=True)
-    nombre_colaborador = models.CharField(max_length=150,unique=True)
+    nombre_colaborador = models.CharField(max_length=150,unique=False)
     #ip_colaborador = models.ForeignKey(lista_ips,on_delete=models.CASCADE, to_field='ip')
     usuario_sistema = models.CharField(max_length=25,default='SIN ACCESO AL SISTEMA')
     correo = models.CharField(max_length=50,unique=False)
