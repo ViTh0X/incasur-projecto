@@ -16,7 +16,7 @@ def ejecutar_inventario_software():
         estado_ips = get_object_or_404(tipo_estado_ips,pk=1)
         laptop = get_object_or_404(tipo_equipos_informaticos,pk=1)
         pc = get_object_or_404(tipo_equipos_informaticos,pk=2)
-        nombres_a_filtrar = [laptop.nombre_tipo_equipo, pc.nombre_tipo_equipo]        
+        nombres_a_filtrar = [laptop, pc]        
         lista_ips_ocupadas = ips.objects.filter(codigo_estado=estado_ips,tipo_equipo_asignado__in=nombres_a_filtrar).values('ip')        
         for ip in lista_ips_ocupadas:
             string_ip = ip['ip']
@@ -152,7 +152,7 @@ def actualizar_ejecutable():
         estado_ips = get_object_or_404(tipo_estado_ips,pk=1)
         laptop = get_object_or_404(tipo_equipos_informaticos,pk=1)
         pc = get_object_or_404(tipo_equipos_informaticos,pk=2)
-        nombres_a_filtrar = [laptop.nombre_tipo_equipo, pc.nombre_tipo_equipo]        
+        nombres_a_filtrar = [laptop, pc]        
         lista_ips_ocupadas = ips.objects.filter(codigo_estado=estado_ips,tipo_equipo_asignado__in=nombres_a_filtrar).values('ip')        
         for ip in lista_ips_ocupadas:
             string_ip = ip['ip']
