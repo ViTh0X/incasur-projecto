@@ -139,7 +139,7 @@ def editar_colaborador(request,pk):
 def cesar_colaborador(request,pk):
     colaborador = get_object_or_404(colaboradores,pk=pk)
     if request.method == 'POST':
-        ip_colaborador = colaborador.ip_colaborador
+        ip_colaborador = get_object_or_404(ips,colaborador_asignado=colaborador)
         nombre_colaborador = colaborador.nombre_colaborador
                         
         estado_colaborador = get_object_or_404(estado_colaboradores,pk=2)
