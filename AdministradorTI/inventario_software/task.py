@@ -37,7 +37,7 @@ def ejecutar_inventario_software():
                 ejecucion_correcta = SSH_instancia.ejecuta_inventario_software()                
                 if ejecucion_correcta:
                     print("Ejecuto inventario software")    
-                    inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                     print("Elimino duplicados")
                     ##################################                    
                     diccionario_inventario_software = SSH_instancia.guardar_inventario_software()                    
@@ -51,16 +51,16 @@ def ejecutar_inventario_software():
                             )
                             modelado_inventario_software.save()                            
                     print("Crea el inventario en DB")                    
-                    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                     print("Elimino duplicados")
                 else:
-                    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                     ip_filtrada = ips.objects.get(ip=string_ip)
                     faltantes_hardware = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                     faltantes_hardware.save()                                          
             except Exception as e:
                 print(f"Error {e}")                
-                faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                 ip_filtrada = ips.objects.get(ip=string_ip)
                 faltantes_hardware = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                 faltantes_hardware.save()
@@ -106,7 +106,7 @@ def ejecutar_faltantes_inventario_software():
                 print(f"********TRABAJANDO IP {string_ip}*********")
                 ejecucion_correcta = SSH_instancia.ejecuta_inventario_software()
                 if ejecucion_correcta:
-                    inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                     print("Elimino Duplicados")
                     diccionario_inventario_software = SSH_instancia.guardar_inventario_software()
                     print("Guardo el Inventario")
@@ -119,15 +119,15 @@ def ejecutar_faltantes_inventario_software():
                                 nombre_software =software                                
                             )
                             modelado_inventario_software.save()
-                    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                 else:                    
-                    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                     ip_filtrada = ips.objects.get(ip=string_ip)
                     faltantes_hardware = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                     faltantes_hardware.save()                                          
             except Exception as e:
                 print(f"Error_ssh {e}")
-                faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                 ip_filtrada = ips.objects.get(ip=string_ip)
                 faltantes_hardware = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                 faltantes_hardware.save()
