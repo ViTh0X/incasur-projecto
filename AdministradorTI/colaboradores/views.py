@@ -103,7 +103,7 @@ def generar_excel_nuevocolab(request,pk):
 
 @login_required(login_url="pagina_login")            
 def editar_colaborador(request,pk):
-    colaborador = get_object_or_404(colaborador,pk=pk)
+    colaborador = get_object_or_404(colaboradores,pk=pk)
     #ip_colaborador_antigua = colaborador.ip_colaborador.ip
     if request.method == 'POST':
         formulario = colaboradorForm_editar(request.POST, instance=colaborador)
@@ -146,7 +146,7 @@ def cesar_colaborador(request,pk):
         colaborador.estado_colaboradores = estado_colaborador
         colaborador.save()
         
-        estado_ocupado_ip = get_object_or_404(tipo_estado_ips,pk=2)
+        estado_ocupado_ip = get_object_or_404(tipo_estado_ips,codigo_estado=2)
         ip_colaborador.codigo_estado = estado_ocupado_ip
         ip_colaborador.save()
         
