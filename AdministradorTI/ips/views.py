@@ -133,7 +133,7 @@ def agregar_accion(request):
 @login_required(login_url="pagina_login")            
 def ver_historial_acciones(request,pk):    
     ip_seleccionada = ips.objects.get(pk=pk)
-    historiales = historial_acciones.objects.filter(ip_historial=ip_seleccionada.ip)
+    historiales = historial_acciones.objects.filter(ip_historial=ip_seleccionada)
     if not historiales: 
         return render(request,'ips/historial_vacio.html')
     else:
