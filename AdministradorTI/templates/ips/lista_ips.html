@@ -51,14 +51,14 @@
                     {% for ip in listado_ips %}                    
                     <tr>
                         <td>{{ ip.ip }}</td>
-                        <td>{{ ip.roll_ip }}</td>
-                        <td>{{ ip.colaborador_asignado.nombre_colaborador }}</td>
-                        <td>{{ ip.seccion.nombre_seccion }}</td>
-                        <td>{{ ip.nivel_firewall.nombre_nivel }}</td>
-                        <td>{{ ip.tipo_equipo_asignado.nombre_tipo_equipo }}</td>
-                        <td>{{ ip.marca_equipo_asignado }}</td>
-                        <td>{{ ip.modelo_equipo_asignado }}</td>
-                        <td>{{ ip.oficina.nombre_oficina }}</td>                                            
+                        <td>{{ ip.roll_ip }}</td>                        
+                        <td>{{ ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</td>
+                        <td>{{ ip.seccion.nombre_seccion|default:"None" }}</td>
+                        <td>{{ ip.nivel_firewall.nombre_nivel|default:"None" }}</td>
+                        <td>{{ ip.tipo_equipo_asignado.nombre_tipo_equipo|default:"None" }}</td>
+                        <td>{{ ip.marca_equipo_asignado|default:"None" }}</td>
+                        <td>{{ ip.modelo_equipo_asignado|default:"None" }}</td>
+                        <td>{{ ip.oficina.nombre_oficina|default:"None" }}</td>                                            
                         <td>{{ ip.codigo_estado.nombre_estado }}</td>                                            
                         <td>
                             <div>
@@ -77,23 +77,7 @@
                                     <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
                                     <path d="M13.5 6.5l4 4" />
                                     </svg>
-                                </a>
-                                <a title="LIMPIAR LOS DATOS DE LA IP" href="{% url 'reiniciar_data_ip' pk=ip.pk %}">
-                                    <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="28"
-                                    height="28"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="#ff2d55"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    >
-                                    <path d="M19 20h-10.5l-4.21 -4.3a1 1 0 0 1 0 -1.41l10 -10a1 1 0 0 1 1.41 0l5 5a1 1 0 0 1 0 1.41l-9.2 9.3" />
-                                    <path d="M18 13.3l-6.3 -6.3" />
-                                    </svg>
-                                </a>   
+                                </a>                                  
                                 <a title="HISTORIAL DE ACCIONES" href="{% url 'ver_historial_acciones' pk=ip.pk %}">
                                 <svg
                                 xmlns="http://www.w3.org/2000/svg"
