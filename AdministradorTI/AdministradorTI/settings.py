@@ -131,9 +131,9 @@ USE_TZ = True
 FORCE_SCRIPT_NAME = '/admintihome'
 
 STATIC_URL = '/admintihome/static/'
-#STATICFILES_DIRS = (
-#    os.path.join(BASE_DIR,'static'),
-#)
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR,'static'),
+)
 
 #STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATIC_ROOT = '/var/www/mi_proyecto/static/'
