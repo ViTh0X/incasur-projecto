@@ -127,15 +127,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR,'static'),
-)
+# Añade esto para que Django sepa que no es el dueño de la raíz
+FORCE_SCRIPT_NAME = '/admintihome'
 
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+STATIC_URL = '/admintihome/static/'
+#STATICFILES_DIRS = (
+#    os.path.join(BASE_DIR,'static'),
+#)
 
-MEDIA_URL = '/archivos/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'archivos')
+#STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+STATIC_ROOT = '/var/www/mi_proyecto/static/'
+
+MEDIA_URL = '/admintihome/archivos/'
+#MEDIA_ROOT = os.path.join(BASE_DIR,'archivos')
+MEDIA_ROOT = '/var/www/mi_proyecto/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
