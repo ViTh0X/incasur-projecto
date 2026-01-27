@@ -21,9 +21,9 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url="pagina_login")
 def listar_colaboradores(request):
     try:
-        #estado_colaborador = get_object_or_404(estado_colaboradores,pk=1)
-        #lista_colaboradores = colaboradores.objects.filter(estado_colaboradores=estado_colaborador).order_by("codigo_colaborador")
-        lista_colaboradores = colaboradores.objects.all()
+        estado_colaborador = get_object_or_404(estado_colaboradores,pk=1)
+        lista_colaboradores = colaboradores.objects.filter(estado_colaboradores=estado_colaborador).order_by("codigo_colaborador")
+        #lista_colaboradores = colaboradores.objects.all()
     except:
         pass
     return render(request,'colaboradores/lista_colaboradores.html',{'lista_colaboradores':lista_colaboradores})   
