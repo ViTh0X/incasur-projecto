@@ -4,7 +4,7 @@ const botonInventario_h = document.getElementById('ejecutar_inventario_h');
 
 if (botonInventario_h){
     botonInventario_h.addEventListener('click',function(){
-        fetch('/inventario-hardware/iniciar-inventario-hardware/',{
+        fetch('/admintihome/inventario-hardware/iniciar-inventario-hardware/',{
             method:'POST',
             headers:{'X-CSRFToken': csrftoken }
         })
@@ -14,7 +14,7 @@ if (botonInventario_h){
             if(taskID){
                 /*Verificacion constante el estado */
                 const intervalos = setInterval(()=>{
-                    fetch(`/inventario-hardware/status/${taskID}/`)
+                    fetch(`/admintihome/inventario-hardware/status/${taskID}/`)
                     .then(response => response.json())
                     .then(estadoData =>{
                         if(estadoData.estado === 'SUCCESS'){
@@ -33,7 +33,7 @@ if (botonInventario_h){
 const  botonFaltantes_h = document.getElementById('ejecutar_inventario_faltantes_h');
 if(botonFaltantes_h){
     botonFaltantes_h.addEventListener('click',function(){
-        fetch('/inventario-hardware/iniciar-faltantes-hardware/',{
+        fetch('/admintihome/inventario-hardware/iniciar-faltantes-hardware/',{
             method:'POST',
             headers:{'X-CSRFToken': csrftoken }
         })
@@ -43,7 +43,7 @@ if(botonFaltantes_h){
             if(taskID){
                 /*Verificacion constante el estado */
                 const intervalos = setInterval(()=>{
-                    fetch(`/inventario-hardware/status/${taskID}/`)
+                    fetch(`/admintihome/inventario-hardware/status/${taskID}/`)
                     .then(response => response.json())
                     .then(estadoData =>{
                         if(estadoData.estado === 'SUCCESS'){
@@ -61,7 +61,7 @@ const botonActualizar_h = document.getElementById('actualizar_ejecutable_h');
 
 if(botonActualizar_h){
     botonActualizar_h.addEventListener('click',function(){
-        fetch('/inventario-hardware/actualizar-ejecutable-h/',{
+        fetch('/admintihome/inventario-hardware/actualizar-ejecutable-h/',{
             method:'POST',
             headers:{'X-CSRFToken': csrftoken }
         })
@@ -71,7 +71,7 @@ if(botonActualizar_h){
             if(taskID){
                 /*Verificacion constante el estado */
                 const intervalos = setInterval(()=>{
-                    fetch(`/inventario-hardware/status/${taskID}/`)
+                    fetch(`/admintihome/inventario-hardware/status/${taskID}/`)
                     .then(response => response.json())
                     .then(estadoData =>{
                         if(estadoData.estado === 'SUCCESS'){
@@ -90,7 +90,7 @@ const botonInventario_s = document.getElementById('ejecutar_inventario_s');
 
 if (botonInventario_s){
     botonInventario_s.addEventListener('click',function(){
-        fetch('/inventario-software/iniciar-inventario-software/',{
+        fetch('/admintihome/inventario-software/iniciar-inventario-software/',{
             method:'POST',
             headers:{'X-CSRFToken': csrftoken }
         })
@@ -117,7 +117,7 @@ if (botonInventario_s){
 const  botonFaltantes_s = document.getElementById('ejecutar_inventario_faltantes_s');
 if(botonFaltantes_s){
     botonFaltantes_s.addEventListener('click',function(){
-        fetch('/inventario-software/iniciar-faltantes-software/',{
+        fetch('/admintihome/inventario-software/iniciar-faltantes-software/',{
             method:'POST',
             headers:{'X-CSRFToken': csrftoken }
         })
@@ -127,7 +127,7 @@ if(botonFaltantes_s){
             if(taskID){
                 /*Verificacion constante el estado */
                 const intervalos = setInterval(()=>{
-                    fetch(`/inventario-software/status/${taskID}/`)
+                    fetch(`/admintihome/inventario-software/status/${taskID}/`)
                     .then(response => response.json())
                     .then(estadoData =>{
                         if(estadoData.estado === 'SUCCESS'){
@@ -145,7 +145,7 @@ const botonActualizar_s = document.getElementById('actualizar_ejecutable_s');
 
 if(botonActualizar_s){
     botonActualizar_s.addEventListener('click',function(){
-        fetch('/inventario-software/actualizar-ejecutable-s/',{
+        fetch('/admintihome/inventario-software/actualizar-ejecutable-s/',{
             method:'POST',
             headers:{'X-CSRFToken': csrftoken }
         })
@@ -173,7 +173,7 @@ const boton_backup = document.getElementById('ejecutar_backup');
 
 if (boton_backup){
     boton_backup.addEventListener('click',function(){
-        fetch('/backup-informacion/iniciar-backup-informacion/',{
+        fetch('/admintihome/backup-informacion/iniciar-backup-informacion/',{
             method:'POST',
             headers:{'X-CSRFToken': csrftoken }
         })
@@ -200,7 +200,7 @@ if (boton_backup){
 const boton_backup_faltantes = document.getElementById('ejecutar_backup_faltantes');
 if(boton_backup_faltantes){
     boton_backup_faltantes.addEventListener('click',function(){
-        fetch('/backup-informacion/iniciar-faltantes-backup/',{
+        fetch('/admintihome/backup-informacion/iniciar-faltantes-backup/',{
             method:'POST',
             headers:{'X-CSRFToken': csrftoken }
         })
