@@ -110,6 +110,9 @@ def listar_faltantes_software(request):
     else:
         return render(request,'inventario_software/lista_faltantes_s.html',{'lista_faltantes':lista_faltantes})
 
+#TEst
+
+
 @login_required(login_url="pagina_login")    
 def listar_logs_s(request):    
     lista_logs = logs_actividades_celery.objects.all()
