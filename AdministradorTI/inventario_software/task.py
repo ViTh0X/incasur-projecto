@@ -56,14 +56,14 @@ def ejecutar_inventario_software():
                 else:
                     faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                     ip_filtrada = ips.objects.get(ip=string_ip)
-                    faltantes_hardware = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
-                    faltantes_hardware.save()                                          
+                    faltantes_software = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
+                    faltantes_software.save()                                          
             except Exception as e:
                 print(f"Error {e}")                
                 faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                 ip_filtrada = ips.objects.get(ip=string_ip)
-                faltantes_hardware = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
-                faltantes_hardware.save()
+                faltantes_software = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
+                faltantes_software.save()
         
         logs_inventario_hardware = logs_actividades_celery(            
             mensaje = 'La ejecucion de inventario de software termino sin interrupciones.'
@@ -123,19 +123,19 @@ def ejecutar_faltantes_inventario_software():
                 else:                    
                     faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                     ip_filtrada = ips.objects.get(ip=string_ip)
-                    faltantes_hardware = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
-                    faltantes_hardware.save()                                          
+                    faltantes_software = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
+                    faltantes_software.save()                                          
             except Exception as e:
                 print(f"Error_ssh {e}")
                 faltantes_inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                 ip_filtrada = ips.objects.get(ip=string_ip)
-                faltantes_hardware = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
-                faltantes_hardware.save()
+                faltantes_software = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
+                faltantes_software.save()
         
-        logs_inventario_hardware = logs_actividades_celery(
+        faltantes_software = logs_actividades_celery(
             mensaje = 'La ejecucion FALTANTES de inventario de software termino sin interrupciones.'
         )                                
-        logs_inventario_hardware.save()
+        faltantes_software.save()
         return "TAREA FALTANTES INVENTARIO SOFTWARE TERMINARDA"         
             
     except Exception as e:
@@ -143,7 +143,7 @@ def ejecutar_faltantes_inventario_software():
             mensaje = f"Error{e}"
             # mensaje = 'Ubo un error en la ejecucion de FALTANTES inventario de software no se completo.'
         )                                
-        logs_inventario_hardware.save()
+        faltantes_software.save()
         return "ERROR FALTANTES INVENTARIO SOFTWARE"
 
 @shared_task
@@ -167,15 +167,15 @@ def actualizar_ejecutable():
                 print("Actualizacion Finalizada")                                                              
             except Exception as e:
                 print(f"{string_ip} No esta en linea")    
-        logs_inventario_hardware = logs_actividades_celery(
+        logs_inventario_software = logs_actividades_celery(
             mensaje = 'Actualizo los exe de software con exito.'
         )                                
-        logs_inventario_hardware.save()
+        logs_inventario_software.save()
         return "ACTUALIZACION DE EJECUTABLES SOFTWARE TERMINARDA "
 
     except Exception as e:
-        logs_inventario_hardware = logs_actividades_celery(
+        logs_inventario_software = logs_actividades_celery(
             mensaje = f"Error{e}"
         )                                
-        logs_inventario_hardware.save()
+        logs_inventario_software.save()
         return "ERROR AL ACTUALIZAR LOS EJECUTABLES SOFTWARE"
