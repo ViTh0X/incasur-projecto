@@ -5,6 +5,18 @@ from django import forms
 
 # Create your models here.
 
+class cargo_colaboradores(models.Model):
+    codigo_cargo = models.AutoField(primary_key=True)
+    nombre_cargo = models.CharField(max_length=60)
+    
+    class Meta:
+        db_table = 'cargo_colaboradores'
+        
+    def __str__(self):
+        return self.nombre_cargo
+
+
+
 class estado_colaboradores(models.Model):
     codigo_estado = models.AutoField(primary_key=True)
     nombre_estado = models.CharField(max_length=20)    
@@ -27,7 +39,7 @@ class colaboradores(models.Model):
     usuario_windows = models.CharField(max_length=15,default="SIN WINDOWS")
     usuario_reloj_control = models.CharField(max_length=15,default="SIN MARCACION")
     codigo_impresion_colaborador = models.CharField(max_length=20,unique=False)    
-    cargo_colaborador = models.CharField(max_length=70)    
+    cargo_colaborador = models.CharField(max_length=70,null=True)    
     estado_colaboradores = models.ForeignKey(estado_colaboradores,on_delete=models.CASCADE)    
     fecha_modificacion = models.DateTimeField(auto_now=True)
     
