@@ -5,7 +5,7 @@ from django import forms
 
 # Create your models here.
 
-'''class cargo_colaboradores(models.Model):
+class cargo_colaboradores(models.Model):
     codigo_cargo = models.AutoField(primary_key=True)
     nombre_cargo = models.CharField(max_length=60)
     
@@ -13,7 +13,7 @@ from django import forms
         db_table = 'cargo_colaboradores'
         
     def __str__(self):
-        return self.nombre_cargo'''
+        return self.nombre_cargo
 
 
 
@@ -39,7 +39,7 @@ class colaboradores(models.Model):
     usuario_windows = models.CharField(max_length=15,default="SIN WINDOWS")
     usuario_reloj_control = models.CharField(max_length=15,default="SIN MARCACION")
     codigo_impresion_colaborador = models.CharField(max_length=20,unique=False)    
-    cargo_colaborador = models.CharField(max_length=70,null=True)    
+    cargo_colaborador = models.ForeignKey(cargo_colaboradores,on_delete=models.CASCADE)    
     estado_colaboradores = models.ForeignKey(estado_colaboradores,on_delete=models.CASCADE)    
     fecha_modificacion = models.DateTimeField(auto_now=True)
     
