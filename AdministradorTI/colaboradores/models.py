@@ -39,7 +39,7 @@ class colaboradores(models.Model):
     usuario_windows = models.CharField(max_length=15,default="SIN WINDOWS")
     usuario_reloj_control = models.CharField(max_length=15,default="SIN MARCACION")
     codigo_impresion_colaborador = models.CharField(max_length=20,unique=False)    
-    cargo_colaborador = models.ForeignKey(cargo_colaboradores,on_delete=models.CASCADE)    
+    cargo_colaborador = models.ForeignKey(cargo_colaboradores,on_delete=models.CASCADE,default=1)    
     estado_colaboradores = models.ForeignKey(estado_colaboradores,on_delete=models.CASCADE)    
     fecha_modificacion = models.DateTimeField(auto_now=True)
     
