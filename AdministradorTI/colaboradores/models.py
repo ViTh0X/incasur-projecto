@@ -5,7 +5,7 @@ from django import forms
 
 # Create your models here.
 
-class cargo_colaboradores(models.Model):
+'''class cargo_colaboradores(models.Model):
     codigo_cargo = models.AutoField(primary_key=True)
     nombre_cargo = models.CharField(max_length=60)
     
@@ -13,7 +13,7 @@ class cargo_colaboradores(models.Model):
         db_table = 'cargo_colaboradores'
         
     def __str__(self):
-        return self.nombre_cargo
+        return self.nombre_cargo'''
 
 
 
