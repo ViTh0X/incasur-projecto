@@ -67,8 +67,8 @@ def generar_excel_nuevocolab(request,pk):
     colaborador = get_object_or_404(colaboradores,pk=pk)
     list_ip_colaborador = get_list_or_404(ips,colaborador_asignado=colaborador.codigo_colaborador)
     ip = ""
-    for ips in list_ip_colaborador:
-        ip += ips.ip + "\n"        
+    for instancia_ips in list_ip_colaborador:
+        ip += instancia_ips.ip + "\n"        
     plantilla_ruta = os.path.join(settings.MEDIA_ROOT,'plantillas_excel','PLANTILLA-USUARIOS-NUEVOS.xlsx')
     try:
         libro = openpyxl.load_workbook(plantilla_ruta)
