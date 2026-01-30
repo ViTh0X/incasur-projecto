@@ -86,7 +86,7 @@ def generar_excel_nuevocolab(request,pk):
     hoja['H10'] = str(colaborador.usuario_sistema)
     hoja['R10'] = str(colaborador.usuario_sentinel) 
     hoja['R11'] = str(colaborador.usuario_reloj_control)
-    hoja['R13'] = ip                      
+    hoja['O13'] = ip                      
     usuario_correo_str = str(colaborador.correo)
     usuario_correo_str = usuario_correo_str[0:usuario_correo_str.find('@')]
     hoja['H11'] = str(colaborador.usuario_windows).lower()
