@@ -68,7 +68,8 @@ def generar_excel_nuevocolab(request,pk):
     list_ip_colaborador = get_list_or_404(ips,colaborador_asignado=colaborador.codigo_colaborador)
     ip = ""
     if len(list_ip_colaborador) == 1:
-        ip = instancia_ips.ip
+        for instancia_ips in list_ip_colaborador:
+            ip = instancia_ips.ip
     else:
         for instancia_ips in list_ip_colaborador:
             ip += instancia_ips.ip + "-"        
