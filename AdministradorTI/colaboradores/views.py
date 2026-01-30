@@ -65,7 +65,9 @@ def agregar_colaborador(request):
 @login_required(login_url="pagina_login")
 def generar_excel_nuevocolab(request,pk):
     colaborador = get_object_or_404(colaboradores,pk=pk)
-    ip_colaborador = get_object_or_404(ips,colaborador_asignado=colaborador.codigo_colaborador)
+    list_ip_colaborador = get_list_or_404(ips,colaborador_asignado=colaborador.codigo_colaborador)
+    for ips in list_ip_colaborador:
+        ip += ips.ip + "\n"        
     plantilla_ruta = os.path.join(settings.MEDIA_ROOT,'plantillas_excel','PLANTILLA-USUARIOS-NUEVOS.xlsx')
     try:
         libro = openpyxl.load_workbook(plantilla_ruta)
@@ -79,7 +81,7 @@ def generar_excel_nuevocolab(request,pk):
     hoja['H10'] = str(colaborador.usuario_sistema)
     hoja['R10'] = str(colaborador.usuario_sentinel) 
     hoja['R11'] = str(colaborador.usuario_reloj_control)
-    hoja['R13'] = ip_colaborador.ip                      
+    hoja['R13'] = ip                      
     usuario_correo_str = str(colaborador.correo)
     usuario_correo_str = usuario_correo_str[0:usuario_correo_str.find('@')]
     hoja['H11'] = str(colaborador.usuario_windows).lower()
