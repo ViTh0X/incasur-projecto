@@ -87,7 +87,7 @@ def generar_excel_nuevocolab(request,pk):
     hoja['R12'] = str(colaborador.usuario_sbs)
     hoja['H13'] = str(colaborador.codigo_impresion_colaborador)
     hoja['G29'] = str(colaborador.nombre_colaborador).upper()
-    hoja['N30'] = str(colaborador.cargo_colaborador).upper()
+    hoja['N30'] = str(colaborador.cargo_colaborador.nombre_cargo).upper()
     #Opcional guardar el libro en memoria para mas robustes
     # buffer = BytesIO()
     # libro.save(buffer)
@@ -173,7 +173,7 @@ def generar_excel_colab(request):
                                          'usuario_windows',
                                          'usuario_reloj_control',
                                          'codigo_impresion_colaborador',
-                                         'cargo_colaborador',
+                                         'cargo_colaborador__nombre_cargo',
                                          'estado_colaboradores__nombre_estado')
     df = pd.DataFrame(list(data_df))
     #df['estado_colaboradores'] = df['estado_colaboradores'].replace({1:'ACTIVO',2:'CESADO'})
