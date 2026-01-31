@@ -9,5 +9,6 @@ urlpatterns = [
     path('status/<str:task_id>/',views.verificar_estado_tarea,name='verificar_estado_tarea'),
     path('listar-logs/',views.listar_logs,name='listar_logs'),
     path('descargar-log-errores/<int:pk>/',views.descargar_logs_errores,name='descargar_logs_errores'),
+    path('descargar-cargo-backup/<int:pk>/',views.descargar_cargo_backup,name='descargar_cargo_backup'),
     path('iniciar_backup_individual/<int:pk>/',views.iniciar_backup_individual,name='iniciar_backup_individual'),    
 ]

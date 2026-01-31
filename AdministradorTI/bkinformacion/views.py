@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.http import JsonResponse
 from django.http.response import HttpResponse
 from django.conf import settings
@@ -8,10 +8,14 @@ from .task import ejecutar_faltantes_backup_informacion,ejecutar_backup_informac
 from datetime import datetime
 from .models import backups_informacion,faltantes_backup_informacion
 from home.models import logs_actividades_celery
+from ips.models import ips
 
 from django.contrib.auth.decorators  import login_required
 
+import subprocess
 import os
+import openpyxl
+import pandas as pd
 # Create your views here.
 
 @login_required(login_url="pagina_login")
@@ -83,6 +87,44 @@ def descargar_logs_errores(request,pk):
     return response
 
 @login_required
+def descargar_cargo_backup(request,pk):
+    instancia_backup = get_object_or_404(backups_informacion,pk=pk)    
+    ip_colaborador = instancia_backup.codigo_ip.ip    
+    instancia_ip = get_object_or_404(ips,ip=ip_colaborador)    
+    nombre_colaborador = instancia_ip.colaborador_asignado.nombre_colaborador
+    puesto_colaborador = instancia_ip.colaborador_asignado.cargo_colaborador.nombre_cargo
+    plantilla_ruta = os.path.join(settings.MEDIA_ROOT,'plantillas_excel','BACKUP_BITACORA.xlsx')
+    try:
+        libro = openpyxl.load_workbook(plantilla_ruta)
+        hoja = libro.active
+    except FileNotFoundError:
+        return HttpResponse("Error:La plantilla no fue encontrada")
+    
+    año = instancia_backup.fecha_modificacion.year
+    mes = instancia_backup.fecha_modificacion.month
+    dia = instancia_backup.fecha_modificacion.day
+    mensaje_Observacion = f"La informacion del Disco D fue guardada correctamente segun archivo Log-{str(ip_colaborador)}-{año}-{mes}-{dia}.txt"
+    ruta_archivo_backup = f'/backupcolaboradores/Backup/{ip_colaborador}/'
+    if os.path.exists(ruta_archivo_backup):
+        tamaño_bytes = subprocess.check_output(['du', '-sb', ruta_archivo_backup]).split()[0]
+        for unidad in ['B', 'KB', 'MB', 'GB', 'TB']:
+            if tamaño_bytes < 1024:
+                return f"{bytes:.2f} {unidad}"
+            tamaño_bytes /= 1024
+        tamaño_archivo = f'{tamaño_bytes} MB'            
+    hoja['C7'] = str(nombre_colaborador)
+    hoja['C8'] = str(puesto_colaborador)
+    hoja['C10'] = str(ip_colaborador)
+    hoja['C11'] = mensaje_Observacion
+    hoja['G10'] = tamaño_archivo
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename=colaborador_{nombre_colaborador}.xlsx'
+    libro.save(response)
+    return response
+    
+    
+    
+@login_required
 def iniciar_backup_individual(request,pk):
     backup_ip = get_object_or_404(backups_informacion,pk=pk)
     ip_bk = backup_ip.codigo_ip.ip    
@@ -90,3 +132,6 @@ def iniciar_backup_individual(request,pk):
         ejecutar_backup_individual.delay(ip=ip_bk)
         return redirect('listar_backup_informacion')
     return redirect('listar_backup_informacion')
+
+
+    
