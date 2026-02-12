@@ -464,10 +464,11 @@ class SSHManager(logArchivos):
             rBaseRemoR = Path(rBaseRemo)
             rBaseLocalR = Path(rBaseLocal)
         try:                
-            listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))
-                                             
-            for archivo in listaArchivos:                                   
+            listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))                                             
+            for archivo in listaArchivos:                                                   
                 nombreArchivo = archivo.filename
+                print(archivo)
+                print(nombreArchivo)
                 if nombreArchivo.startswith("~"):
                     print(f"Archivo {nombreArchivo} ignorado")
                     continue
@@ -543,37 +544,26 @@ class SSHManager(logArchivos):
                             print(f"Ocurrio un error inesperado : {e} bucle 1 - {rutaCopiarRemoto}")
                             mensaje = f"Ocurrio un error inesperado : {e} -{rutaCopiarRemoto}"
                             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                                                                                                                                               
-            print("Intentando copiar el PST")
-            try:
-                self.canalSFTP.get(str(self.pst_path_remoto),str(self.pst_path_local))  
-            except IOError as e:
-                mensaje = f"No se pudo copiar {self.nombre_archivo_pst} (¿Archivo en uso?): {e}"
-                self.registrarLog(mensaje, "ERR",self. pst_path_remoto, self.hostname)
-                self.cerrarConexiones()
+            if self.nombre_archivo_pst != "":
+                print("Intentando copiar el PST")
+                try:
+                    self.canalSFTP.get(str(self.pst_path_remoto),str(self.pst_path_local))  
+                except IOError as e:
+                    mensaje = f"No se pudo copiar {self.nombre_archivo_pst} (¿Archivo en uso?): {e}"
+                    self.registrarLog(mensaje, "ERR",self. pst_path_remoto, self.hostname)
+                    self.cerrarConexiones()
         except SFTPError as e:            
             print(f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}")
             mensaje = f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}"
-            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
-            #if self.canalSFTP:
-            #    self.canalSFTP.close()
-            #if self.conexionSSH:
-            #    self.conexionSSH.close()                  
+            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)            
         except FileExistsError as e:            
             print(f"Error en ruta {rBaseRemoR} posiblemente no existe : {e}")
             mensaje = f"Error en ruta {rBaseRemoR} posiblemente no existe : {e}"
-            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                              
-            #if self.canalSFTP:
-            #    self.canalSFTP.close()
-            #if self.conexionSSH:
-            # self.conexionSSH.close()
+            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                                          
         except Exception as e:                        
-            print(f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}")
+            #print(f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}")
             mensaje = f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}"
-            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname) 
-            #if self.canalSFTP:
-            #    self.canalSFTP.close()
-            #if self.conexionSSH:
-            #    self.conexionSSH.close()                            
+            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                   
                 
     def cerrarConexiones(self):
         self.canalSFTP.close()
