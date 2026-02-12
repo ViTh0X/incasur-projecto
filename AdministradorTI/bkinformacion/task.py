@@ -16,7 +16,7 @@ def ejecutar_backup_informacion():
         estado_ips = get_object_or_404(tipo_estado_ips,pk=1)
         laptop = get_object_or_404(tipo_equipos_informaticos,pk=1)
         pc = get_object_or_404(tipo_equipos_informaticos,pk=2)
-        nombres_a_filtrar = [laptop.nombre_tipo_equipo, pc.nombre_tipo_equipo]        
+        nombres_a_filtrar = [laptop, pc]        
         lista_ips_ocupadas = ips.objects.filter(codigo_estado=estado_ips,tipo_equipo_asignado__in=nombres_a_filtrar).values('ip')
         print(lista_ips_ocupadas)
         for ip in lista_ips_ocupadas:
@@ -30,8 +30,7 @@ def ejecutar_backup_informacion():
             #Filtrando el objeto ip
             ip_filtrada = ips.objects.get(ip=string_ip)
             mes_actual = datetime.now().month
-            año_actual = datetime.now().year
-            backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+            año_actual = datetime.now().year            
             #Filtrando el objeto nombre Trabajador
             #nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)                        
             try:
@@ -39,6 +38,8 @@ def ejecutar_backup_informacion():
                 equipo_conectado = SSH_instancia.realizarConSSH()
                 if equipo_conectado:
                     print(f"Trabajando IP {ip_filtrada}")
+                    backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
+                    print("Elimino Duplicados")                    
                     SSH_instancia.crearCanalSFTP()                    
                     listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"])
                     listaRutas = SSH_instancia.creaRutasRemotas(username,listaRutasLocales,string_ip)
@@ -59,15 +60,15 @@ def ejecutar_backup_informacion():
                         detalle = detalle_backup
                     )                    
                     modelado_backup_informacion.save()
-                    faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                 else:
-                    faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                     ip_filtrada = ips.objects.get(ip=string_ip)
                     faltantes_hardware = faltantes_backup_informacion(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                     faltantes_hardware.save()
             except Exception as e:
                 print(f"Error_ssh {e}")
-                faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                 ip_filtrada = ips.objects.get(ip=string_ip)
                 faltantes_hardware = faltantes_backup_informacion(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                 faltantes_hardware.save()
@@ -114,7 +115,7 @@ def ejecutar_faltantes_backup_informacion():
                 equipo_conectado = SSH_instancia.realizarConSSH()
                 if equipo_conectado:
                     SSH_instancia.crearCanalSFTP()
-                    backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                     listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"])
                     listaRutas = SSH_instancia.creaRutasRemotas(username,listaRutasLocales,string_ip)
                     for rutas in listaRutas:
@@ -132,16 +133,16 @@ def ejecutar_faltantes_backup_informacion():
                         detalle = detalle_backup
                     )
                     modelado_backup_informacion.save()
-                    faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                 else:
-                    faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                    faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                     ip_filtrada = ips.objects.get(ip=string_ip)
                     faltantes_hardware = faltantes_backup_informacion(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                     faltantes_hardware.save()
                 
             except Exception as e:
                 print(f"Error_ssh {e}")
-                faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                 ip_filtrada = ips.objects.get(ip=string_ip)
                 faltantes_hardware = faltantes_backup_informacion(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                 faltantes_hardware.save()
@@ -173,13 +174,14 @@ def ejecutar_backup_individual(ip):
         #Filtrando el objeto ip
         ip_filtrada = ips.objects.get(ip=ip)
         mes_actual = datetime.now().month
-        año_actual = datetime.now().year
-        backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+        año_actual = datetime.now().year        
         #Filtrando el objeto nombre Trabajador
         #nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=ip)                        
         try:
             #if esta_en_linea:
             print(f"Trabajando IP {ip_filtrada}")
+            backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
+            print("Elimino Duplicados")
             equipo_conectado = SSH_instancia.realizarConSSH()
             if equipo_conectado:
                 SSH_instancia.crearCanalSFTP()                    
@@ -202,15 +204,15 @@ def ejecutar_backup_individual(ip):
                     detalle = detalle_backup
                 )                    
                 modelado_backup_informacion.save()
-                faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
             else:
-                faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+                faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                 ip_filtrada = ips.objects.get(ip=ip)
                 faltantes_hardware = faltantes_backup_informacion(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                 faltantes_hardware.save()
         except Exception as e:
             print(f"Error_ssh {e}")
-            faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,ip=ip_filtrada).delete()
+            faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
             ip_filtrada = ips.objects.get(ip=ip)
             faltantes_hardware = faltantes_backup_informacion(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
             faltantes_hardware.save()
