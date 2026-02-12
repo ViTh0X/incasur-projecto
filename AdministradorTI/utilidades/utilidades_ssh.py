@@ -16,7 +16,10 @@ class SSHManager(logArchivos):
         self.passphrase = passphrase
         self.conexionSSH = None
         self.canalSFTP = None
-        self.rutaArchivo = None                                             
+        self.rutaArchivo = None
+        self.pst_path_local = ""
+        self.pst_path_remoto = ""
+        self.nombre_archivo_pst = ""                                             
 
     def revisarConexionSSH(self):
         try:
@@ -343,7 +346,7 @@ class SSHManager(logArchivos):
     
     
     def rutasIniciales(self,listaCarpetas:list):
-        rutaInicial = f"/backupcolaboradores/Backup/{self.hostname}/"
+        rutaInicial = f"/mnt/backupcolaboradores/{self.hostname}/"
         listaRutasLocales = []                
         os.makedirs(rutaInicial,exist_ok=True)
         for carpetas in listaCarpetas:
@@ -352,7 +355,7 @@ class SSHManager(logArchivos):
             os.makedirs(ruta,exist_ok=True)
             print(f"Esto se creo {ruta}")        
             listaRutasLocales.append(ruta)
-            mensaje = "Las carpetas iniciales en el Disco /backupcolaboradores/ fueron creadas con exito"
+            mensaje = "Las carpetas iniciales en el Disco /mnt/backupcolaboradores/ fueron creadas con exito"
             self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
         return listaRutasLocales
     
@@ -439,8 +442,7 @@ class SSHManager(logArchivos):
         except Exception as e:
             mensaje = f"Error preparando las rutas : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
-            
-            
+                
             
     def realizarBKUP(self,rBaseRemo:str,rBaseLocal:str,nombreCarpeta:str):                                        
         # --- VALIDACIÓN CRÍTICA ---
@@ -456,14 +458,21 @@ class SSHManager(logArchivos):
             rBaseRemoR = Path(rBaseRemo)
             rBaseLocalR = Path(rBaseLocal)
         try:                
-            listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))                     
+            listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))
+                                             
             for archivo in listaArchivos:                                   
                 nombreArchivo = archivo.filename
                 if nombreArchivo.startswith("~"):
                     print(f"Archivo {nombreArchivo} ignorado")
                     continue
+                elif ".pst " in nombreArchivo:
+                    print(f"Ignorando Archivo PST SE copiara al final")
+                    self.pst_path_local = rBaseLocalR / nombreArchivo
+                    self.pst_path_remoto = rBaseRemo
+                    self.nombre_archivo_pst = nombreArchivo
+                    continue
                 else:
-                    if nombreArchivo == "System Volume Information" or nombreArchivo == "$RECYCLE.BIN" or nombreArchivo == "Documentos":
+                    if nombreArchivo == "System Volume Information" or nombreArchivo == "$RECYCLE.BIN":
                         print(f"Ignorando Carpeta System Volume Information, RECYCLE,Plantillas y su contenido")
                         continue
                     elif stat.S_ISDIR(archivo.st_mode):                                            
@@ -528,6 +537,13 @@ class SSHManager(logArchivos):
                             print(f"Ocurrio un error inesperado : {e} bucle 1 - {rutaCopiarRemoto}")
                             mensaje = f"Ocurrio un error inesperado : {e} -{rutaCopiarRemoto}"
                             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                                                                                                                                               
+            print("Intentando copiar el PST")
+            try:
+                self.canalSFTP.get(str(self.pst_path_remoto),str(self.pst_path_local))  
+            except IOError as e:
+                mensaje = f"No se pudo copiar {self.nombre_archivo_pst} (¿Archivo en uso?): {e}"
+                self.registrarLog(mensaje, "ERR",self. pst_path_remoto, self.hostname)
+                self.cerrarConexiones()
         except SFTPError as e:            
             print(f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}")
             mensaje = f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}"
