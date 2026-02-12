@@ -466,9 +466,7 @@ class SSHManager(logArchivos):
         try:                
             listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))                                             
             for archivo in listaArchivos:                                                   
-                nombreArchivo = archivo.filename
-                print(archivo)
-                print(nombreArchivo)
+                nombreArchivo = archivo.filename                
                 if nombreArchivo.startswith("~"):
                     print(f"Archivo {nombreArchivo} ignorado")
                     continue
@@ -560,8 +558,9 @@ class SSHManager(logArchivos):
             print(f"Error en ruta {rBaseRemoR} posiblemente no existe : {e}")
             mensaje = f"Error en ruta {rBaseRemoR} posiblemente no existe : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                                          
-        except Exception as e:                        
+        except Exception as e:                                    
             #print(f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}")
+            print(nombreArchivo)
             mensaje = f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                   
                 
