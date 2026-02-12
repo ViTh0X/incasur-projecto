@@ -350,6 +350,7 @@ class SSHManager(logArchivos):
             rutaBase = Path("/mnt/backupcolaboradores")
             #rutaInicial = f"/mnt/backupcolaboradores/{self.hostname}/"
             rutaInicial = rutaBase / self.hostname
+            print(f"Ruta inicial creada {rutaInicial} --- {self.hostname}")
         except Exception as e:
             print(f"Error creando ruta {e}")
         listaRutasLocales = []                
@@ -369,7 +370,7 @@ class SSHManager(logArchivos):
         lsRutaBKUP = []
         rBaseRemoC = "C:/Users/"        
         try:
-            if ip == "192.168.1.32":
+            if ip == "192.168.1.30":
                 for rLocal in listaRutaLocales:
                     lsR = {}
                     rutaTexto = str(rLocal)
