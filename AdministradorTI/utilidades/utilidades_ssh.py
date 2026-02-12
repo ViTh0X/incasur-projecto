@@ -349,7 +349,7 @@ class SSHManager(logArchivos):
         try:
             rutaBase = Path("/mnt/backupcolaboradores")
             #rutaInicial = f"/mnt/backupcolaboradores/{self.hostname}/"
-            rutaInicial = ruta / self.hostname
+            rutaInicial = rutaBase / self.hostname
         except Exception as e:
             print(f"Error creando ruta {e}")
         listaRutasLocales = []                
