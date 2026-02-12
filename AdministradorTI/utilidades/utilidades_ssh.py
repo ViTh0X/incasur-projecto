@@ -346,7 +346,9 @@ class SSHManager(logArchivos):
     
     
     def rutasIniciales(self,listaCarpetas:list):
-        rutaInicial = f"/mnt/backupcolaboradores/{self.hostname}/"
+        rutaBase = Path("/mnt/backupcolaboradores")
+        #rutaInicial = f"/mnt/backupcolaboradores/{self.hostname}/"
+        rutaInicial = ruta / self.hostname
         listaRutasLocales = []                
         os.makedirs(rutaInicial,exist_ok=True)
         for carpetas in listaCarpetas:
