@@ -473,7 +473,8 @@ class SSHManager(logArchivos):
             
     def realizarBKUP(self,rBaseRemo:str,rBaseLocal:str,nombreCarpeta:str):                                        
         # --- VALIDACIÓN CRÍTICA ---
-        if self.conexionSSH is None or not self.conexionSSH.get_transport().is_active():
+        transport = self.conexionSSH.get_transport() if self.conexionSSH else None
+        if self.conexionSSH is None or transport is None or not transport.is_active():
             self.registrarLog("CONEXIÓN CERRADA: Abortando rama de backup.", "ERR", self.rutaArchivo, self.hostname)
             return
         if nombreCarpeta != "":
@@ -524,16 +525,17 @@ class SSHManager(logArchivos):
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)  
                                 try:                                                                                      
                                     self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))                                    
+                                    mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
+                                    self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
                                 except IOError as e:
                                     mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
                                     self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
-                                    self.cerrarConexiones()                                    
+                                    continue
+                                    #self.cerrarConexiones()                                    
                                 except Exception as e:
                                     print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
                                     if "Socket is closed" in str(e):
-                                        self.cerrarConexiones()
-                                mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
-                                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
+                                        self.cerrarConexiones()                                             
                             else:    
                                 tamañoRemoto = archivo.st_size
                                 tamañoLocal = os.path.getsize(rutaCopiarLocal)                            
@@ -544,16 +546,17 @@ class SSHManager(logArchivos):
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                                                                              
                                     try:                                                                                      
                                         self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))
+                                        mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
+                                        self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
                                     except IOError as e:
                                         mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
                                         self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
-                                        self.cerrarConexiones()
+                                        continue
+                                        #self.cerrarConexiones()
                                     except Exception as e:
                                         print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
                                         if "Socket is closed" in str(e):
-                                            self.cerrarConexiones()                                 
-                                    mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
-                                    self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+                                            self.cerrarConexiones()                                                                     
                                 else:
                                     mensaje = f"El archivo {nombreArchivo} ya fue guardado de manera local"
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
