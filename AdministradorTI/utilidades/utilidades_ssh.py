@@ -492,7 +492,7 @@ class SSHManager(logArchivos):
                 if nombreArchivo.startswith("~"):
                     print(f"Archivo {nombreArchivo} ignorado")
                     continue
-                elif ".pst " in nombreArchivo:
+                elif nombreArchivo.lower().endswith(".pst"):
                     print(f"Ignorando Archivo PST SE copiara al final")
                     pst_ruta_local = rBaseLocalR / nombreArchivo
                     self.pst_path_local.append(pst_ruta_local)
