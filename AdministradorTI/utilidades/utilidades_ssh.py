@@ -488,8 +488,7 @@ class SSHManager(logArchivos):
         try:                
             listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))                                             
             for archivo in listaArchivos:                                                   
-                nombreArchivo = archivo.filename                
-                print(nombreArchivo)
+                nombreArchivo = archivo.filename                                
                 if nombreArchivo.startswith("~"):
                     print(f"Archivo {nombreArchivo} ignorado")
                     continue
@@ -507,6 +506,7 @@ class SSHManager(logArchivos):
                         continue
                     if stat.S_ISDIR(archivo.st_mode):                                            
                         creaRutaLocal = rBaseLocalR / nombreArchivo
+                        print(creaRutaLocal)
                         try:
                             os.makedirs(creaRutaLocal,exist_ok=True)
                         except Exception as e:
