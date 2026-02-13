@@ -19,8 +19,11 @@ def ejecutar_backup_informacion():
         nombres_a_filtrar = [laptop, pc]        
         lista_ips_ocupadas = ips.objects.filter(codigo_estado=estado_ips,tipo_equipo_asignado__in=nombres_a_filtrar).values('ip')
         print(lista_ips_ocupadas)
-        for ip in lista_ips_ocupadas:
+        lista_ips_bloqueadas = ['192.168.1.40','192.168.1.38']
+        for ip in lista_ips_ocupadas:                                        
             string_ip = ip['ip']
+            if string_ip in lista_ips_bloqueadas:
+                continue
             username = "Administrador"
             puerto = os.getenv('SSH_PORT')
             keyfile = os.getenv('SSH_KEYFILE')
@@ -47,6 +50,7 @@ def ejecutar_backup_informacion():
                     for rutas in listaRutas:
                         llave, valor = list(rutas.items())[0]
                         SSH_instancia.realizarBKUP(str(valor),str(llave),"")
+                        SSH_instancia.copiar_pst()
                     print("Termino La ejecucion del Backup")
                     SSH_instancia.cerrarConexiones()                    
                     existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip)

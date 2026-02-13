@@ -17,9 +17,9 @@ class SSHManager(logArchivos):
         self.conexionSSH = None
         self.canalSFTP = None
         self.rutaArchivo = None
-        self.pst_path_local = ""
-        self.pst_path_remoto = ""
-        self.nombre_archivo_pst = ""                                             
+        self.pst_path_local = []
+        self.pst_path_remoto = []
+        self.nombre_archivo_pst = []                                             
 
     def revisarConexionSSH(self):
         try:
@@ -370,7 +370,7 @@ class SSHManager(logArchivos):
         lsRutaBKUP = []
         rBaseRemoC = "C:/Users/"        
         try:
-            if ip == "192.168.1.30":
+            '''if ip == "192.168.1.30":
                 for rLocal in listaRutaLocales:
                     lsR = {}
                     rutaTexto = str(rLocal)
@@ -383,8 +383,8 @@ class SSHManager(logArchivos):
                         lsR = {}
                 mensaje = "Las rutas iniciales fueron preparadas con exito"
                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
-                return lsRutaBKUP            
-            elif ip == "192.168.1.36":
+                return lsRutaBKUP   '''         
+            if ip == "192.168.1.36":
                 for rLocal in listaRutaLocales:
                     lsR = {}
                     rutaTexto = str(rLocal)
@@ -448,7 +448,28 @@ class SSHManager(logArchivos):
         except Exception as e:
             mensaje = f"Error preparando las rutas : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)
-                
+
+
+    def copiar_pst(self):
+        if len(self.nombre_archivo_pst) > 0:
+            ubicacion = 0
+            for ruta_retoma in self.pst_path_remoto:                        
+                try:
+                    mensaje = f"Copiando archivo {self.nombre_archivo_pst[ubicacion]}"
+                    self.registrarLog(mensaje,"INF",ruta_retoma,self.hostname) 
+                    print("Intentando copiar el PST")                        
+                    mensaje = f"De {ruta_retoma} --> {self.pst_path_local[ubicacion]}"
+                    self.registrarLog(mensaje,"INF",ruta_retoma,self.hostname)  
+                    self.canalSFTP.get(str(ruta_retoma),str(self.pst_path_local[ubicacion]))
+                    mensaje = f"Archivo {self.nombre_archivo_pst[ubicacion]} salvado con EXITO"
+                    self.registrarLog(mensaje,"INF",ruta_retoma,self.hostname)  
+                except IOError as e:
+                    mensaje = f"No se pudo copiar {self.nombre_archivo_pst[ubicacion]} (¿Archivo en uso?): {e}"
+                    self.registrarLog(mensaje, "ERR",ruta_retoma, self.hostname)                    
+                ubicacion += 1
+        else:
+            print("No se encontro ningun pst")
+            
             
     def realizarBKUP(self,rBaseRemo:str,rBaseLocal:str,nombreCarpeta:str):                                        
         # --- VALIDACIÓN CRÍTICA ---
@@ -472,9 +493,11 @@ class SSHManager(logArchivos):
                     continue
                 elif ".pst " in nombreArchivo:
                     print(f"Ignorando Archivo PST SE copiara al final")
-                    self.pst_path_local = rBaseLocalR / nombreArchivo
-                    self.pst_path_remoto = rBaseRemo
-                    self.nombre_archivo_pst = nombreArchivo
+                    pst_ruta_local = rBaseLocalR / nombreArchivo
+                    self.pst_path_local.append(pst_ruta_local)
+                    pst_ruta_remota = rBaseRemoR / nombreArchivo
+                    self.pst_path_remoto.append(pst_ruta_remota)
+                    self.nombre_archivo_pst.append(nombreArchivo)
                     continue
                 else:
                     if nombreArchivo == "System Volume Information" or nombreArchivo == "$RECYCLE.BIN":
@@ -541,15 +564,7 @@ class SSHManager(logArchivos):
                         except Exception as e:                        
                             print(f"Ocurrio un error inesperado : {e} bucle 1 - {rutaCopiarRemoto}")
                             mensaje = f"Ocurrio un error inesperado : {e} -{rutaCopiarRemoto}"
-                            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                                                                                                                                               
-            if self.nombre_archivo_pst != "":
-                print("Intentando copiar el PST")
-                try:
-                    self.canalSFTP.get(str(self.pst_path_remoto),str(self.pst_path_local))  
-                except IOError as e:
-                    mensaje = f"No se pudo copiar {self.nombre_archivo_pst} (¿Archivo en uso?): {e}"
-                    self.registrarLog(mensaje, "ERR",self. pst_path_remoto, self.hostname)
-                    self.cerrarConexiones()
+                            self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                                                                                                                                                       
         except SFTPError as e:            
             print(f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}")
             mensaje = f"Error en la carpeta {rBaseRemoR} posiblemente no existe : {e}"
@@ -559,8 +574,7 @@ class SSHManager(logArchivos):
             mensaje = f"Error en ruta {rBaseRemoR} posiblemente no existe : {e}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                                          
         except Exception as e:                                    
-            #print(f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}")
-            print(nombreArchivo)
+            print(f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}")            
             mensaje = f"Ocurrio un error inesperado {e} - {rBaseRemoR} - {rBaseLocalR}"
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)                   
                 
