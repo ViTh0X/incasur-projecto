@@ -505,7 +505,7 @@ class SSHManager(logArchivos):
                     if nombreArchivo == "System Volume Information" or nombreArchivo == "$RECYCLE.BIN":
                         print(f"Ignorando Carpeta System Volume Information, RECYCLE,Plantillas y su contenido")
                         continue
-                    elif stat.S_ISDIR(archivo.st_mode):                                            
+                    if stat.S_ISDIR(archivo.st_mode):                                            
                         creaRutaLocal = rBaseLocalR / nombreArchivo
                         try:
                             os.makedirs(creaRutaLocal,exist_ok=True)
