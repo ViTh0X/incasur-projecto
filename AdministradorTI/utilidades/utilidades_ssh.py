@@ -451,6 +451,7 @@ class SSHManager(logArchivos):
 
 
     def copiar_pst(self):
+        print("Funcion copiar_pst Ejecutada")
         if len(self.nombre_archivo_pst) > 0:
             ubicacion = 0
             for ruta_retoma in self.pst_path_remoto:                        
@@ -487,15 +488,7 @@ class SSHManager(logArchivos):
         try:                
             listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))                                             
             for archivo in listaArchivos:                                                   
-                nombreArchivo = archivo.filename
-                if nombreArchivo.lower().endswith(".pst"):
-                    print(f"Ignorando Archivo PST SE copiara al final")
-                    pst_ruta_local = rBaseLocalR / nombreArchivo
-                    self.pst_path_local.append(pst_ruta_local)
-                    pst_ruta_remota = rBaseRemoR / nombreArchivo
-                    self.pst_path_remoto.append(pst_ruta_remota)
-                    self.nombre_archivo_pst.append(nombreArchivo)
-                    continue                                                                
+                nombreArchivo = archivo.filename                                                
                 if nombreArchivo.startswith("~"):
                     print(f"Archivo {nombreArchivo} ignorado")
                     continue                
@@ -523,15 +516,18 @@ class SSHManager(logArchivos):
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                                 mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)  
-                                try:                                                                                      
+                                try:        
+                                    with self.canalSFTP.open(rutaCopiarRemoto,'r+') as prueba_abrir:
+                                        pass                                                                              
                                     self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))                                    
                                     mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
                                 except IOError as e:
+                                    self.pst_path_local.append(rutaCopiarLocal)
+                                    self.pst_path_remoto.append(rutaCopiarRemoto)
+                                    self.nombre_archivo_pst.append(nombreArchivo)
                                     mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
-                                    self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
-                                    continue
-                                    #self.cerrarConexiones()                                    
+                                    self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)                                              
                                 except Exception as e:
                                     print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
                                     if "Socket is closed" in str(e):
@@ -544,15 +540,18 @@ class SSHManager(logArchivos):
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                                     mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                                                                              
-                                    try:                                                                                      
+                                    try:
+                                        with self.canalSFTP.open(rutaCopiarRemoto,'r+') as prueba_abrir:
+                                            pass                                                                                                                           
                                         self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))
                                         mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                         self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
                                     except IOError as e:
+                                        self.pst_path_local.append(rutaCopiarLocal)
+                                        self.pst_path_remoto.append(rutaCopiarRemoto)
+                                        self.nombre_archivo_pst.append(nombreArchivo)
                                         mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
-                                        self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
-                                        continue
-                                        #self.cerrarConexiones()
+                                        self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)                                        
                                     except Exception as e:
                                         print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
                                         if "Socket is closed" in str(e):

@@ -50,8 +50,8 @@ def ejecutar_backup_informacion():
                     for rutas in listaRutas:
                         llave, valor = list(rutas.items())[0]
                         SSH_instancia.realizarBKUP(str(valor),str(llave),"")                        
-                    print("Termino La ejecucion del Backup")
-                    SSH_instancia.copiar_pst()
+                        SSH_instancia.copiar_pst()
+                    print("Termino La ejecucion del Backup")                    
                     SSH_instancia.cerrarConexiones()                    
                     existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip)
                     if existen_errores:
@@ -125,7 +125,7 @@ def ejecutar_faltantes_backup_informacion():
                     for rutas in listaRutas:
                         llave, valor = list(rutas.items())[0]
                         SSH_instancia.realizarBKUP(str(valor),str(llave),"")
-                    SSH_instancia.copiar_pst()                        
+                        SSH_instancia.copiar_pst()                                            
                     SSH_instancia.cerrarConexiones()
                     existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip)
                     if existen_errores:
@@ -196,9 +196,8 @@ def ejecutar_backup_individual(ip):
                 for rutas in listaRutas:
                     llave, valor = list(rutas.items())[0]
                     SSH_instancia.realizarBKUP(str(valor),str(llave),"")
-                print("Termino La ejecucion del Backup")
-                SSH_instancia.copiar_pst()
-                SSH_instancia.cerrarConexiones()                    
+                    SSH_instancia.cerrarConexiones()                    
+                print("Termino La ejecucion del Backup")                                
                 existen_errores = SSH_instancia.verificar_archivos_logs(host=ip)
                 if existen_errores:
                     detalle_backup = "Parece que aparecieron unos errores revise el log."                        
