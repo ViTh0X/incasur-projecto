@@ -517,7 +517,7 @@ class SSHManager(logArchivos):
                                 mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)  
                                 try:        
-                                    with self.canalSFTP.open(rutaCopiarRemoto,'r+') as prueba_abrir:
+                                    with self.canalSFTP.open(str(rutaCopiarRemoto),'r+') as prueba_abrir:
                                         pass                                                                              
                                     self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))                                    
                                     mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
@@ -541,7 +541,7 @@ class SSHManager(logArchivos):
                                     mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                                                                              
                                     try:
-                                        with self.canalSFTP.open(rutaCopiarRemoto,'r+') as prueba_abrir:
+                                        with self.canalSFTP.open(str(rutaCopiarRemoto),'r+') as prueba_abrir:
                                             pass                                                                                                                           
                                         self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))
                                         mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
