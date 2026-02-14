@@ -50,7 +50,10 @@ def ejecutar_backup_informacion():
                     for rutas in listaRutas:
                         llave, valor = list(rutas.items())[0]
                         SSH_instancia.realizarBKUP(str(valor),str(llave),"")                        
-                        SSH_instancia.copiar_pst()
+                    try:
+                        SSH_instancia.copiar_pst()                                            
+                    except Exception as e:
+                        print(f"No ejecufo copiar Pst {e}")
                     print("Termino La ejecucion del Backup")                    
                     SSH_instancia.cerrarConexiones()                    
                     existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip)
@@ -125,7 +128,10 @@ def ejecutar_faltantes_backup_informacion():
                     for rutas in listaRutas:
                         llave, valor = list(rutas.items())[0]
                         SSH_instancia.realizarBKUP(str(valor),str(llave),"")
+                    try:
                         SSH_instancia.copiar_pst()                                            
+                    except Exception as e:
+                        print(f"No ejecufo copiar Pst {e}")                                                    
                     SSH_instancia.cerrarConexiones()
                     existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip)
                     if existen_errores:
@@ -196,7 +202,10 @@ def ejecutar_backup_individual(ip):
                 for rutas in listaRutas:
                     llave, valor = list(rutas.items())[0]
                     SSH_instancia.realizarBKUP(str(valor),str(llave),"")
-                    SSH_instancia.cerrarConexiones()                    
+                try:
+                    SSH_instancia.copiar_pst()                                            
+                except Exception as e:
+                    print(f"No ejecufo copiar Pst {e}")                    
                 print("Termino La ejecucion del Backup")                                
                 existen_errores = SSH_instancia.verificar_archivos_logs(host=ip)
                 if existen_errores:
