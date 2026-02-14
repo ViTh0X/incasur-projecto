@@ -468,16 +468,7 @@ class SSHManager(logArchivos):
                     self.registrarLog(mensaje, "ERR",ruta_retoma, self.hostname)                    
                 ubicacion += 1
         else:
-            print("No se encontro ningun pst")
-        
-        '''elif nombreArchivo.lower().endswith(".pst"):
-                    print(f"Ignorando Archivo PST SE copiara al final")
-                    pst_ruta_local = rBaseLocalR / nombreArchivo
-                    self.pst_path_local.append(pst_ruta_local)
-                    pst_ruta_remota = rBaseRemoR / nombreArchivo
-                    self.pst_path_remoto.append(pst_ruta_remota)
-                    self.nombre_archivo_pst.append(nombreArchivo)
-                    continue'''
+            print("No se encontro ningun pst")                
             
     def realizarBKUP(self,rBaseRemo:str,rBaseLocal:str,nombreCarpeta:str):                                        
         # --- VALIDACIÓN CRÍTICA ---
@@ -496,15 +487,23 @@ class SSHManager(logArchivos):
         try:                
             listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))                                             
             for archivo in listaArchivos:                                                   
-                nombreArchivo = archivo.filename                                                                
+                nombreArchivo = archivo.filename
+                if nombreArchivo.lower().endswith(".pst"):
+                    print(f"Ignorando Archivo PST SE copiara al final")
+                    pst_ruta_local = rBaseLocalR / nombreArchivo
+                    self.pst_path_local.append(pst_ruta_local)
+                    pst_ruta_remota = rBaseRemoR / nombreArchivo
+                    self.pst_path_remoto.append(pst_ruta_remota)
+                    self.nombre_archivo_pst.append(nombreArchivo)
+                    continue                                                                
                 if nombreArchivo.startswith("~"):
                     print(f"Archivo {nombreArchivo} ignorado")
                     continue                
-                else:
-                    if nombreArchivo == "System Volume Information" or nombreArchivo == "$RECYCLE.BIN":
-                        print(f"Ignorando Carpeta System Volume Information, RECYCLE,Plantillas y su contenido")
-                        continue
-                    if stat.S_ISDIR(archivo.st_mode):                                            
+                else:                    
+                    if stat.S_ISDIR(archivo.st_mode):
+                        if nombreArchivo == "System Volume Information" or nombreArchivo == "$RECYCLE.BIN":
+                            print(f"Ignorando Carpeta System Volume Information, RECYCLE,Plantillas y su contenido")
+                            continue                        
                         creaRutaLocal = rBaseLocalR / nombreArchivo
                         print(creaRutaLocal)
                         try:
