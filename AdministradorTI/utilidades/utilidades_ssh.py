@@ -452,6 +452,9 @@ class SSHManager(logArchivos):
 
     def copiar_pst(self):
         print("Funcion copiar_pst Ejecutada")
+        print(f"Lista archivos ocupados1: {self.pst_path_local}")
+        print(f"Lista archivos ocupados2: {self.pst_path_remoto}")
+        print(f"Lista nombre archivos: {self.nombre_archivo_pst}")
         if len(self.nombre_archivo_pst) > 0:
             ubicacion = 0
             for ruta_retoma in self.pst_path_remoto:                        
@@ -498,7 +501,6 @@ class SSHManager(logArchivos):
                             print(f"Ignorando Carpeta System Volume Information, RECYCLE,Plantillas y su contenido")
                             continue                        
                         creaRutaLocal = rBaseLocalR / nombreArchivo
-                        print(creaRutaLocal)
                         try:
                             os.makedirs(creaRutaLocal,exist_ok=True)
                         except Exception as e:
@@ -526,6 +528,9 @@ class SSHManager(logArchivos):
                                     self.pst_path_local.append(rutaCopiarLocal)
                                     self.pst_path_remoto.append(rutaCopiarRemoto)
                                     self.nombre_archivo_pst.append(nombreArchivo)
+                                    print(f"Lista archivos ocupados1: {self.pst_path_local}")
+                                    print(f"Lista archivos ocupados2: {self.pst_path_remoto}")
+                                    print(f"Lista nombre archivos: {self.nombre_archivo_pst}")
                                     mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
                                     self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)                                              
                                 except Exception as e:
