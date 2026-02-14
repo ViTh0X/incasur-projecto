@@ -103,7 +103,7 @@ def ejecutar_faltantes_backup_informacion():
         except:
             return "NO HAY FALTANTES TAREA TERMINADA"
         for ip_faltantes in lista_faltantes:
-            string_ip = ip_faltantes.ip.ip
+            string_ip = ip_faltantes.codigo_ip.ip
             username = "Administrador"
             puerto = os.getenv('SSH_PORT')
             keyfile = os.getenv('SSH_KEYFILE')
