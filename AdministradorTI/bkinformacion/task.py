@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 load_dotenv()
 from utilidades.utilidades_ssh import SSHManager
 
+
+lista_ips_bloqueadas = ['192.168.1.40','192.168.1.38']
 @shared_task()
 def ejecutar_backup_informacion():
     try:
@@ -18,8 +20,7 @@ def ejecutar_backup_informacion():
         pc = get_object_or_404(tipo_equipos_informaticos,pk=2)
         nombres_a_filtrar = [laptop, pc]        
         lista_ips_ocupadas = ips.objects.filter(codigo_estado=estado_ips,tipo_equipo_asignado__in=nombres_a_filtrar).values('ip')
-        print(lista_ips_ocupadas)
-        lista_ips_bloqueadas = ['192.168.1.40','192.168.1.38']
+        print(lista_ips_ocupadas)        
         for ip in lista_ips_ocupadas:                                        
             string_ip = ip['ip']
             if string_ip in lista_ips_bloqueadas:
@@ -102,8 +103,10 @@ def ejecutar_faltantes_backup_informacion():
             lista_faltantes = get_list_or_404(faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual))            
         except:
             return "NO HAY FALTANTES TAREA TERMINADA"
-        for ip_faltantes in lista_faltantes:
+        for ip_faltantes in lista_faltantes:            
             string_ip = ip_faltantes.codigo_ip.ip
+            if string_ip in lista_ips_bloqueadas:
+                continue
             username = "Administrador"
             puerto = os.getenv('SSH_PORT')
             keyfile = os.getenv('SSH_KEYFILE')
