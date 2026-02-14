@@ -49,9 +49,9 @@ def ejecutar_backup_informacion():
                     print("Inicio la ejecucion del Backup Espere...")
                     for rutas in listaRutas:
                         llave, valor = list(rutas.items())[0]
-                        SSH_instancia.realizarBKUP(str(valor),str(llave),"")
-                        SSH_instancia.copiar_pst()
+                        SSH_instancia.realizarBKUP(str(valor),str(llave),"")                        
                     print("Termino La ejecucion del Backup")
+                    SSH_instancia.copiar_pst()
                     SSH_instancia.cerrarConexiones()                    
                     existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip)
                     if existen_errores:
@@ -125,6 +125,7 @@ def ejecutar_faltantes_backup_informacion():
                     for rutas in listaRutas:
                         llave, valor = list(rutas.items())[0]
                         SSH_instancia.realizarBKUP(str(valor),str(llave),"")
+                    SSH_instancia.copiar_pst()                        
                     SSH_instancia.cerrarConexiones()
                     existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip)
                     if existen_errores:
@@ -196,6 +197,7 @@ def ejecutar_backup_individual(ip):
                     llave, valor = list(rutas.items())[0]
                     SSH_instancia.realizarBKUP(str(valor),str(llave),"")
                 print("Termino La ejecucion del Backup")
+                SSH_instancia.copiar_pst()
                 SSH_instancia.cerrarConexiones()                    
                 existen_errores = SSH_instancia.verificar_archivos_logs(host=ip)
                 if existen_errores:
