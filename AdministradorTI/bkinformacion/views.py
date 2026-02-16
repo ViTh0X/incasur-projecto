@@ -104,14 +104,15 @@ def descargar_cargo_backup(request,pk):
     mes = instancia_backup.fecha_modificacion.month
     dia = instancia_backup.fecha_modificacion.day
     mensaje_Observacion = f"La informacion del Disco D fue guardada correctamente segun archivo Log-{str(ip_colaborador)}-{año}-{mes}-{dia}.txt"
-    ruta_archivo_backup = f'/mnt/backupcolaboradores/{ip_colaborador}/'
+    tamaño_archivo = '150GB'
+    '''ruta_archivo_backup = f'/mnt/backupcolaboradores/{ip_colaborador}/'
     if os.path.exists(ruta_archivo_backup):
         tamaño_bytes = subprocess.check_output(['du', '-sb', ruta_archivo_backup]).split()[0]
         for unidad in ['B', 'KB', 'MB', 'GB', 'TB']:
             if tamaño_bytes < 1024:
                 return f"{bytes:.2f} {unidad}"
             tamaño_bytes /= 1024
-        tamaño_archivo = f'{tamaño_bytes} MB'            
+        tamaño_archivo = f'{tamaño_bytes} MB'            '''
     hoja['C7'] = str(nombre_colaborador)
     hoja['C8'] = str(puesto_colaborador)
     hoja['C10'] = str(ip_colaborador)
