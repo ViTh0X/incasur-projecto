@@ -105,6 +105,7 @@ def descargar_cargo_backup(request,pk):
     dia = instancia_backup.fecha_modificacion.day
     mensaje_Observacion = f"La informacion del Disco D fue guardada correctamente segun archivo Log-{str(ip_colaborador)}-{año}-{mes}-{dia}.txt"
     tamaño_archivo = ''
+    total_size = 0 
     ruta_archivo_backup = f'/mnt/backupcolaboradores/{ip_colaborador}'
     if os.path.exists(ruta_archivo_backup):
     # Caminamos por toda la estructura de la carpeta
