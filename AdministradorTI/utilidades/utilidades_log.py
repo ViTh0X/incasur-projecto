@@ -24,12 +24,12 @@ class logArchivos():
             mensaje = f"{time} - {host} - {tipo} - {mensaje}\n"
             archivoLog.write(mensaje)
 
-    def verificar_archivos_logs(self,host:str):
+    def verificar_archivos_logs(self,host:str,año_actual,mes_actual,dia_actual):
         termino_con_errores = False
         rutaBaseLog = f"/mnt/backupcolaboradores/Logs/{host}"
-        dd = datetime.now().day        
-        mm =  datetime.now().month
-        yyyy = datetime.now().year
+        dd = dia_actual        
+        mm =  mes_actual
+        yyyy = año_actual
         rutaArchivo_buscado = f"{rutaBaseLog}/Log-{host}-{yyyy}-{mm}-{dd}.txt"
         nombre_archivo = f"LogErrores-{host}.txt"        
         nombre_archivo_err = os.path.join(settings.MEDIA_ROOT,'logs_errores',nombre_archivo)

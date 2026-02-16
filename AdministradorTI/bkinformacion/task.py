@@ -34,7 +34,8 @@ def ejecutar_backup_informacion():
             #Filtrando el objeto ip
             ip_filtrada = ips.objects.get(ip=string_ip)
             mes_actual = datetime.now().month
-            año_actual = datetime.now().year            
+            año_actual = datetime.now().year
+            dia_actual = datetime.now().day
             #Filtrando el objeto nombre Trabajador
             #nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=string_ip)                        
             try:
@@ -57,7 +58,7 @@ def ejecutar_backup_informacion():
                         print(f"No ejecufo copiar Pst {e}")
                     print("Termino La ejecucion del Backup")                    
                     SSH_instancia.cerrarConexiones()                    
-                    existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip)
+                    existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip,año_actual=año_actual,mes_actual=mes_actual,dia_actual=dia_actual)
                     if existen_errores:
                         detalle_backup = "Parece que aparecieron unos errores revise el log."                        
                     else:
@@ -100,6 +101,7 @@ def ejecutar_faltantes_backup_informacion():
         try:
             año_actual = datetime.now().year
             mes_actual = datetime.now().month
+            dia_actual = datetime.now().day
             lista_faltantes = get_list_or_404(faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual))            
         except:
             return "NO HAY FALTANTES TAREA TERMINADA"
@@ -136,7 +138,7 @@ def ejecutar_faltantes_backup_informacion():
                     except Exception as e:
                         print(f"No ejecufo copiar Pst {e}")                                                    
                     SSH_instancia.cerrarConexiones()
-                    existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip)
+                    existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip,año_actual=año_actual,mes_actual=mes_actual,dia_actual=dia_actual)
                     if existen_errores:
                         detalle_backup = "Parece que aparecieron unos errores revise el log."                        
                     else:
@@ -188,7 +190,8 @@ def ejecutar_backup_individual(ip):
         #Filtrando el objeto ip
         ip_filtrada = ips.objects.get(ip=ip)
         mes_actual = datetime.now().month
-        año_actual = datetime.now().year        
+        año_actual = datetime.now().year
+        dia_actual = datetime.now().day        
         #Filtrando el objeto nombre Trabajador
         #nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=ip)                        
         try:
@@ -210,7 +213,7 @@ def ejecutar_backup_individual(ip):
                 except Exception as e:
                     print(f"No ejecufo copiar Pst {e}")                    
                 print("Termino La ejecucion del Backup")                                
-                existen_errores = SSH_instancia.verificar_archivos_logs(host=ip)
+                existen_errores = SSH_instancia.verificar_archivos_logs(host=ip,año_actual=año_actual,mes_actual=mes_actual,dia_actual=dia_actual)
                 if existen_errores:
                     detalle_backup = "Parece que aparecieron unos errores revise el log."                        
                 else:
