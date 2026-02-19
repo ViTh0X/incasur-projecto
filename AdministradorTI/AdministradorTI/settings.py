@@ -147,6 +147,7 @@ MEDIA_ROOT = '/var/www/mi_proyecto/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SESSION_COOKIE_NAME = 'administrador_ti'
 #Configuracion Celery broker
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
