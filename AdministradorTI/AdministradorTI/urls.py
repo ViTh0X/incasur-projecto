@@ -25,4 +25,5 @@ urlpatterns = [
     path('inventario-hardware/',include('inventario_hardware.urls')),
     path('inventario-software/',include('inventario_software.urls')),
     path('backup-informacion/',include('bkinformacion.urls')),
+    path('administracion-windows/',include('administracion_windows.urls')),
 ]

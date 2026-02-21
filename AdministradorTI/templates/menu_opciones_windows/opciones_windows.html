@@ -1,0 +1,115 @@
+{% extends '../layout.html' %}
+{% block titulo %}Windows-Manager{% endblock  %}
+{% block contenido %}
+<body>
+    <main class="contenedor__grande">
+        <div class="contenido__table">                                    
+            <h1 class="no-margin">Menu Opciones Equipos Windows:</h1>                       
+            <div class="opciones__table">                                                                
+                <div class="opciones__table--boton">                                                         
+                     <a title="VERIFICACION WINDOWS USB" href="{% url 'ejecutar_verificacion_usbfaltantes' %}">Ejecutar Verificacion USB</a>                     
+                </div>                                                                  
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>IP</th>                        
+                        <th>Nombre Colaborador</th>
+                        <th>USB-ESTADO</th>
+                        <th>USB-ACCIONES</th>
+                        <th>RESET-CONTRASEÑA</th>
+                        <th>ESTADO-EJECUCION</th>                                             
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ip in listado_ips %}                    
+                    <tr>
+                        <td>{{ ip.ip }}</td>                        
+                        <td>{{ ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</td>                        
+                        <td>{{ ip.id_ip.estado_puertos_usb|default:"No Ejecutado" }}</td>                                                                                           
+                        <td>
+                            <div>
+                                <a title="CAMBIAR A SOLO LECTURA" href="{% url 'usb_solo_lectura' pk=ip.pk %}">
+                                    <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="28"
+                                    height="28"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#000000"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    >
+                                    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                    <path d="M13.5 6.5l4 4" />
+                                    <path d="M19 22v-6" />
+                                    <path d="M22 19l-3 -3l-3 3" />
+                                    </svg>
+                                </a>                                  
+                                <a title="BLOQUEAR TOTALMENTE" href="{% url 'usb_desbloqueado_totalmente' pk=ip.pk %}">
+                                    <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="28"
+                                    height="28"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#000000"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    >
+                                    <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+                                    <path d="M13.5 6.5l4 4" />
+                                    <path d="M3 3l18 18" />
+                                    </svg>
+                                </a>                             
+                                <a title="DESBLOQUEAR TOTALMENTE" href="{% url 'usb_bloqueado_totalmente' pk=ip.pk %}">
+                                    <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="28"
+                                    height="28"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#000000"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    >
+                                    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                    <path d="M13.5 6.5l4 4" />
+                                    <path d="M15 19l2 2l4 -4" />
+                                    </svg>
+                                </a>                             
+                            </div>                            
+                        </td>
+                        <td>
+                            <div>
+                                <a title="RESETEAR_CONTRASEÑA_WINDOWS" href="{% url 'resetear_contraseña_windows' pk=ip.pk %}">
+                                    <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="28"
+                                    height="28"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#000000"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    >
+                                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                                    <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+                                    <path d="M15 19l2 2l4 -4" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </td>
+                        <td>{{ ip.id_ip.estato_actualizacion|default:"No Ejecutado"  }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>    
+{% endblock  %}

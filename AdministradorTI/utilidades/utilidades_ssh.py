@@ -60,6 +60,9 @@ class SSHManager(logArchivos):
             print(f"{self.hostname} Error General {e}") 
               
     
+    
+        
+    
     def actualizar_ejecutable_software(self):                
         try:
             with paramiko.SSHClient() as conexionSSH:
@@ -83,7 +86,145 @@ class SSHManager(logArchivos):
                     self.conexionSSH.close()                                    
         except Exception as e:            
             print(f"{self.hostname} Error General {e}")                           
-                            
+            
+    def estatus_puerto_usb(self):            
+        try:
+             with paramiko.SSHClient() as conexionSSH:
+                self.conexionSSH = conexionSSH
+                self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
+                transporte = self.conexionSSH.get_transport()
+                transporte.set_keepalive(20)                
+                comando = (
+                            "powershell -Command \" "
+                            "$u = (Get-ItemProperty 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\USBSTOR').Start; "
+                            "$s = 0; if (Test-Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies') { "
+                            "$s = (Get-ItemProperty 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies').WriteProtect }; "
+                            "if ($u -eq 4) { 'Bloqueado' } elseif ($s -eq 1) { 'Solo Lectura' } else { 'Disponible' } \""
+                        )
+                stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
+                resultado = stdout.read().decode().strip()
+                if not resultado or stderr.read().decode():
+                    return "Error al consultar"
+
+                return resultado
+                
+        except:
+            return ""
+        
+
+    def ejecutar_cambiar_usb_solo_lectura(self):
+        try:
+             with paramiko.SSHClient() as conexionSSH:
+                self.conexionSSH = conexionSSH
+                self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
+                transporte = self.conexionSSH.get_transport()
+                transporte.set_keepalive(20)                
+                comando = (
+                            'powershell.exe -Command "'
+                            'if (-not (Test-Path \'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies\')) {'
+                            '  New-Item \'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies\' -Force'
+                            '};'
+                            'Set-ItemProperty -Path \'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies\' '
+                            '-Name \'WriteProtect\' -Value 1"'
+                        )
+                stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
+                error = stderr.read().decode()
+                if error:
+                    print(f"Error SSH: {error}")                
+                    return "No Actualizado"                     
+                return "Actualizado"
+                
+        except:
+            return "No Actualizado"
+                
+                
+    def ejecutar_bloqueo_total_usb(self):
+        try:
+             with paramiko.SSHClient() as conexionSSH:
+                self.conexionSSH = conexionSSH
+                self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
+                transporte = self.conexionSSH.get_transport()
+                transporte.set_keepalive(20)                
+                comando = (
+                            'powershell -Command "Set-ItemProperty -Path \'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\USBSTOR\' '
+                            '-Name \'Start\' -Value 4"'
+                        )
+                stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
+                error = stderr.read().decode()
+                if error:
+                    print(f"Error SSH: {error}")                
+                    return "No Actualizado"                     
+                return "Actualizado"                
+        except:
+            return "No Actualizado"
+                
+
+    def ejecutar_desbloqueo_total_usb(self):
+        try:
+             with paramiko.SSHClient() as conexionSSH:
+                self.conexionSSH = conexionSSH
+                self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
+                transporte = self.conexionSSH.get_transport()
+                transporte.set_keepalive(20)                
+                comando = (
+                            'powershell -Command "Set-ItemProperty -Path \'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\USBSTOR\' '
+                            '-Name \'Start\' -Value 3"'
+                        )
+                stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
+                error = stderr.read().decode()
+                if error:
+                    print(f"Error SSH: {error}")                
+                    return "No Actualizado"                     
+                return "Actualizado"                
+        except:
+            return "No Actualizado"              
+    
+        
+    def ejecutar_forzar_cambio_password_no_admin(self):
+        try:
+            with paramiko.SSHClient() as conexionSSH:
+                conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                conexionSSH.connect(
+                    hostname=self.hostname,
+                    port=self.port,
+                    timeout=15,
+                    username=self.username,
+                    key_filename=self.keyfile,
+                    passphrase=self.passphrase
+                )
+
+                # SCRIPT DE POWERSHELL:
+                # 1. Obtiene usuarios locales activos.
+                # 2. Filtra para excluir a los que están en el grupo 'Administradores'.
+                # 3. Para cada uno: cambia pass, quita el "nunca expira" y fuerza cambio al iniciar.
+                comando_ps = (
+                    'powershell -Command "'
+                    '$usuarios = Get-LocalUser | Where-Object { $_.Enabled -eq $true }; '
+                    'foreach ($u in $usuarios) { '
+                    '  $grupos = Get-LocalGroupMember -Group Administrators; '
+                    '  if ($grupos.Name -notcontains $u.Name) { '
+                    '    net user \\"$($u.Name)\\" Incasur_2026; '
+                    '    Set-LocalUser -Name \\"$($u.Name)\\" -PasswordNeverExpires $false; '
+                    '    net user \\"$($u.Name)\\" /passwordchg:yes '
+                    '  }'
+                    '}"'
+                )
+
+                stdin, stdout, stderr = conexionSSH.exec_command(comando_ps)
+                
+                error = stderr.read().decode()
+                if error:
+                    # Si hay error (ej. permisos insuficientes), devolvemos "No Actualizado"
+                    return "No Actualizado"
+                
+                return "Actualizado"
+        except Exception:
+            return "No Actualizado"                 
+                                        
     def ejecuta_inventario_hardware(self):                       
         try:
             with paramiko.SSHClient() as conexionSSH:

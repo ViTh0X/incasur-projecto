@@ -1,0 +1,35 @@
+{% extends '../layout.html' %}
+{% block titulo %}Backup Informacion{% endblock  %}
+{% block contenido %}
+<body>
+    <main class="contenedor">
+        <div class="contenido__table">
+            <h1 class="no-margin">Faltantes Revision Windows : </h1>
+            <p class="no-margin">No se logro revisar por un problema de red</p>
+            <div class="opciones__table marginb-04">
+                <div class="opciones__table--boton">                                                         
+                     <a title="VOLVER A BACKUP INFORMACION" href="{% url 'ejecutar_verificacion_usbfaltantes' %}">Ejecutar Faltantes</a>                     
+                </div>                                     
+            </div>
+            <table class="table" id="tabla_inventario_h">
+                <thead>
+                    <tr>
+                        <th>IP</th>
+                        <th>Nombre Colaborador</th>                                                                        
+                        <th>Fecha</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for faltante_windows in faltantes_windows %}
+                    <tr>
+                        <td>{{ faltante_windows.codigo_ip.ip }}</td>
+                        <td>{{ faltante_windows.codigo_colaborador.nombre_colaborador }}</td>
+                        <td>{{ faltante_windows.fecha_modificacion|date:"m-Y" }}</td>                        
+                    </tr>
+                    {% endfor %}                    
+                </tbody> 
+            </table>
+        </div>
+    </main>        
+</body>
+{% endblock  %}
