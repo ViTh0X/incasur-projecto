@@ -184,7 +184,7 @@ class SSHManager(logArchivos):
             return "No Actualizado"              
     
         
-    def ejecutar_forzar_cambio_password_no_admin(self):
+    def hacer_reset_contraseña_windows(self):
         try:
             with paramiko.SSHClient() as conexionSSH:
                 conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -203,9 +203,11 @@ class SSHManager(logArchivos):
                 # 3. Para cada uno: cambia pass, quita el "nunca expira" y fuerza cambio al iniciar.
                 comando_ps = (
                     'powershell -Command "'
+                    # Buscamos el nombre real del grupo de administradores usando su SID
+                    '$adminGroupName = (Get-LocalGroup -SID \'S-1-5-32-544\').Name; '
                     '$usuarios = Get-LocalUser | Where-Object { $_.Enabled -eq $true }; '
                     'foreach ($u in $usuarios) { '
-                    '  $grupos = Get-LocalGroupMember -Group Administrators; '
+                    '  $grupos = Get-LocalGroupMember -Group $adminGroupName; '
                     '  if ($grupos.Name -notcontains $u.Name) { '
                     '    net user \\"$($u.Name)\\" Incasur_2026; '
                     '    Set-LocalUser -Name \\"$($u.Name)\\" -PasswordNeverExpires $false; '
