@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404,redirect
 from ips.models import ips
 from .models import EstadoAccionesWindows,FaltantesRevisionEquiposWindows
-from task import cambiar_usb_solo_lectura, cambiar_usb_bloqueo_total,cambiar_usb_desbloqueo_total, hacer_reset_contraseña_windows,verificacion_usb_all,verificacion_usb_faltantes
+from .task import cambiar_usb_solo_lectura, cambiar_usb_bloqueo_total,cambiar_usb_desbloqueo_total, hacer_reset_contraseña_windows,verificacion_usb_all,verificacion_usb_faltantes
 
 
 # Create your views here.
