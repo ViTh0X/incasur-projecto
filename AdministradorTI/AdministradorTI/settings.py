@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'inventario_hardware',
     'inventario_software',
     'bkinformacion',
+    'administracion_windows',
 ]
 
 MIDDLEWARE = [
