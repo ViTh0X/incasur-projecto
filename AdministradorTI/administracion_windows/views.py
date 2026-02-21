@@ -12,7 +12,7 @@ def menu_opciones_windows(request):
 
 def faltantes_verificacion_windows(request):
     faltantes_windows = FaltantesRevisionEquiposWindows.objects.all()
-    return render(request,'faltantes_revision_windows.html',{'faltantes_windows':faltantes_windows})
+    return render(request,'menu_opciones_windows/faltantes_revision_windows.html',{'faltantes_windows':faltantes_windows})
 
 def usb_solo_lectura(request,pk):
     ip_filtrada = get_object_or_404(ips,pk=pk)        
