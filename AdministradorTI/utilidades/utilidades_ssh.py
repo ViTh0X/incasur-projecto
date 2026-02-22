@@ -136,7 +136,8 @@ class SSHManager(logArchivos):
                     return "No Actualizado"                     
                 return "Actualizado"
                 
-        except:
+        except Exception as e:
+            print(f"Ubo un error en {e}")
             return "No Actualizado"
                 
                 
