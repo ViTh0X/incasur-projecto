@@ -221,6 +221,7 @@ def cambiar_usb_bloqueo_total(ip):
         try:
             print(f"Trabajando IP {ip_filtrada}")
             resultado = SSH_instancia.ejecutar_bloqueo_total_usb()
+            print(f"Resultado de Ejecucion comando: {resultado}")
             if not resultado == 'No Actualizado':
                 windows_actualizacion.estado_puertos_usb = "Bloqueado"                                                               
                 windows_actualizacion.estato_actualizacion = resultado                

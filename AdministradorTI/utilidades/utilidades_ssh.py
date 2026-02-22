@@ -129,7 +129,7 @@ class SSHManager(logArchivos):
                         )
                 stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
                 error = stderr.read().decode()
-                out = stdout.read()
+                out = stdout.read().decode()
                 print(out)
                 if error:
                     print(f"Error SSH: {error}")                
