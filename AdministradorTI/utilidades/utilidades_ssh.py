@@ -120,11 +120,9 @@ class SSHManager(logArchivos):
                 transporte = self.conexionSSH.get_transport()
                 transporte.set_keepalive(20)                
                 script_ps = (
-                    "if (-not (Test-Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies')) {"
-                    "  New-Item 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies' -Force | Out-Null"
-                    "};"
-                    "Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies' "
-                    "-Name 'WriteProtect' -Value 1"
+                    "$path = 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies';"
+                    "if (-not (Test-Path $path)) { New-Item $path -Force };"
+                    "Set-ItemProperty -Path $path -Name 'WriteProtect' -Value 1 -ErrorAction Stop"
                 )
                 comando = f'powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "{script_ps}"'
                 
