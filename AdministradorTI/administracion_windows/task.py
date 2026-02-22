@@ -253,7 +253,7 @@ def cambiar_usb_desbloqueo_total(ip):
             print(f"Trabajando IP {ip_filtrada}")
             resultado = SSH_instancia.ejecutar_desbloqueo_total_usb() 
             if not resultado == 'No Actualizado':                 
-                windows_actualizacion.estado_puertos_usb = "Disponible"                                                                    
+                windows_actualizacion.estado_puertos_usb = "Acceso Total"                                                                    
                 windows_actualizacion.estato_actualizacion = resultado                
                 windows_actualizacion.save()
             else:
