@@ -119,10 +119,22 @@ class SSHManager(logArchivos):
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
                 transporte = self.conexionSSH.get_transport()
                 transporte.set_keepalive(20)                
+                # script_ps = (
+                #     "$path = 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies';"
+                #     "if (-not (Test-Path $path)) { New-Item $path -Force };"
+                #     "Set-ItemProperty -Path $path -Name 'WriteProtect' -Value 1 -ErrorAction Stop"
+                # )
                 script_ps = (
                     "$path = 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies';"
-                    "if (-not (Test-Path $path)) { New-Item $path -Force };"
-                    "Set-ItemProperty -Path $path -Name 'WriteProtect' -Value 1 -ErrorAction Stop"
+                    "try {"
+                    "  if (-not (Test-Path $path)) { New-Item $path -Force | Out-Null };"
+                    "  Set-ItemProperty -Path $path -Name 'WriteProtect' -Value 1 -ErrorAction Stop;"
+                    "  Write-Output 'EXITO_CAMBIO';"
+                    "} catch {"
+                    "  Write-Error \"Error Detallado: $($_.Exception.Message)\";"
+                    "  $user = [Security.Principal.WindowsIdentity]::GetCurrent();"
+                    "  Write-Error \"Usuario actual: $($user.Name) - IsAdmin: $($user.Groups.Contains([Security.Principal.SecurityIdentifier]'S-1-5-32-544'))\";"
+                    "}"
                 )
                 comando = f'powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "{script_ps}"'
                 
