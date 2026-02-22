@@ -129,6 +129,8 @@ class SSHManager(logArchivos):
                         )
                 stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
                 error = stderr.read().decode()
+                out = stdout.read()
+                print(out)
                 if error:
                     print(f"Error SSH: {error}")                
                     return "No Actualizado"                     
