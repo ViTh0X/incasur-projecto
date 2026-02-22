@@ -12,7 +12,7 @@ def menu_opciones_windows(request):
     pc = get_object_or_404(tipo_equipos_informaticos,pk=2)
     nombres_a_filtrar = [laptop, pc]
     lista_ips_ocupadas = ips.objects.filter(codigo_estado=estado_ips,tipo_equipo_asignado__in=nombres_a_filtrar)
-    acciones_windows = EstadoAccionesWindows.objects.filter(id_ip__in=lista_ips_ocupadas)
+    acciones_windows = EstadoAccionesWindows.objects.filter(id_ip__in=lista_ips_ocupadas).order_by('id_estado')
     return render(request,'menu_opciones_windows/opciones_windows.html',{'acciones_windows':acciones_windows})
 
 def faltantes_verificacion_windows(request):
