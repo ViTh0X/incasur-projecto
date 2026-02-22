@@ -26,7 +26,7 @@
                     {% for data in acciones_windows %}                    
                     <tr>
                         <td>{{ data.id_ip.ip }}</td>                        
-                        <td>{{ id_ip.ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</td>                        
+                        <td>{{ data.id_ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</td>                        
                         <td>{{ data.estado_puertos_usb|default:"No Ejecutado" }}</td>                                                                                           
                         <td>
                             <div>
