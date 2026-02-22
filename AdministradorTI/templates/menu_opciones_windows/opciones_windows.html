@@ -23,14 +23,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for ip in listado_ips %}                    
+                    {% for data in acciones_windows %}                    
                     <tr>
-                        <td>{{ ip.ip }}</td>                        
-                        <td>{{ ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</td>                        
-                        <td>{{ ip.id_ip.estado_puertos_usb|default:"No Ejecutado" }}</td>                                                                                           
+                        <td>{{ data.id_ip.ip }}</td>                        
+                        <td>{{ id_ip.ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</td>                        
+                        <td>{{ data.estado_puertos_usb|default:"No Ejecutado" }}</td>                                                                                           
                         <td>
                             <div>
-                                <a title="CAMBIAR A SOLO LECTURA" href="{% url 'usb_solo_lectura' pk=ip.pk %}">
+                                <a title="CAMBIAR A SOLO LECTURA" href="{% url 'usb_solo_lectura' pk=data.id_ip.pk %}">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="28"
@@ -48,7 +48,7 @@
                                     <path d="M22 19l-3 -3l-3 3" />
                                     </svg>
                                 </a>                                  
-                                <a title="BLOQUEAR TOTALMENTE" href="{% url 'usb_desbloqueado_totalmente' pk=ip.pk %}">
+                                <a title="BLOQUEAR TOTALMENTE" href="{% url 'usb_desbloqueado_totalmente' pk=data.id_ip.pk %}">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="28"
@@ -65,7 +65,7 @@
                                     <path d="M3 3l18 18" />
                                     </svg>
                                 </a>                             
-                                <a title="DESBLOQUEAR TOTALMENTE" href="{% url 'usb_bloqueado_totalmente' pk=ip.pk %}">
+                                <a title="DESBLOQUEAR TOTALMENTE" href="{% url 'usb_bloqueado_totalmente' pk=data.id_ip.pk %}">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="28"
@@ -86,7 +86,7 @@
                         </td>
                         <td>
                             <div>
-                                <a title="RESETEAR_CONTRASEÑA_WINDOWS" href="{% url 'resetear_contraseña_windows' pk=ip.pk %}">
+                                <a title="RESETEAR_CONTRASEÑA_WINDOWS" href="{% url 'resetear_contraseña_windows' pk=data.id_ip.pk %}">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="28"
@@ -105,7 +105,7 @@
                                 </a>
                             </div>
                         </td>
-                        <td>{{ ip.id_ip.estato_actualizacion|default:"No Ejecutado"  }}</td>
+                        <td>{{ data.estato_actualizacion|default:"No Ejecutado"  }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

@@ -1,14 +1,19 @@
 from django.shortcuts import render, get_object_or_404,redirect
-from ips.models import ips
+from ips.models import ips, tipo_equipos_informaticos, tipo_estado_ips
 from .models import EstadoAccionesWindows,FaltantesRevisionEquiposWindows
 from .task import cambiar_usb_solo_lectura, cambiar_usb_bloqueo_total,cambiar_usb_desbloqueo_total, hacer_reset_contraseña_windows,verificacion_usb_all,verificacion_usb_faltantes
 
 
 # Create your views here.
 def menu_opciones_windows(request):
-    listado_ips =  ips.objects.all()
-    acciones_windows = EstadoAccionesWindows.objects.all()
-    return render(request,'menu_opciones_windows/opciones_windows.html',{'listado_ips':listado_ips,'acciones_windows':acciones_windows})
+    #listado_ips =  ips.objects.all()
+    estado_ips = get_object_or_404(tipo_estado_ips,pk=1)
+    laptop = get_object_or_404(tipo_equipos_informaticos,pk=1)
+    pc = get_object_or_404(tipo_equipos_informaticos,pk=2)
+    nombres_a_filtrar = [laptop, pc]
+    lista_ips_ocupadas = ips.objects.filter(codigo_estado=estado_ips,tipo_equipo_asignado__in=nombres_a_filtrar).values('ip')            
+    acciones_windows = EstadoAccionesWindows.objects.filter(id_ip__in=lista_ips_ocupadas)
+    return render(request,'menu_opciones_windows/opciones_windows.html',{'acciones_windows':acciones_windows})
 
 def faltantes_verificacion_windows(request):
     faltantes_windows = FaltantesRevisionEquiposWindows.objects.all()
