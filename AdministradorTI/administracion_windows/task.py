@@ -190,7 +190,8 @@ def cambiar_usb_solo_lectura(ip):
         SSH_instancia = SSHManager(ip,username,puerto,keyfile,passphrase)        
         try:
             print(f"Trabajando IP {ip_filtrada}")            
-            resultado = SSH_instancia.ejecutar_cambiar_usb_solo_lectura()                
+            resultado = SSH_instancia.ejecutar_cambiar_usb_solo_lectura()
+            print(f"Resultado de Ejecucion comando: {resultado}")                
             if not resultado == 'No Actualizado':
                 windows_actualizacion.estado_puertos_usb = "Solo Lectura"                                                                   
                 windows_actualizacion.estato_actualizacion = resultado               
@@ -220,8 +221,7 @@ def cambiar_usb_bloqueo_total(ip):
         SSH_instancia = SSHManager(ip,username,puerto,keyfile,passphrase)        
         try:
             print(f"Trabajando IP {ip_filtrada}")
-            resultado = SSH_instancia.ejecutar_bloqueo_total_usb()
-            print(f"Resultado de Ejecucion comando: {resultado}")
+            resultado = SSH_instancia.ejecutar_bloqueo_total_usb()            
             if not resultado == 'No Actualizado':
                 windows_actualizacion.estado_puertos_usb = "Bloqueado"                                                               
                 windows_actualizacion.estato_actualizacion = resultado                
