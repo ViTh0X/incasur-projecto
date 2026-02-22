@@ -101,6 +101,7 @@ class SSHManager(logArchivos):
                         )
                 stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
                 resultado = stdout.read().decode().strip()
+                print(f"Resultado Comando {resultado}")
                 if not resultado or stderr.read().decode():
                     return "Error al consultar"
 

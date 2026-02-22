@@ -31,7 +31,8 @@ def verificacion_usb_all():
             try:                                
                 print(f"********TRABAJANDO IP {string_ip}*********")  
                 estado_puertos = SSH_instancia.estatus_puerto_usb()                                                
-                if not estado_puertos == "Error al consultar":                               
+                print(estado_puertos) 
+                if not estado_puertos == "Error al consultar":                                                  
                     FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=ip_filtrada).delete()                                        
                     if ip_filtrada.colaborador_asignado.cargo_colaborador.nombre_cargo in lista_acceso_total:
                         if estado_puertos.lower().strip() == 'disponible':
@@ -115,10 +116,11 @@ def verificacion_usb_faltantes():
             try:                                
                 print(f"********TRABAJANDO IP {string_ip}*********")  
                 estado_puertos = SSH_instancia.estatus_puerto_usb()
+                print(estado_puertos)
                 if not estado_puertos == "Error al consultar":                               
                     FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=ip_filtrada).delete()                    
                     estado_puertos = SSH_instancia.estatus_puerto_usb()                
-                    if ip_filtrada.colaborador_asignado.cargo_colaborador.nombre_cargo in lista_acceso_total:
+                    if ip_filtrada.colaborador_asignado.cargo_colaborador.nombre_cargo in lista_acceso_total:                        
                         if estado_puertos.lower().strip() == 'disponible':
                             windows_actualizacion.estado_puertos_usb = "Acceso Total"
                             windows_actualizacion.save()
