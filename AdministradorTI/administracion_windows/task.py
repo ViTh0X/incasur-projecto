@@ -30,10 +30,9 @@ def verificacion_usb_all():
             windows_actualizacion = EstadoAccionesWindows.objects.get(id_ip=ip_filtrada.id)                     
             try:                                
                 print(f"********TRABAJANDO IP {string_ip}*********")  
-                equipo_conectado = SSH_instancia.realizarConSSH()
-                if equipo_conectado:                               
-                    FaltantesRevisionEquiposWindows.objects.filter(odigo_ip=ip_filtrada).delete()                    
-                    estado_puertos = SSH_instancia.estatus_puerto_usb()                
+                estado_puertos = SSH_instancia.estatus_puerto_usb()                                                
+                if not estado_puertos == "Error al consultar":                               
+                    FaltantesRevisionEquiposWindows.objects.filter(odigo_ip=ip_filtrada).delete()                                        
                     if ip_filtrada.colaborador_asignado.cargo_colaborador.nombre_cargo in lista_acceso_total:
                         if estado_puertos.lower().strip() == 'disponible':
                             windows_actualizacion.estado_puertos_usb = "Acceso Total"
@@ -80,7 +79,7 @@ def verificacion_usb_all():
                     faltantes_update_windows = FaltantesRevisionEquiposWindows()
                     faltantes_update_windows.codigo_ip = ip_filtrada
                     faltantes_update_windows.codigo_colaborador = ip_filtrada.colaborador_asignado                                    
-                    faltantes_update_windows.save()                                        
+                    faltantes_update_windows.save()                                                      
             except Exception as e:
                 print(f"Error en verficiacion USB {e}")
                 faltantes_update_windows = FaltantesRevisionEquiposWindows()
@@ -115,8 +114,8 @@ def verificacion_usb_faltantes():
             año_actual = datetime.now().year
             try:                                
                 print(f"********TRABAJANDO IP {string_ip}*********")  
-                equipo_conectado = SSH_instancia.realizarConSSH()
-                if equipo_conectado:                               
+                estado_puertos = SSH_instancia.estatus_puerto_usb()
+                if not estado_puertos == "Error al consultar":                               
                     FaltantesRevisionEquiposWindows.objects.filter(odigo_ip=ip_filtrada).delete()                    
                     estado_puertos = SSH_instancia.estatus_puerto_usb()                
                     if ip_filtrada.colaborador_asignado.cargo_colaborador.nombre_cargo in lista_acceso_total:
@@ -165,7 +164,7 @@ def verificacion_usb_faltantes():
                     faltantes_update_windows = FaltantesRevisionEquiposWindows()
                     faltantes_update_windows.codigo_ip = ip_filtrada
                     faltantes_update_windows.codigo_colaborador = ip_filtrada.colaborador_asignado                                    
-                    faltantes_update_windows.save()  
+                    faltantes_update_windows.save()                      
             except Exception as e:
                 print(f"Error en verficiacion USB {e}")
                 faltantes_update_windows = FaltantesRevisionEquiposWindows()
@@ -188,11 +187,9 @@ def cambiar_usb_solo_lectura(ip):
         passphrase = os.getenv('SSH_PASSPHRASE')
         SSH_instancia = SSHManager(ip,username,puerto,keyfile,passphrase)        
         try:
-            print(f"Trabajando IP {ip_filtrada}")
-            equipo_conectado = SSH_instancia.realizarConSSH()
-            if equipo_conectado:
-                SSH_instancia.crearCanalSFTP()                    
-                resultado = SSH_instancia.ejecutar_cambiar_usb_solo_lectura()                
+            print(f"Trabajando IP {ip_filtrada}")            
+            resultado = SSH_instancia.ejecutar_cambiar_usb_solo_lectura()                
+            if not resultado == 'No Actualizado':                                                    
                 windows_actualizacion.estato_actualizacion = resultado               
                 windows_actualizacion.save()
             else:
@@ -220,10 +217,8 @@ def cambiar_usb_bloqueo_total(ip):
         SSH_instancia = SSHManager(ip,username,puerto,keyfile,passphrase)        
         try:
             print(f"Trabajando IP {ip_filtrada}")
-            equipo_conectado = SSH_instancia.realizarConSSH()
-            if equipo_conectado:
-                SSH_instancia.crearCanalSFTP()                    
-                resultado = SSH_instancia.ejecutar_bloqueo_total_usb()                
+            resultado = SSH_instancia.ejecutar_bloqueo_total_usb()
+            if not resultado == 'No Actualizado':                                                               
                 windows_actualizacion.estato_actualizacion = resultado                
                 windows_actualizacion.save()
             else:
@@ -252,10 +247,8 @@ def cambiar_usb_desbloqueo_total(ip):
         SSH_instancia = SSHManager(ip,username,puerto,keyfile,passphrase)        
         try:
             print(f"Trabajando IP {ip_filtrada}")
-            equipo_conectado = SSH_instancia.realizarConSSH()
-            if equipo_conectado:
-                SSH_instancia.crearCanalSFTP()                    
-                resultado = SSH_instancia.ejecutar_desbloqueo_total_usb()                
+            resultado = SSH_instancia.ejecutar_desbloqueo_total_usb() 
+            if not resultado == 'No Actualizado':                                                                     
                 windows_actualizacion.estato_actualizacion = resultado                
                 windows_actualizacion.save()
             else:
@@ -282,11 +275,9 @@ def hacer_reset_contraseña_windows(ip):
         passphrase = os.getenv('SSH_PASSPHRASE')
         SSH_instancia = SSHManager(ip,username,puerto,keyfile,passphrase)        
         try:
-            print(f"Trabajando IP {ip_filtrada}")
-            equipo_conectado = SSH_instancia.realizarConSSH()
-            if equipo_conectado:
-                SSH_instancia.crearCanalSFTP()                    
-                resultado = SSH_instancia.resetear_contraseña_windows()                
+            print(f"Trabajando IP {ip_filtrada}")            
+            resultado = SSH_instancia.resetear_contraseña_windows()                
+            if not resultado == 'No Actualizado':                                                 
                 windows_actualizacion.estato_actualizacion = resultado                
                 windows_actualizacion.save()
             else:

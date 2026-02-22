@@ -59,10 +59,7 @@ class SSHManager(logArchivos):
         except Exception as e:
             print(f"{self.hostname} Error General {e}") 
               
-    
-    
-        
-    
+                    
     def actualizar_ejecutable_software(self):                
         try:
             with paramiko.SSHClient() as conexionSSH:
@@ -110,7 +107,7 @@ class SSHManager(logArchivos):
                 return resultado
                 
         except:
-            return ""
+            return "Error al consultar"
         
 
     def ejecutar_cambiar_usb_solo_lectura(self):
