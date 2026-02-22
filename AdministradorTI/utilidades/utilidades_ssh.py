@@ -119,17 +119,21 @@ class SSHManager(logArchivos):
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
                 transporte = self.conexionSSH.get_transport()
                 transporte.set_keepalive(20)                
-                comando = (
-                            'powershell.exe -Command "'
-                            'if (-not (Test-Path \'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies\')) {'
-                            '  New-Item \'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies\' -Force'
-                            '};'
-                            'Set-ItemProperty -Path \'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies\' '
-                            '-Name \'WriteProtect\' -Value 1"'
-                        )
-                stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
-                error = stderr.read().decode()
-                out = stdout.read().decode()
+                script_ps = (
+                    "if (-not (Test-Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies')) {"
+                    "  New-Item 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies' -Force | Out-Null"
+                    "};"
+                    "Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies' "
+                    "-Name 'WriteProtect' -Value 1"
+                )
+                comando = f'powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "{script_ps}"'
+                
+                stdin, stdout, stderr = conexionSSH.exec_command(comando)
+                
+                # SOLUCIÓN AL CODEC: Usamos 'cp1252' o 'latin-1' para la decodificación de Windows en español
+                # 'replace' evita que el script truene si hay un carácter extraño
+                out = stdout.read().decode('cp1252', errors='replace').strip()
+                error = stderr.read().decode('cp1252', errors='replace').strip()
                 print(out)
                 if error:
                     print(f"Error SSH: {error}")                
