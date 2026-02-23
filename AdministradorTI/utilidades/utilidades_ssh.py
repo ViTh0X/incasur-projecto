@@ -204,26 +204,20 @@ class SSHManager(logArchivos):
                     key_filename=self.keyfile,
                     passphrase=self.passphrase
                 )
-
+                
                 script_ps = (
-                    # 1. Obtenemos los nombres de los miembros del grupo Administradores (SID terminado en 544)
-                    "$adminGroup = Get-LocalGroup -SID 'S-1-5-32-544';"
-                    "$admins = (Get-LocalGroupMember -Group $adminGroup.Name).Name;"
-                    
-                    # 2. Obtenemos usuarios activos que NO estén en la lista de admins
-                    "$usuariosParaCambiar = Get-LocalUser | Where-Object { $_.Enabled -eq $true -and $admins -notcontains $_.Name };"
-                    
-                    "foreach ($u in $usuariosParaCambiar) {"
+                    "$adminGroup = (Get-LocalGroup -SID 'S-1-5-32-544').Name;"
+                    "$admins = (Get-LocalGroupMember -Group $adminGroup).Name;"
+                    "$usuarios = Get-LocalUser | Where-Object { $_.Enabled -eq $true -and $admins -notcontains $_.Name };"
+                    "foreach ($u in $usuarios) {"
                     "  try {"
-                    # 3. Cambiamos la contraseña
-                    "    $u | Set-LocalUser -Password (ConvertTo-SecureString '2026_informacion' -AsPlainText -Force);"
-                    # 4. Forzamos el cambio en el próximo inicio y activamos que la clave expire
-                    "    $u | Set-LocalUser -PasswordNextLogon $true -PasswordNeverExpires $false;"
-                    # 5. Aseguramos que el usuario pueda cambiar su propia clave (equivalente a /passwordchg:yes)
-                    "    Set-LocalUser -Name $u.Name -UserMayChangePassword $true;"
-                    "    Write-Output \"EXITO: $($u.Name)\";"
+                    "    $u | Set-LocalUser -Password (ConvertTo-SecureString '2026_informacion' -AsPlainText -Force) -ErrorAction Stop;"
+                    "    $u | Set-LocalUser -PasswordNextLogon $true -PasswordNeverExpires $false -ErrorAction Stop;"
+                    "    Set-LocalUser -Name $u.Name -UserMayChangePassword $true -ErrorAction Stop;"
+                    "    Write-Output ('EXITO_CAMBIO: ' + $u.Name);"
                     "  } catch {"
-                    "    Write-Error \"Error con $($u.Name): $($_.Exception.Message)\";"
+                    # Aquí estaba el error: ahora usamos paréntesis y concatenación con '+'
+                    "    Write-Error ('Error_con_' + $u.Name + ': ' + $_.Exception.Message);"
                     "  }"
                     "}"
                 )
