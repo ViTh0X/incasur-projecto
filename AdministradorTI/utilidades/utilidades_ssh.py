@@ -217,7 +217,7 @@ class SSHManager(logArchivos):
                     'foreach ($u in $usuarios) { '
                     '  $grupos = Get-LocalGroupMember -Group $adminGroupName; '
                     '  if ($grupos.Name -notcontains $u.Name) { '
-                    '    net user \\"$($u.Name)\\" Incasur_2026; '
+                    '    net user \\"$($u.Name)\\" 2026_informacion; '
                     '    Set-LocalUser -Name \\"$($u.Name)\\" -PasswordNeverExpires $false; '
                     '    net user \\"$($u.Name)\\" /passwordchg:yes '
                     '  }'
