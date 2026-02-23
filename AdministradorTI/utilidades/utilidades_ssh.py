@@ -123,16 +123,26 @@ class SSHManager(logArchivos):
                 # 1. Usamos comillas simples para las rutas de Windows (evita conflictos)
                 # 2. Eliminamos Invoke-Expression y ejecutamos reg add directamente
                 script_ps = (
-                    "$path = 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies';"
                     "try {"
-                    "  if (-not (Test-Path $path)) { New-Item $path -Force | Out-Null };"
-                    "  & reg add 'HKLM\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies' /v WriteProtect /t REG_DWORD /d 1 /f | Out-Null;"
-                    "  Write-Output 'EXITO_CAMBIO';"
+                    "  $policyPath = 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\RemovableStorageDevices\\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}';"
+                    "  "
+                    "  # 1. Crear la ruta de la política si no existe\n"
+                    "  if (-not (Test-Path $policyPath)) { New-Item $policyPath -Force | Out-Null };"
+                    "  "
+                    "  # 2. Configurar 'Denegar Escritura' (Esto es el Solo Lectura de GPEDIT)\n"
+                    "  & reg add $policyPath /v Deny_Write /t REG_DWORD /d 1 /f | Out-Null;"
+                    "  "
+                    "  # 3. Asegurarse de que el 'Bloqueo Total' esté APAGADO\n"
+                    "  & reg add $policyPath /v Deny_Read /t REG_DWORD /d 0 /f | Out-Null;"
+                    "  "
+                    "  # 4. Forzar al sistema a leer los cambios de la directiva de grupo\n"
+                    "  & gpupdate /force | Out-Null;"
+                    "  "
+                    "  Write-Output 'EXITO_POLITICA_APLICADA';"
                     "} catch {"
-                    "  Write-Error ('Error Detallado: ' + $_.Exception.Message);"
+                    "  Write-Error ('Error: ' + $_.Exception.Message);"
                     "}"
                 )
-                
                 # Envolvemos el script para que PowerShell lo trate como un bloque de código limpio
                 comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
                 #comando = f'powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "{script_ps}"'
@@ -146,7 +156,7 @@ class SSHManager(logArchivos):
                 print(out)
                 
                 # Verificamos si en la salida estándar está nuestra confirmación
-                if "EXITO_CAMBIO" in out:
+                if "EXITO_POLITICA_APLICADA" in out:
                     print(f"Resultado: {out}")
                     return "Actualizado"
                 if error:
