@@ -206,21 +206,30 @@ class SSHManager(logArchivos):
                 )
                 
                 script_ps = (
-                    "$adminGroup = (Get-LocalGroup -SID 'S-1-5-32-544').Name;"
-                    "$admins = (Get-LocalGroupMember -Group $adminGroup).Name;"
+                    # 1. Obtenemos el nombre exacto del grupo de administradores por SID
+                    "$adminGroupName = (Get-LocalGroup -SID 'S-1-5-32-544').Name;"
+                    # 2. Obtenemos solo los nombres de los miembros de ese grupo
+                    "$admins = (Get-LocalGroupMember -Group $adminGroupName).Name;"
+                    # 3. Filtramos: Usuarios activos que NO estén en la lista de administradores
                     "$usuarios = Get-LocalUser | Where-Object { $_.Enabled -eq $true -and $admins -notcontains $_.Name };"
+                    
                     "foreach ($u in $usuarios) {"
                     "  try {"
-                    "    $u | Set-LocalUser -Password (ConvertTo-SecureString '2026_informacion' -AsPlainText -Force) -ErrorAction Stop;"
-                    "    $u | Set-LocalUser -PasswordNextLogon $true -PasswordNeverExpires $false -ErrorAction Stop;"
-                    "    Set-LocalUser -Name $u.Name -UserMayChangePassword $true -ErrorAction Stop;"
-                    "    Write-Output ('EXITO_CAMBIO: ' + $u.Name);"
+                    "    $username = $u.Name;"
+                    # 4. Cambiamos contraseña usando net user (Universal)
+                    "    net user \"$username\" 2026_informacion /add /y | Out-Null;"
+                    # 5. Forzamos cambio de contraseña en el próximo inicio (Universal)
+                    "    net user \"$username\" /logonpasswordchg:yes | Out-Null;"
+                    # 6. Quitamos la expiración si fuera necesario (Opcional)
+                    "    Set-LocalUser -Name $username -PasswordNeverExpires $false -ErrorAction SilentlyContinue;"
+                    
+                    "    Write-Output ('EXITO_CAMBIO: ' + $username);"
                     "  } catch {"
-                    # Aquí estaba el error: ahora usamos paréntesis y concatenación con '+'
                     "    Write-Error ('Error_con_' + $u.Name + ': ' + $_.Exception.Message);"
                     "  }"
                     "}"
                 )
+
                 comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
 
                 stdin, stdout, stderr = conexionSSH.exec_command(comando)
