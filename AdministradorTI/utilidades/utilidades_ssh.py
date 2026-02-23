@@ -229,10 +229,12 @@ class SSHManager(logArchivos):
                 error = stderr.read().decode()
                 if error:
                     # Si hay error (ej. permisos insuficientes), devolvemos "No Actualizado"
+                    print(error)
                     return "No Actualizado"
                 
                 return "Actualizado"
-        except Exception:
+        except Exception as e:
+            print(f"Error es {e}")
             return "No Actualizado"                 
                                         
     def ejecuta_inventario_hardware(self):                       
