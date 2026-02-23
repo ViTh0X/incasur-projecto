@@ -125,25 +125,24 @@ class SSHManager(logArchivos):
                 # Nota: No uses variables de Python dentro de las llaves de la política
                 script_ps = (
                     "try {"
-                    # 1. Definimos las rutas usando comillas simples para evitar escapes molestos
-                    "$p = 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\RemovableStorageDevices';"
-                    "$guid = '{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}';"
+                    # 1. Definimos la ruta de la política (sin HKLM: porque el comando ya sabe que es equipo)
+                    "$key = 'Software\\Policies\\Microsoft\\Windows\\RemovableStorageDevices\\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}';"
                     
-                    # 2. Aseguramos que las carpetas existan
-                    "if (-not (Test-Path $p)) { New-Item $p -Force | Out-Null };"
-                    "$cp = Join-Path $p $guid;"
-                    "if (-not (Test-Path $cp)) { New-Item $cp -Force | Out-Null };"
+                    # 2. Aplicamos 'Denegar Escritura' = 1 (Habilitado)
+                    "Set-GPRegistryValue -Name 'Local Group Policy' -Key $key -ValueName 'Deny_Write' -Type DWord -Value 1 | Out-Null;"
                     
-                    # 3. Aplicamos las llaves de registro directamente (Sin variables complejas)
-                    "& reg add $p /v Deny_Write /t REG_DWORD /d 1 /f | Out-Null;"
-                    "& reg add $cp /v Deny_Write /t REG_DWORD /d 1 /f | Out-Null;"
-                    "& reg add $cp /v Deny_Read /t REG_DWORD /d 0 /f | Out-Null;"
+                    # 3. Aplicamos 'Denegar Lectura' = 0 (Deshabilitado para que se vea el USB)
+                    "Set-GPRegistryValue -Name 'Local Group Policy' -Key $key -ValueName 'Deny_Read' -Type DWord -Value 0 | Out-Null;"
                     
-                    # 4. Forzamos la actualización
+                    # 4. Forzar la actualización inmediata
                     "& gpupdate /force | Out-Null;"
-                    "Write-Output 'EXITO_POLITICA_APLICADA';"
+                    "Write-Output 'EXITO_POLITICA_REAL_APLICADA';"
                     "} catch {"
-                    "Write-Error ('Error: ' + $_.Exception.Message);"
+                    # Si el comando anterior no existe (versiones viejas), usamos el método REG ADD agresivo
+                    "  & reg add \"HKLM\\$key\" /v Deny_Write /t REG_DWORD /d 1 /f | Out-Null;"
+                    "  & reg add \"HKLM\\$key\" /v Deny_Read /t REG_DWORD /d 0 /f | Out-Null;"
+                    "  & gpupdate /force | Out-Null;"
+                    "  Write-Output 'EXITO_VIA_REGISTRO_DIRECTO';"
                     "}"
                 )
                 # IMPORTANTE: Asegúrate de que las llaves externas {{ }} rodeen al script_ps correctamente
