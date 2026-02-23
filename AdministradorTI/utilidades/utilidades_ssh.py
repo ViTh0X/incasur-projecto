@@ -204,23 +204,21 @@ class SSHManager(logArchivos):
                     key_filename=self.keyfile,
                     passphrase=self.passphrase
                 )
-                
                 script_ps = (
-                    # 1. Obtenemos el nombre del grupo de admins por SID (independiente del idioma)
+                    # 1. Obtenemos el nombre del grupo de admins por SID
                     "$adminGroupName = (Get-LocalGroup -SID 'S-1-5-32-544').Name;"
-                    # 2. Obtenemos los nombres de los miembros (como texto simple)
-                    "$admins = (Get-LocalGroupMember -Group $adminGroupName).Name;"
-                    # 3. Filtramos usuarios: activos y que NO estén en la lista de admins
+                    
+                    # 2. Obtenemos los nombres de los miembros y quitamos el "Equipo\" si existe
+                    "$admins = (Get-LocalGroupMember -Group $adminGroupName).Name | ForEach-Object { $_ -split '\\\\\\\\' | Select-Object -Last 1 };"
+                    
+                    # 3. Filtramos usuarios: activos y cuyo nombre NO esté en la lista limpia de admins
                     "$usuarios = Get-LocalUser | Where-Object { $_.Enabled -eq $true -and $admins -notcontains $_.Name };"
                     
                     "foreach ($u in $usuarios) {"
                     "  try {"
                     "    $username = $u.Name;"
-                    # 4. Actualizamos contraseña (QUITAMOS EL /add)
                     "    & net user \"$username\" 2026_informacion /y | Out-Null;"
-                    # 5. Forzamos cambio de contraseña en el próximo inicio
                     "    & net user \"$username\" /logonpasswordchg:yes | Out-Null;"
-                    
                     "    Write-Output ('EXITO_CAMBIO: ' + $username);"
                     "  } catch {"
                     "    Write-Error ('Error_con_' + $u.Name + ': ' + $_.Exception.Message);"
@@ -228,8 +226,8 @@ class SSHManager(logArchivos):
                     "}"
                 )
 
-                comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
-
+                comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""                                
+                                
                 stdin, stdout, stderr = conexionSSH.exec_command(comando)
                 
                 error = stderr.read().decode('cp1252', errors='replace').strip()
