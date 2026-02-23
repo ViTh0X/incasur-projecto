@@ -102,7 +102,7 @@ class SSHManager(logArchivos):
                     "if ($dr -eq 1) { 'Bloqueado' } elseif ($dw -eq 1) { 'Solo Lectura' } else { 'Disponible' }"
                 )
                 comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
-                stdin, stdout, stderr = conexionSSH.exec_command(comando)
+                stdin, stdout, stderr = conexionSSH.exec_command(comando,timeout=60)
                 resultado = stdout.read().decode('cp1252', errors='replace').strip()
                 
                 # Si el resultado contiene varias líneas, tomamos la última que es la respuesta
@@ -152,7 +152,7 @@ class SSHManager(logArchivos):
                 # IMPORTANTE: Asegúrate de que las llaves externas {{ }} rodeen al script_ps correctamente
                 comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
                 
-                stdin, stdout, stderr = conexionSSH.exec_command(comando)
+                stdin, stdout, stderr = conexionSSH.exec_command(comando,timeout=60)
                 
                 out = stdout.read().decode('cp1252', errors='replace').strip()
                 error = stderr.read().decode('cp1252', errors='replace').strip()
@@ -195,7 +195,7 @@ class SSHManager(logArchivos):
                     "}"
                 )
                 comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
-                stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
+                stdin, stdout,stderr = self.conexionSSH.exec_command(comando,timeout=60)
                 out = stdout.read().decode('cp1252', errors='replace')
                 return "Actualizado" if "EXITO" in out else "No Actualizado"                
         except:
@@ -226,7 +226,7 @@ class SSHManager(logArchivos):
                     "}"
                 )
                 comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
-                stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
+                stdin, stdout,stderr = self.conexionSSH.exec_command(comando,timeout=60)
                 out = stdout.read().decode('cp1252', errors='replace')
                 return "Actualizado" if "EXITO" in out else "No Actualizado"         
         except:
@@ -269,7 +269,7 @@ class SSHManager(logArchivos):
 
                 comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""                                
                                 
-                stdin, stdout, stderr = conexionSSH.exec_command(comando)
+                stdin, stdout, stderr = conexionSSH.exec_command(comando,timeout=60)
                 
                 error = stderr.read().decode('cp1252', errors='replace').strip()
                 if error:
