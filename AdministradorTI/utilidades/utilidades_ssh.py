@@ -205,26 +205,31 @@ class SSHManager(logArchivos):
                     passphrase=self.passphrase
                 )
 
-                # SCRIPT DE POWERSHELL:
-                # 1. Obtiene usuarios locales activos.
-                # 2. Filtra para excluir a los que están en el grupo 'Administradores'.
-                # 3. Para cada uno: cambia pass, quita el "nunca expira" y fuerza cambio al iniciar.
-                comando_ps = (
-                    'powershell -Command "'
-                    # Buscamos el nombre real del grupo de administradores usando su SID
-                    '$adminGroupName = (Get-LocalGroup -SID \'S-1-5-32-544\').Name; '
-                    '$usuarios = Get-LocalUser | Where-Object { $_.Enabled -eq $true }; '
-                    'foreach ($u in $usuarios) { '
-                    '  $grupos = Get-LocalGroupMember -Group $adminGroupName; '
-                    '  if ($grupos.Name -notcontains $u.Name) { '
-                    '    net user \\"$($u.Name)\\" 2026_informacion; '
-                    '    Set-LocalUser -Name \\"$($u.Name)\\" -PasswordNeverExpires $false; '
-                    '    net user \\"$($u.Name)\\" /passwordchg:yes '
-                    '  }'
-                    '}"'
+                script_ps = (
+                    # 1. Obtenemos los nombres de los miembros del grupo Administradores (SID terminado en 544)
+                    "$adminGroup = Get-LocalGroup -SID 'S-1-5-32-544';"
+                    "$admins = (Get-LocalGroupMember -Group $adminGroup.Name).Name;"
+                    
+                    # 2. Obtenemos usuarios activos que NO estén en la lista de admins
+                    "$usuariosParaCambiar = Get-LocalUser | Where-Object { $_.Enabled -eq $true -and $admins -notcontains $_.Name };"
+                    
+                    "foreach ($u in $usuariosParaCambiar) {"
+                    "  try {"
+                    # 3. Cambiamos la contraseña
+                    "    $u | Set-LocalUser -Password (ConvertTo-SecureString '2026_informacion' -AsPlainText -Force);"
+                    # 4. Forzamos el cambio en el próximo inicio y activamos que la clave expire
+                    "    $u | Set-LocalUser -PasswordNextLogon $true -PasswordNeverExpires $false;"
+                    # 5. Aseguramos que el usuario pueda cambiar su propia clave (equivalente a /passwordchg:yes)
+                    "    Set-LocalUser -Name $u.Name -UserMayChangePassword $true;"
+                    "    Write-Output \"EXITO: $($u.Name)\";"
+                    "  } catch {"
+                    "    Write-Error \"Error con $($u.Name): $($_.Exception.Message)\";"
+                    "  }"
+                    "}"
                 )
+                comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
 
-                stdin, stdout, stderr = conexionSSH.exec_command(comando_ps)
+                stdin, stdout, stderr = conexionSSH.exec_command(comando)
                 
                 error = stderr.read().decode('cp1252', errors='replace').strip()
                 if error:
