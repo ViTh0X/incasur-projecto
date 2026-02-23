@@ -206,22 +206,20 @@ class SSHManager(logArchivos):
                 )
                 
                 script_ps = (
-                    # 1. Obtenemos el nombre exacto del grupo de administradores por SID
+                    # 1. Obtenemos el nombre del grupo de admins por SID (independiente del idioma)
                     "$adminGroupName = (Get-LocalGroup -SID 'S-1-5-32-544').Name;"
-                    # 2. Obtenemos solo los nombres de los miembros de ese grupo
+                    # 2. Obtenemos los nombres de los miembros (como texto simple)
                     "$admins = (Get-LocalGroupMember -Group $adminGroupName).Name;"
-                    # 3. Filtramos: Usuarios activos que NO estén en la lista de administradores
+                    # 3. Filtramos usuarios: activos y que NO estén en la lista de admins
                     "$usuarios = Get-LocalUser | Where-Object { $_.Enabled -eq $true -and $admins -notcontains $_.Name };"
                     
                     "foreach ($u in $usuarios) {"
                     "  try {"
                     "    $username = $u.Name;"
-                    # 4. Cambiamos contraseña usando net user (Universal)
-                    "    net user \"$username\" 2026_informacion /add /y | Out-Null;"
-                    # 5. Forzamos cambio de contraseña en el próximo inicio (Universal)
-                    "    net user \"$username\" /logonpasswordchg:yes | Out-Null;"
-                    # 6. Quitamos la expiración si fuera necesario (Opcional)
-                    "    Set-LocalUser -Name $username -PasswordNeverExpires $false -ErrorAction SilentlyContinue;"
+                    # 4. Actualizamos contraseña (QUITAMOS EL /add)
+                    "    & net user \"$username\" 2026_informacion /y | Out-Null;"
+                    # 5. Forzamos cambio de contraseña en el próximo inicio
+                    "    & net user \"$username\" /logonpasswordchg:yes | Out-Null;"
                     
                     "    Write-Output ('EXITO_CAMBIO: ' + $username);"
                     "  } catch {"
