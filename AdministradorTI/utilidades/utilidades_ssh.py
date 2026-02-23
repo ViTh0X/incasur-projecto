@@ -113,59 +113,48 @@ class SSHManager(logArchivos):
 
     def ejecutar_cambiar_usb_solo_lectura(self):
         try:
-             with paramiko.SSHClient() as conexionSSH:
+            with paramiko.SSHClient() as conexionSSH:
                 self.conexionSSH = conexionSSH
                 self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-                self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
+                self.conexionSSH.connect(hostname=self.hostname, port=self.port, timeout=15, username=self.username, key_filename=self.keyfile, passphrase=self.passphrase)
+                
                 transporte = self.conexionSSH.get_transport()
-                transporte.set_keepalive(20)                
-                # Script optimizado:
-                # 1. Usamos comillas simples para las rutas de Windows (evita conflictos)
-                # 2. Eliminamos Invoke-Expression y ejecutamos reg add directamente
+                transporte.set_keepalive(20)
+                
+                # Usamos comillas triples para que el script sea más legible y evitar errores de escape
+                # Nota: No uses variables de Python dentro de las llaves de la política
                 script_ps = (
                     "try {"
-                    "  $policyPath = 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\RemovableStorageDevices\\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}';"
-                    "  "
-                    "  # 1. Crear la ruta de la política si no existe\n"
-                    "  if (-not (Test-Path $policyPath)) { New-Item $policyPath -Force | Out-Null };"
-                    "  "
-                    "  # 2. Configurar 'Denegar Escritura' (Esto es el Solo Lectura de GPEDIT)\n"
-                    "  & reg add $policyPath /v Deny_Write /t REG_DWORD /d 1 /f | Out-Null;"
-                    "  "
-                    "  # 3. Asegurarse de que el 'Bloqueo Total' esté APAGADO\n"
-                    "  & reg add $policyPath /v Deny_Read /t REG_DWORD /d 0 /f | Out-Null;"
-                    "  "
-                    "  # 4. Forzar al sistema a leer los cambios de la directiva de grupo\n"
-                    "  & gpupdate /force | Out-Null;"
-                    "  "
-                    "  Write-Output 'EXITO_POLITICA_APLICADA';"
+                    "$p = 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\RemovableStorageDevices\\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}';"
+                    "if (-not (Test-Path $p)) { New-Item $p -Force | Out-Null };"
+                    "& reg add $p /v Deny_Write /t REG_DWORD /d 1 /f | Out-Null;"
+                    "& reg add $p /v Deny_Read /t REG_DWORD /d 0 /f | Out-Null;"
+                    "& gpupdate /force | Out-Null;"
+                    "Write-Output 'EXITO_POLITICA_APLICADA';"
                     "} catch {"
-                    "  Write-Error ('Error: ' + $_.Exception.Message);"
+                    "Write-Error ('Error: ' + $_.Exception.Message);"
                     "}"
                 )
-                # Envolvemos el script para que PowerShell lo trate como un bloque de código limpio
+
+                # IMPORTANTE: Asegúrate de que las llaves externas {{ }} rodeen al script_ps correctamente
                 comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
-                #comando = f'powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "{script_ps}"'
                 
                 stdin, stdout, stderr = conexionSSH.exec_command(comando)
                 
-                # SOLUCIÓN AL CODEC: Usamos 'cp1252' o 'latin-1' para la decodificación de Windows en español
-                # 'replace' evita que el script truene si hay un carácter extraño
                 out = stdout.read().decode('cp1252', errors='replace').strip()
                 error = stderr.read().decode('cp1252', errors='replace').strip()
-                print(out)
                 
-                # Verificamos si en la salida estándar está nuestra confirmación
+                print(f"Salida: {out}")
+                
                 if "EXITO_POLITICA_APLICADA" in out:
-                    print(f"Resultado: {out}")
                     return "Actualizado"
-                if error:
-                    print(f"Error SSH: {error}")                
-                    return "No Actualizado"                     
-                return "Actualizado"
-                
+                else:
+                    if error:
+                        print(f"Error SSH detectado: {error}")
+                    return "No Actualizado"
+                    
         except Exception as e:
-            print(f"Ubo un error en {e}")
+            print(f"Error en la ejecución: {e}")
             return "No Actualizado"
                 
                 
