@@ -119,16 +119,21 @@ class SSHManager(logArchivos):
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
                 transporte = self.conexionSSH.get_transport()
                 transporte.set_keepalive(20)                
+                # Script optimizado:
+                # 1. Usamos comillas simples para las rutas de Windows (evita conflictos)
+                # 2. Eliminamos Invoke-Expression y ejecutamos reg add directamente
                 script_ps = (
                     "$path = 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies';"
-                    "try {"                    
-                    "  $cmd = \"reg add `\"HKLM\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies`\" /v WriteProtect /t REG_DWORD /d 1 /f\";"
-                    "  Invoke-Expression $cmd | Out-Null;"
+                    "try {"
+                    "  if (-not (Test-Path $path)) { New-Item $path -Force | Out-Null };"
+                    "  & reg add 'HKLM\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies' /v WriteProtect /t REG_DWORD /d 1 /f | Out-Null;"
                     "  Write-Output 'EXITO_CAMBIO';"
                     "} catch {"
                     "  Write-Error ('Error Detallado: ' + $_.Exception.Message);"
                     "}"
                 )
+                
+                # Envolvemos el script para que PowerShell lo trate como un bloque de código limpio
                 comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
                 #comando = f'powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "{script_ps}"'
                 
@@ -139,6 +144,11 @@ class SSHManager(logArchivos):
                 out = stdout.read().decode('cp1252', errors='replace').strip()
                 error = stderr.read().decode('cp1252', errors='replace').strip()
                 print(out)
+                
+                # Verificamos si en la salida estándar está nuestra confirmación
+                if "EXITO_CAMBIO" in out:
+                    print(f"Resultado: {out}")
+                    return "Actualizado"
                 if error:
                     print(f"Error SSH: {error}")                
                     return "No Actualizado"                     
