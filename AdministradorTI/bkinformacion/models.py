@@ -23,6 +23,7 @@ class backups_informacion(models.Model):
     codigo_ip = models.ForeignKey(ips,on_delete=models.CASCADE)
     codigo_colaborador = models.ForeignKey(colaboradores,on_delete=models.CASCADE)
     detalle = models.CharField(max_length=50)
+    peso_archivo = models.IntegerField(default=0)
     fecha_modificacion = models.DateField(auto_now=True)
     
     class Meta:

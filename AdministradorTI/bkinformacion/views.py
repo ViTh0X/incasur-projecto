@@ -100,40 +100,13 @@ def descargar_cargo_backup(request,pk):
     except FileNotFoundError:
         return HttpResponse("Error:La plantilla no fue encontrada")
     
-    año = instancia_backup.fecha_modificacion.year
-    mes = instancia_backup.fecha_modificacion.month
-    dia = instancia_backup.fecha_modificacion.day
     mensaje_Observacion = f"La informacion del Disco D fue guardada correctamente segun archivo Log-{str(ip_colaborador)}-{año}-{mes}-{dia}.txt"
-    tamaño_archivo = ''
-    total_size = 0 
-    ruta_archivo_backup = f'/mnt/backupcolaboradores/{ip_colaborador}'
-    if os.path.exists(ruta_archivo_backup):
-    # Caminamos por toda la estructura de la carpeta
-        for dirpath, dirnames, filenames in os.walk(ruta_archivo_backup):
-            for f in filenames:
-                fp = os.path.join(dirpath, f)
-                # Sumamos solo si no es un enlace roto
-                if not os.path.islink(fp):
-                    total_size += os.path.getsize(fp)
-
-        # Convertimos a formato legible
-        temp_size = total_size
-        unidad_final = "B"
-        for unidad in ['B', 'KB', 'MB', 'GB', 'TB']:
-            if temp_size < 1024:
-                unidad_final = unidad
-                break
-            temp_size /= 1024
-    
-    # Esta es tu variable final
-        tamaño_archivo = f"{temp_size:.2f} {unidad_final}"
-    else:
-        tamaño_archivo = "Directorio no encontrado"
+    tamaño_archivo = instancia_backup.peso_archivo
     hoja['C7'] = str(nombre_colaborador)
     hoja['C8'] = str(puesto_colaborador)
     hoja['C10'] = str(ip_colaborador)
     hoja['C11'] = mensaje_Observacion
-    hoja['G10'] = tamaño_archivo
+    hoja['G10'] = f"{int(tamaño_archivo)} MB"
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename=colaborador_{nombre_colaborador}.xlsx'
     libro.save(response)

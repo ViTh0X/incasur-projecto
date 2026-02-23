@@ -17,9 +17,11 @@ class SSHManager(logArchivos):
         self.conexionSSH = None
         self.canalSFTP = None
         self.rutaArchivo = None
-        self.pst_path_local = []
-        self.pst_path_remoto = []
-        self.nombre_archivo_pst = []                                             
+        self.archivos_bloqueados_path_local = []
+        self.archivos_bloqueados_path_remoto = []
+        self.archivos_bloqueados_nombre = []
+        self.archivos_bloqueados_peso = []
+        self.peso_archivo_final = 0                                             
 
     def revisarConexionSSH(self):
         try:
@@ -650,23 +652,24 @@ class SSHManager(logArchivos):
 
     def copiar_pst(self):
         print("Funcion copiar_pst Ejecutada")
-        print(f"Lista archivos ocupados1: {self.pst_path_local}")
-        print(f"Lista archivos ocupados2: {self.pst_path_remoto}")
-        print(f"Lista nombre archivos: {self.nombre_archivo_pst}")
-        if len(self.nombre_archivo_pst) > 0:
+        print(f"Lista archivos ocupados1: {self.archivos_bloqueados_path_local}")
+        print(f"Lista archivos ocupados2: {self.archivos_bloqueados_path_remoto}")
+        print(f"Lista nombre archivos: {self.archivos_bloqueados_nombre}")
+        if len(self.archivos_bloqueados_nombre) > 0:
             ubicacion = 0
-            for ruta_retoma in self.pst_path_remoto:                        
+            for ruta_retoma in self.archivos_bloqueados_path_remoto:                        
                 try:
-                    mensaje = f"Copiando archivo {self.nombre_archivo_pst[ubicacion]}"
+                    mensaje = f"Copiando archivo {self.archivos_bloqueados_nombre[ubicacion]}"
                     self.registrarLog(mensaje,"INF",ruta_retoma,self.hostname) 
                     print("Intentando copiar el PST")                        
-                    mensaje = f"De {ruta_retoma} --> {self.pst_path_local[ubicacion]}"
+                    mensaje = f"De {ruta_retoma} --> {self.archivos_bloqueados_path_local[ubicacion]}"
                     self.registrarLog(mensaje,"INF",ruta_retoma,self.hostname)  
-                    self.canalSFTP.get(str(ruta_retoma),str(self.pst_path_local[ubicacion]))
-                    mensaje = f"Archivo {self.nombre_archivo_pst[ubicacion]} salvado con EXITO"
-                    self.registrarLog(mensaje,"INF",ruta_retoma,self.hostname)  
+                    self.canalSFTP.get(str(ruta_retoma),str(self.archivos_bloqueados_path_local[ubicacion]))
+                    mensaje = f"Archivo {self.archivos_bloqueados_nombre[ubicacion]} salvado con EXITO"
+                    self.registrarLog(mensaje,"INF",ruta_retoma,self.hostname)
+                    self.peso_archivo_final += self.archivos_bloqueados_peso[ubicacion]  
                 except IOError as e:
-                    mensaje = f"No se pudo copiar {self.nombre_archivo_pst[ubicacion]} (¿Archivo en uso?): {e}"
+                    mensaje = f"No se pudo copiar {self.archivos_bloqueados_nombre[ubicacion]} (¿Archivo en uso?): {e}"
                     self.registrarLog(mensaje, "ERR",ruta_retoma, self.hostname)                    
                 ubicacion += 1
         else:
@@ -688,7 +691,7 @@ class SSHManager(logArchivos):
             rBaseLocalR = Path(rBaseLocal)
         try:                
             listaArchivos = list(self.canalSFTP.listdir_iter(str(rBaseRemoR)))                                             
-            for archivo in listaArchivos:                                                   
+            for archivo in listaArchivos:                                                                   
                 nombreArchivo = archivo.filename                                                
                 if nombreArchivo.startswith("~"):
                     print(f"Archivo {nombreArchivo} ignorado")
@@ -706,10 +709,12 @@ class SSHManager(logArchivos):
                         mensaje = f"Se creo la carpeta {nombreArchivo} - Ruta {creaRutaLocal}"
                         self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                            
                         self.realizarBKUP(rBaseRemoR,rBaseLocalR,nombreArchivo)                                            
-                    else:                        
+                    else:                
+                        peso_archivo = archivo.st_size
+                        peso_final = peso_archivo / (1024 * 1024)        
                         rutaCopiarLocal = rBaseLocalR / nombreArchivo                          
                         rutaCopiarRemoto = rBaseRemoR / nombreArchivo 
-                        existeLocal = os.path.exists(str(rutaCopiarLocal))
+                        existeLocal = os.path.exists(str(rutaCopiarLocal))                        
                         try:                            
                             if not existeLocal:                                                                
                                 mensaje = f"Copiando archivo {nombreArchivo}"
@@ -722,15 +727,17 @@ class SSHManager(logArchivos):
                                     self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))                                    
                                     mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+                                    self.peso_archivo_final += int(peso_final)
                                 except IOError as e:
-                                    self.pst_path_local.append(rutaCopiarLocal)
-                                    self.pst_path_remoto.append(rutaCopiarRemoto)
-                                    self.nombre_archivo_pst.append(nombreArchivo)
-                                    print(f"Lista archivos ocupados1: {self.pst_path_local}")
-                                    print(f"Lista archivos ocupados2: {self.pst_path_remoto}")
-                                    print(f"Lista nombre archivos: {self.nombre_archivo_pst}")
+                                    self.archivos_bloqueados_path_local.append(rutaCopiarLocal)
+                                    self.archivos_bloqueados_path_remoto.append(rutaCopiarRemoto)
+                                    self.archivos_bloqueados_nombre.append(nombreArchivo)
+                                    print(f"Lista archivos ocupados1: {self.archivos_bloqueados_path_local}")
+                                    print(f"Lista archivos ocupados2: {self.archivos_bloqueados_path_remoto}")
+                                    print(f"Lista nombre archivos: {self.archivos_bloqueados_nombre}")
                                     mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
-                                    self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)                                              
+                                    self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
+                                    self.archivos_bloqueados_peso.append(int(peso_final))                                              
                                 except Exception as e:
                                     print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
                                     if "Socket is closed" in str(e):
@@ -749,15 +756,17 @@ class SSHManager(logArchivos):
                                         self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))
                                         mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                         self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+                                        self.peso_archivo_final += int(peso_final)
                                     except IOError as e:
-                                        self.pst_path_local.append(rutaCopiarLocal)
-                                        self.pst_path_remoto.append(rutaCopiarRemoto)
-                                        self.nombre_archivo_pst.append(nombreArchivo)
-                                        print(f"Lista archivos ocupados1: {self.pst_path_local}")
-                                        print(f"Lista archivos ocupados2: {self.pst_path_remoto}")
-                                        print(f"Lista nombre archivos: {self.nombre_archivo_pst}")
+                                        self.archivos_bloqueados_path_local.append(rutaCopiarLocal)
+                                        self.archivos_bloqueados_path_remoto.append(rutaCopiarRemoto)
+                                        self.archivos_bloqueados_nombre.append(nombreArchivo)
+                                        print(f"Lista archivos ocupados1: {self.archivos_bloqueados_path_local}")
+                                        print(f"Lista archivos ocupados2: {self.archivos_bloqueados_path_remoto}")
+                                        print(f"Lista nombre archivos: {self.archivos_bloqueados_nombre}")
                                         mensaje = f"No se pudo copiar {nombreArchivo} (¿Archivo en uso?): {e}"
-                                        self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)                                        
+                                        self.registrarLog(mensaje, "ERR", self.rutaArchivo, self.hostname)
+                                        self.archivos_bloqueados_peso.append(int(peso_final))                                        
                                     except Exception as e:
                                         print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
                                         if "Socket is closed" in str(e):

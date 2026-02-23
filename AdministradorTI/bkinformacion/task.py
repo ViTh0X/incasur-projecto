@@ -59,6 +59,7 @@ def ejecutar_backup_informacion():
                     print("Termino La ejecucion del Backup")                    
                     SSH_instancia.cerrarConexiones()                    
                     existen_errores = SSH_instancia.verificar_archivos_logs(host=string_ip,año_actual=año_actual,mes_actual=mes_actual,dia_actual=dia_actual)
+                    peso = SSH_instancia.peso_archivo_final
                     if existen_errores:
                         detalle_backup = "Parece que aparecieron unos errores revise el log."                        
                     else:
@@ -66,7 +67,8 @@ def ejecutar_backup_informacion():
                     modelado_backup_informacion = backups_informacion(
                         codigo_ip = ip_filtrada,
                         codigo_colaborador = ip_filtrada.colaborador_asignado,
-                        detalle = detalle_backup
+                        detalle = detalle_backup,
+                        peso_archivo = peso
                     )                    
                     modelado_backup_informacion.save()
                     faltantes_backup_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
