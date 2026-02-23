@@ -106,7 +106,8 @@ class SSHManager(logArchivos):
                     return "Error al consultar"
                 return resultado
                 
-        except:
+        except Exception as e:
+            print(f"Error Capturado {e}")
             return "Error al consultar"
         
 
