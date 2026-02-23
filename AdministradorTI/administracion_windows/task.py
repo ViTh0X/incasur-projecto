@@ -31,9 +31,9 @@ def verificacion_usb_all():
             try:                                
                 print(f"********TRABAJANDO IP {string_ip}*********")  
                 estado_puertos = SSH_instancia.estatus_puerto_usb()                                                
-                print(estado_puertos) 
-                if not estado_puertos == "Error al consultar":                                                  
-                    FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=ip_filtrada).delete()                                        
+                print(estado_puertos)                 
+                if not estado_puertos == "Error al consultar":                                                                                                              
+                    FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=ip_filtrada).delete()
                     if ip_filtrada.colaborador_asignado.cargo_colaborador.nombre_cargo in lista_acceso_total:
                         if estado_puertos.lower().strip() == 'disponible':
                             windows_actualizacion.estado_puertos_usb = "Acceso Total"
@@ -77,12 +77,14 @@ def verificacion_usb_all():
                                 windows_actualizacion.estato_actualizacion = "No Actualizado"
                                 windows_actualizacion.save()                                                                                                                  
                 else:
+                    FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=ip_filtrada).delete()
                     faltantes_update_windows = FaltantesRevisionEquiposWindows()
                     faltantes_update_windows.codigo_ip = ip_filtrada
                     faltantes_update_windows.codigo_colaborador = ip_filtrada.colaborador_asignado                                    
                     faltantes_update_windows.save()                                                      
             except Exception as e:
                 print(f"Error en verficiacion USB {e}")
+                FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=ip_filtrada).delete()
                 faltantes_update_windows = FaltantesRevisionEquiposWindows()
                 faltantes_update_windows.codigo_ip = ip_filtrada
                 faltantes_update_windows.codigo_colaborador = ip_filtrada.colaborador_asignado                                    
@@ -163,11 +165,13 @@ def verificacion_usb_faltantes():
                                 windows_actualizacion.estato_actualizacion = "No Actualizado"
                                 windows_actualizacion.save()                                                                                                                  
                 else:
+                    FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=ip_filtrada).delete()
                     faltantes_update_windows = FaltantesRevisionEquiposWindows()
                     faltantes_update_windows.codigo_ip = ip_filtrada
                     faltantes_update_windows.codigo_colaborador = ip_filtrada.colaborador_asignado                                    
                     faltantes_update_windows.save()                      
             except Exception as e:
+                FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=ip_filtrada).delete()
                 print(f"Error en verficiacion USB {e}")
                 faltantes_update_windows = FaltantesRevisionEquiposWindows()
                 faltantes_update_windows.codigo_ip = ip_filtrada
@@ -290,10 +294,10 @@ def hacer_reset_contraseña_windows(ip):
                 windows_actualizacion.estato_actualizacion = "No se Actualizo"
                 windows_actualizacion.save()
         except Exception as e:
-            print("Error no pudo actualizar no esta en red")
+            print(f"Error no pudo actualizar no esta en red {e}")
             windows_actualizacion.estato_actualizacion = "No se Actualizo"
             windows_actualizacion.save()
     except Exception as e:
-        print("Error no pudo actualizar no esta en red")
+        print(f"Error no pudo actualizar no esta en red {e}")
         windows_actualizacion.estato_actualizacion = "No se Actualizo"
         windows_actualizacion.save()

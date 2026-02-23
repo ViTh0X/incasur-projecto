@@ -104,7 +104,6 @@ class SSHManager(logArchivos):
                 print(f"Resultado Comando {resultado}")
                 if not resultado or stderr.read().decode():
                     return "Error al consultar"
-
                 return resultado
                 
         except:
