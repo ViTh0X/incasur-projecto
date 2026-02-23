@@ -125,17 +125,26 @@ class SSHManager(logArchivos):
                 # Nota: No uses variables de Python dentro de las llaves de la política
                 script_ps = (
                     "try {"
-                    "$p = 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\RemovableStorageDevices\\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}';"
+                    # 1. Ruta de la política general de almacenamiento extraíble
+                    "$p = 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\RemovableStorageDevices';"
                     "if (-not (Test-Path $p)) { New-Item $p -Force | Out-Null };"
+                    
+                    # 2. Denegar escritura a NIVEL GLOBAL (esto es lo que activa la directiva)
                     "& reg add $p /v Deny_Write /t REG_DWORD /d 1 /f | Out-Null;"
-                    "& reg add $p /v Deny_Read /t REG_DWORD /d 0 /f | Out-Null;"
+                    
+                    # 3. Aplicar también a la clase específica de discos por si acaso
+                    "$classPath = \"$p\\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}\";"
+                    "if (-not (Test-Path $classPath)) { New-Item $classPath -Force | Out-Null };"
+                    "& reg add $classPath /v Deny_Write /t REG_DWORD /d 1 /f | Out-Null;"
+                    "& reg add $classPath /v Deny_Read /t REG_DWORD /d 0 /f | Out-Null;"
+                    
+                    # 4. FORZAR el refresco de la política en el núcleo de Windows
                     "& gpupdate /force | Out-Null;"
                     "Write-Output 'EXITO_POLITICA_APLICADA';"
                     "} catch {"
                     "Write-Error ('Error: ' + $_.Exception.Message);"
                     "}"
                 )
-
                 # IMPORTANTE: Asegúrate de que las llaves externas {{ }} rodeen al script_ps correctamente
                 comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
                 
