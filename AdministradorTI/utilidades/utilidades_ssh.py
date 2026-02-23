@@ -226,7 +226,7 @@ class SSHManager(logArchivos):
 
                 stdin, stdout, stderr = conexionSSH.exec_command(comando_ps)
                 
-                error = stderr.read().decode()
+                error = stderr.read().decode('cp1252', errors='replace').strip()
                 if error:
                     # Si hay error (ej. permisos insuficientes), devolvemos "No Actualizado"
                     print(error)
