@@ -92,20 +92,24 @@ class SSHManager(logArchivos):
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
                 transporte = self.conexionSSH.get_transport()
                 transporte.set_keepalive(20)                
-                comando = (
-                            "powershell -Command \" "
-                            "$u = (Get-ItemProperty 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\USBSTOR').Start; "
-                            "$s = 0; if (Test-Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies') { "
-                            "$s = (Get-ItemProperty 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies').WriteProtect }; "
-                            "if ($u -eq 4) { 'Bloqueado' } elseif ($s -eq 1) { 'Solo Lectura' } else { 'Disponible' } \""
-                        )
-                stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
-                resultado = stdout.read().decode().strip()
-                print(f"Resultado Comando {resultado}")
-                if not resultado or stderr.read().decode():
-                    return "Error al consultar"
-                return resultado
+                script_ps = (
+                    "$p = 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\RemovableStorageDevices\\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}';"
+                    "$dr = 0; $dw = 0;"
+                    "if (Test-Path $p) {"
+                    "  $dr = (Get-ItemProperty $p).Deny_Read;"
+                    "  $dw = (Get-ItemProperty $p).Deny_Write;"
+                    "};"
+                    "if ($dr -eq 1) { 'Bloqueado' } elseif ($dw -eq 1) { 'Solo Lectura' } else { 'Disponible' }"
+                )
+                comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
+                stdin, stdout, stderr = conexionSSH.exec_command(comando)
+                resultado = stdout.read().decode('cp1252', errors='replace').strip()
                 
+                # Si el resultado contiene varias líneas, tomamos la última que es la respuesta
+                if resultado:
+                    resultado = resultado.split('\n')[-1].strip()
+                    
+                return resultado if resultado in ['Bloqueado', 'Solo Lectura', 'Disponible'] else "Error al consultar"                                    
         except Exception as e:
             print(f"Error Capturado {e}")
             return "Error al consultar"
@@ -175,16 +179,25 @@ class SSHManager(logArchivos):
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
                 transporte = self.conexionSSH.get_transport()
                 transporte.set_keepalive(20)                
-                comando = (
-                            'powershell -Command "Set-ItemProperty -Path \'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\USBSTOR\' '
-                            '-Name \'Start\' -Value 4"'
-                        )
+                script_ps = (
+                    "try {"
+                    "$key = 'Software\\Policies\\Microsoft\\Windows\\RemovableStorageDevices\\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}';"
+                    # Bloqueamos Lectura y Escritura
+                    "Set-GPRegistryValue -Name 'Local Group Policy' -Key $key -ValueName 'Deny_Read' -Type DWord -Value 1 | Out-Null;"
+                    "Set-GPRegistryValue -Name 'Local Group Policy' -Key $key -ValueName 'Deny_Write' -Type DWord -Value 1 | Out-Null;"
+                    "& gpupdate /force | Out-Null;"
+                    "Write-Output 'EXITO_BLOQUEO_TOTAL';"
+                    "} catch {"
+                    "  & reg add \"HKLM\\$key\" /v Deny_Read /t REG_DWORD /d 1 /f | Out-Null;"
+                    "  & reg add \"HKLM\\$key\" /v Deny_Write /t REG_DWORD /d 1 /f | Out-Null;"
+                    "  & gpupdate /force | Out-Null;"
+                    "  Write-Output 'EXITO_BLOQUEO_TOTAL_REG';"
+                    "}"
+                )
+                comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
                 stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
-                error = stderr.read().decode()
-                if error:
-                    print(f"Error SSH: {error}")                
-                    return "No Actualizado"                     
-                return "Actualizado"                
+                out = stdout.read().decode('cp1252', errors='replace')
+                return "Actualizado" if "EXITO" in out else "No Actualizado"                
         except:
             return "No Actualizado"
                 
@@ -197,16 +210,25 @@ class SSHManager(logArchivos):
                 self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
                 transporte = self.conexionSSH.get_transport()
                 transporte.set_keepalive(20)                
-                comando = (
-                            'powershell -Command "Set-ItemProperty -Path \'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\USBSTOR\' '
-                            '-Name \'Start\' -Value 3"'
-                        )
+                script_ps = (
+                    "try {"
+                    "$key = 'Software\\Policies\\Microsoft\\Windows\\RemovableStorageDevices\\{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}';"
+                    # Liberamos Lectura y Escritura
+                    "Set-GPRegistryValue -Name 'Local Group Policy' -Key $key -ValueName 'Deny_Read' -Type DWord -Value 0 | Out-Null;"
+                    "Set-GPRegistryValue -Name 'Local Group Policy' -Key $key -ValueName 'Deny_Write' -Type DWord -Value 0 | Out-Null;"
+                    "& gpupdate /force | Out-Null;"
+                    "Write-Output 'EXITO_DESBLOQUEO';"
+                    "} catch {"
+                    "  & reg add \"HKLM\\$key\" /v Deny_Read /t REG_DWORD /d 0 /f | Out-Null;"
+                    "  & reg add \"HKLM\\$key\" /v Deny_Write /t REG_DWORD /d 0 /f | Out-Null;"
+                    "  & gpupdate /force | Out-Null;"
+                    "  Write-Output 'EXITO_DESBLOQUEO_REG';"
+                    "}"
+                )
+                comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
                 stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
-                error = stderr.read().decode()
-                if error:
-                    print(f"Error SSH: {error}")                
-                    return "No Actualizado"                     
-                return "Actualizado"                
+                out = stdout.read().decode('cp1252', errors='replace')
+                return "Actualizado" if "EXITO" in out else "No Actualizado"         
         except:
             return "No Actualizado"              
     
