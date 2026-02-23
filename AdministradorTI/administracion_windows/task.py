@@ -286,7 +286,8 @@ def hacer_reset_contraseña_windows(ip):
         SSH_instancia = SSHManager(ip,username,puerto,keyfile,passphrase)        
         try:
             print(f"Trabajando IP {ip_filtrada}")            
-            resultado = SSH_instancia.hacer_reset_contraseña_windows()                
+            resultado = SSH_instancia.hacer_reset_contraseña_windows()
+            print(resultado)                
             if not resultado == 'No Actualizado':                                                 
                 windows_actualizacion.estato_actualizacion = resultado                
                 windows_actualizacion.save()
