@@ -121,16 +121,12 @@ class SSHManager(logArchivos):
                 transporte.set_keepalive(20)                
                 script_ps = (
                     "$path = 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies';"
-                    "try {"
-                    "  if (-not (Test-Path $path)) { New-Item $path -Force | Out-Null };"
-                    "  Set-ItemProperty -Path $path -Name 'WriteProtect' -Value 1 -ErrorAction Stop;"
+                    "try {"                    
+                    "  $cmd = \"reg add `\"HKLM\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies`\" /v WriteProtect /t REG_DWORD /d 1 /f\";"
+                    "  Invoke-Expression $cmd | Out-Null;"
                     "  Write-Output 'EXITO_CAMBIO';"
                     "} catch {"
-                    # Cambiamos las comillas dobles internas por comillas simples
                     "  Write-Error ('Error Detallado: ' + $_.Exception.Message);"
-                    "  $user = [Security.Principal.WindowsIdentity]::GetCurrent();"
-                    "  $isAdmin = $user.Groups.Contains([Security.Principal.SecurityIdentifier]'S-1-5-32-544');"
-                    "  Write-Error ('Usuario actual: ' + $user.Name + ' - IsAdmin: ' + $isAdmin);"
                     "}"
                 )
                 comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""
