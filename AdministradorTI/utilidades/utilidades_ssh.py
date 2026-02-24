@@ -21,7 +21,8 @@ class SSHManager(logArchivos):
         self.archivos_bloqueados_path_remoto = []
         self.archivos_bloqueados_nombre = []
         self.archivos_bloqueados_peso = []
-        self.peso_archivo_final = 0                                             
+        self.peso_archivo_final = 0
+        self.nombre_archivo_log = ""                                             
 
     def revisarConexionSSH(self):
         try:
@@ -511,6 +512,10 @@ class SSHManager(logArchivos):
         
     def realizarConSSH(self):
         self.rutaArchivo = self.crearArchivo(self.hostname)
+        dd = datetime.now().day
+        mm =  datetime.now().month
+        yyyy = datetime.now().year  
+        self.nombre_archivo_log = f"Log-{self.hostname}--{yyyy}-{mm}-{dd}"
         try:                        
             self.conexionSSH = paramiko.SSHClient()            
             self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())            

@@ -99,8 +99,8 @@ def descargar_cargo_backup(request,pk):
         hoja = libro.active
     except FileNotFoundError:
         return HttpResponse("Error:La plantilla no fue encontrada")
-    
-    mensaje_Observacion = f"La informacion del Disco D fue guardada correctamente segun archivo Log-{str(ip_colaborador)}-{año}-{mes}-{dia}.txt"
+    nombre_log = instancia_backup.nombre_archivo_log
+    mensaje_Observacion = f"La informacion del Disco D fue guardada correctamente segun archivo {nombre_log}.txt"
     tamaño_archivo = instancia_backup.peso_archivo
     hoja['C7'] = str(nombre_colaborador)
     hoja['C8'] = str(puesto_colaborador)
