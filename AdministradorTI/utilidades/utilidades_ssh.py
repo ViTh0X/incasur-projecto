@@ -248,14 +248,23 @@ class SSHManager(logArchivos):
                     passphrase=self.passphrase
                 )
                 script_ps = (
-                    # 1. Obtenemos el nombre del grupo de admins por SID
+                    # 1. Obtener nombre del grupo de admins por SID (S-1-5-32-544)
                     "$adminGroupName = (Get-LocalGroup -SID 'S-1-5-32-544').Name;"
                     
-                    # 2. Obtenemos los nombres de los miembros y quitamos el "Equipo\" si existe
-                    "$admins = (Get-LocalGroupMember -Group $adminGroupName).Name | ForEach-Object { $_ -split '\\\\\\\\' | Select-Object -Last 1 };"
+                    # 2. Obtener nombres limpios de los miembros del grupo admin
+                    "$admins = (Get-LocalGroupMember -Group $adminGroupName).Name | ForEach-Object { $_ -split '\\\\' | Select-Object -Last 1 };"
                     
-                    # 3. Filtramos usuarios: activos y cuyo nombre NO esté en la lista limpia de admins
-                    "$usuarios = Get-LocalUser | Where-Object { $_.Enabled -eq $true -and $admins -notcontains $_.Name };"
+                    # 3. FILTRO MEJORADO: 
+                    # - Debe estar habilitado
+                    # - NO debe estar en la lista de admins
+                    # - NO debe llamarse 'Administrador' o 'Administrator'
+                    # - Su SID NO debe terminar en -500 (que es la cuenta admin integrada)
+                    "$usuarios = Get-LocalUser | Where-Object { "
+                    "  $_.Enabled -eq $true -and "
+                    "  $admins -notcontains $_.Name -and "
+                    "  $_.Name -notmatch 'Administrador|Administrator' -and "
+                    "  $_.SID.Value -notmatch '-500$'"
+                    "};"
                     
                     "foreach ($u in $usuarios) {"
                     "  try {"
@@ -264,11 +273,10 @@ class SSHManager(logArchivos):
                     "    & net user \"$username\" /logonpasswordchg:yes | Out-Null;"
                     "    Write-Output ('EXITO_CAMBIO: ' + $username);"
                     "  } catch {"
-                    "    Write-Error ('Error_con_' + $u.Name + ': ' + $_.Exception.Message);"
+                    "    Write-Output ('ERROR_EN: ' + $u.Name);"
                     "  }"
                     "}"
                 )
-
                 comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""                                
                                 
                 stdin, stdout, stderr = conexionSSH.exec_command(comando,timeout=60)
