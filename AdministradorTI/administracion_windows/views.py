@@ -30,7 +30,7 @@ def usb_solo_lectura(request,pk):
 def usb_desbloqueado_totalmente(request,pk):
     ip_filtrada = get_object_or_404(ips,pk=pk)        
     if request.method == 'GET':
-        cambiar_usb_bloqueo_total.delay(ip=ip_filtrada.ip)
+        cambiar_usb_desbloqueo_total.delay(ip=ip_filtrada.ip)
         return redirect('menu_opciones_windows')
     return redirect('menu_opciones_windows')
 
@@ -38,7 +38,7 @@ def usb_desbloqueado_totalmente(request,pk):
 def usb_bloqueado_totalmente(request,pk):
     ip_filtrada = get_object_or_404(ips,pk=pk)        
     if request.method == 'GET':
-        cambiar_usb_desbloqueo_total.delay(ip=ip_filtrada.ip)
+        cambiar_usb_bloqueo_total.delay(ip=ip_filtrada.ip)
         return redirect('menu_opciones_windows')
     return redirect('menu_opciones_windows')
 
