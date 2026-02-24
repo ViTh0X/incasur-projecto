@@ -133,6 +133,11 @@ h1{
     height: 35rem;
 
 }
+.tabla thead th{
+    position: sticky;
+    top: 0;
+}
+
 
 .table th{
     background-color: var(--oscuro);
@@ -143,6 +148,7 @@ h1{
     line-height: normal;
     font: bold;    
     height: 4rem;
+
 }
 .table td{
     border: none;
