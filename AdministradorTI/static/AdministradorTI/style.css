@@ -31,7 +31,7 @@ body{
 .contenedor{
     width: min(90% , 120rem);
     margin: 0 auto;
-    padding: 2rem 2rem 2rem 2rem;       
+    padding: 0.1rem 2rem 0 2rem;       
 }
 
 ul {
@@ -127,7 +127,12 @@ h1{
     text-align: center;
 }
 
-
+.table{
+    overflow-y: auto;
+    overflow-x: auto;
+    height: 35rem;
+    
+}
 
 .table th{
     background-color: var(--oscuro);

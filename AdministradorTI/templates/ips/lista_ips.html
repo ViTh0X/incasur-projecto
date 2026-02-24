@@ -47,59 +47,64 @@
                         <th>Opciones</th>                        
                     </tr>
                 </thead>
-                <tbody>
+            </table>
+            <div class="table_container">
+                <table class="table">
+                    <tbody>
                     {% for ip in listado_ips %}                    
-                    <tr>
-                        <td>{{ ip.ip }}</td>
-                        <td>{{ ip.roll_ip }}</td>                        
-                        <td>{{ ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</td>
-                        <td>{{ ip.seccion.nombre_seccion|default:"None" }}</td>
-                        <td>{{ ip.nivel_firewall.nombre_nivel|default:"None" }}</td>
-                        <td>{{ ip.tipo_equipo_asignado.nombre_tipo_equipo|default:"None" }}</td>
-                        <td>{{ ip.marca_equipo_asignado|default:"None" }}</td>
-                        <td>{{ ip.modelo_equipo_asignado|default:"None" }}</td>
-                        <td>{{ ip.oficina.nombre_oficina|default:"None" }}</td>                                            
-                        <td>{{ ip.codigo_estado.nombre_estado }}</td>                                            
-                        <td>
-                            <div>
-                                <a title="EDITAR DATOS DE LA IP" href="{% url 'editar_ip' pk=ip.pk %}">
+                        <tr>
+                            <td>{{ ip.ip }}</td>
+                            <td>{{ ip.roll_ip }}</td>                        
+                            <td>{{ ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</td>
+                            <td>{{ ip.seccion.nombre_seccion|default:"None" }}</td>
+                            <td>{{ ip.nivel_firewall.nombre_nivel|default:"None" }}</td>
+                            <td>{{ ip.tipo_equipo_asignado.nombre_tipo_equipo|default:"None" }}</td>
+                            <td>{{ ip.marca_equipo_asignado|default:"None" }}</td>
+                            <td>{{ ip.modelo_equipo_asignado|default:"None" }}</td>
+                            <td>{{ ip.oficina.nombre_oficina|default:"None" }}</td>                                            
+                            <td>{{ ip.codigo_estado.nombre_estado }}</td>                                            
+                            <td>
+                                <div>
+                                    <a title="EDITAR DATOS DE LA IP" href="{% url 'editar_ip' pk=ip.pk %}">
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="28"
+                                        height="28"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="#5856d6"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        >
+                                        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                        <path d="M13.5 6.5l4 4" />
+                                        </svg>
+                                    </a>                                  
+                                    <a title="HISTORIAL DE ACCIONES" href="{% url 'ver_historial_acciones' pk=ip.pk %}">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="28"
                                     height="28"
                                     viewBox="0 0 24 24"
                                     fill="none"
-                                    stroke="#5856d6"
-                                    stroke-width="1.5"
+                                    stroke="#b0745e"
+                                    stroke-width="2"
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                     >
-                                    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-                                    <path d="M13.5 6.5l4 4" />
+                                    <path d="M12 8l0 4l2 2" />
+                                    <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
                                     </svg>
-                                </a>                                  
-                                <a title="HISTORIAL DE ACCIONES" href="{% url 'ver_historial_acciones' pk=ip.pk %}">
-                                <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="28"
-                                height="28"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="#b0745e"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                >
-                                <path d="M12 8l0 4l2 2" />
-                                <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
-                                </svg>
-                                </a>                             
-                            </div>                            
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                                    </a>                             
+                                </div>                            
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+                            
         </div>
     </main>
 </body>    
