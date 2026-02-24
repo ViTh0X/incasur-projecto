@@ -31,6 +31,8 @@ def listar_colaboradores(request):
 @login_required(login_url="pagina_login")
 def agregar_colaborador(request):
     ip_disponibles = ips.objects.filter(codigo_estado=2)
+    cod_impresion_libre = colaboradores.objects.latest().codigo_impresion_colaborador
+    codigo_impresion_mostrar= int(cod_impresion_libre)+1
     if request.method == 'POST':
         formulario = colaboradorForm(request.POST)
         ip_colaborador_str = request.POST.get('ip_colaborador')
@@ -60,7 +62,7 @@ def agregar_colaborador(request):
         formulario =  colaboradorForm()
         #formulario.fields['ip_colaborador'].queryset = ip_disponibles
     
-    return render(request,'colaboradores/agregar_colaborador.html',{'formulario':formulario,'ip_disponibles':ip_disponibles})
+    return render(request,'colaboradores/agregar_colaborador.html',{'formulario':formulario,'ip_disponibles':ip_disponibles,'codigo_impresion_mostrar':codigo_impresion_mostrar})
 
 @login_required(login_url="pagina_login")
 def generar_excel_nuevocolab(request,pk):

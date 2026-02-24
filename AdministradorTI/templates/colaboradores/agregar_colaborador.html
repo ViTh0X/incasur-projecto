@@ -4,7 +4,7 @@
 <body>
     <main class="contenedor">
         <section>
-            <h1 class="no-margin">Crear Nuevo Colaborador:</h1>
+            <h1 class="no-margin">Crear Nuevo Colaborador: COD IMPRESION LIBRE {{codigo_impresion_mostrar}}</h1>
                 <form class="formulario" method="POST">
                     {% csrf_token %}                    
                     <div class="contenedor-campos">
@@ -76,7 +76,7 @@
                         </div>                        
                         <div class="campo">
                             <label class="campo--label">Cargo :</label>
-                            <div class="campos__formulario--normal">
+                            <div class="campos__formulario--listbox">
                                 {{ formulario.cargo_colaborador }}
                                 {{ formulario.cargo_colaborador.errors }}
                             </div>                            
