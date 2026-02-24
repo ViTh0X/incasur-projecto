@@ -166,13 +166,14 @@ CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 # Límite de tiempo (duro) para terminar una tarea, en segundos.
 # 7200 segundos = 2 horas. Esto dará margen para que el backup
 # termine sin ser terminado por el worker.
-CELERY_TASK_TIME_LIMIT = 86400 
+CELERY_TASK_TIME_LIMIT = 43200
 
 # Opcional: Límite de tiempo suave. Si se excede, lanza una excepción SoftTimeLimitExceeded 
 # dentro de la tarea, permitiéndole limpiar conexiones o guardar progreso.
 # 6000 segundos = 1 hora y 40 minutos.
-CELERY_TASK_SOFT_TIME_LIMIT = 82800
- 
+CELERY_TASK_SOFT_TIME_LIMIT = 41400
+#Limite de memoria ram 300MB
+CELERY_WORKER_MAX_MEMORY_PER_CHILD = 300000
 CELERY_BROKER_TRANSPORT_OPTIONS = {
-    'visibility_timeout': 90000, 
+    'visibility_timeout': 45000, 
 }
