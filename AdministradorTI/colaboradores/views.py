@@ -31,7 +31,7 @@ def listar_colaboradores(request):
 @login_required(login_url="pagina_login")
 def agregar_colaborador(request):
     ip_disponibles = ips.objects.filter(codigo_estado=2)
-    cod_impresion_libre = colaboradores.objects.latest().codigo_impresion_colaborador
+    cod_impresion_libre = colaboradores.objects.latest('fecha_modificacion').codigo_impresion_colaborador
     codigo_impresion_mostrar= int(cod_impresion_libre)+1
     if request.method == 'POST':
         formulario = colaboradorForm(request.POST)
