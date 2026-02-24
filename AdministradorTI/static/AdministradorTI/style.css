@@ -133,7 +133,7 @@ h1{
     height: 35rem;
 
 }
-.tabla thead th{
+.table thead th{
     position: sticky;
     top: 0;
 }
