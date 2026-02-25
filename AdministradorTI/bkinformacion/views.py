@@ -44,7 +44,7 @@ def listar_faltantes_backup(request):
 
 @login_required(login_url="pagina_login")
 def listar_logs(request):    
-    lista_logs = logs_actividades_celery.objects.all()
+    lista_logs = logs_actividades_celery.objects.all().order_by('-tiempo_creacion')
     return render(request,'logs/listar_logs_bk.html',{'lista_logs':lista_logs})    
     
 

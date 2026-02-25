@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from .models import EstadoAccionesWindows, FaltantesRevisionEquiposWindows
 from ips.models import ips,tipo_estado_ips,tipo_equipos_informaticos
 from colaboradores.models import colaboradores
+from home.models import logs_actividades_celery
 import os
 from datetime import datetime
 from utilidades.utilidades_ssh import SSHManager
@@ -88,11 +89,20 @@ def verificacion_usb_all():
                 faltantes_update_windows = FaltantesRevisionEquiposWindows()
                 faltantes_update_windows.codigo_ip = ip_filtrada
                 faltantes_update_windows.codigo_colaborador = ip_filtrada.colaborador_asignado                                    
-                faltantes_update_windows.save()                                          
+                faltantes_update_windows.save()
+        
+        logs_revision_usb = logs_actividades_celery(            
+            mensaje = "La ejecucion de revision Puertos USB termino."
+        )                                
+        logs_revision_usb.save()                                          
         return "TAREA VERIFICACION USB TERMINO"
     
     except Exception as e:
-        return "ERROR FALTANTES INVENTARIO HARDWARE"                             
+        logs_inventario_hardware = logs_actividades_celery(            
+            mensaje = F"Error revisando los usb {e}."
+        )                                
+        logs_inventario_hardware.save()
+        return "ERROR REVISANDO PUERTOS USB"                             
     
                              
 @shared_task
@@ -176,11 +186,20 @@ def verificacion_usb_faltantes():
                 faltantes_update_windows = FaltantesRevisionEquiposWindows()
                 faltantes_update_windows.codigo_ip = ip_filtrada
                 faltantes_update_windows.codigo_colaborador = ip_filtrada.colaborador_asignado                                    
-                faltantes_update_windows.save()         
-        return "TAREA FALTANTES INVENTARIO HARDWARE TERMINARDA"
+                faltantes_update_windows.save()
+        
+        logs_revision_usb = logs_actividades_celery(            
+            mensaje = "La ejecucion de revision Puertos USB termino."
+        )                                
+        logs_revision_usb.save()                                          
+        return "TAREA FALTANTES VERIFICACION USB TERMINO"                 
     
     except Exception as e:
-        return "ERROR FALTANTES INVENTARIO HARDWARE"       
+        logs_inventario_hardware = logs_actividades_celery(            
+            mensaje = F"Error revisando los usb {e}."
+        )                                
+        logs_inventario_hardware.save()
+        return "ERROR FALTANTES REVISANDO PUERTOS USB"                                    
 
 @shared_task
 def cambiar_usb_solo_lectura(ip):
