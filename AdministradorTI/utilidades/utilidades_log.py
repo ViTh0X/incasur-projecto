@@ -5,7 +5,7 @@ from django.conf import settings
 class logArchivos():   
             
     def crearArchivo(self,host:str):        
-        rutaBaseLog = f"/mnt/backupcolaboradores/Logs/{host}"
+        rutaBaseLog = f"/mnt/backupinformacion/Logs/{host}"
         os.makedirs(rutaBaseLog,exist_ok=True)
         dd = datetime.now().day
         mm =  datetime.now().month
@@ -26,7 +26,7 @@ class logArchivos():
 
     def verificar_archivos_logs(self,host:str,año_actual,mes_actual,dia_actual):
         termino_con_errores = False
-        rutaBaseLog = f"/mnt/backupcolaboradores/Logs/{host}"
+        rutaBaseLog = f"/mnt/backupinformacion/Logs/{host}"
         dd = dia_actual        
         mm =  mes_actual
         yyyy = año_actual
