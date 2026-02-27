@@ -744,7 +744,7 @@ class SSHManager(logArchivos):
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)  
                                 try:
                                     if not es_archivo_office:        
-                                        with self.canalSFTP.open(str(rutaCopiarRemoto),'r+') as prueba_abrir:
+                                        with self.canalSFTP.open(str(rutaCopiarRemoto),'r') as prueba_abrir:
                                             pass                                                                                                                  
                                     self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))                                    
                                     mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
