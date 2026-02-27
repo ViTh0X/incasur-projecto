@@ -731,7 +731,7 @@ class SSHManager(logArchivos):
                         self.realizarBKUP(rBaseRemoR,rBaseLocalR,nombreArchivo)                                            
                     else:                
                         peso_archivo = archivo.st_size
-                        peso_final = peso_archivo / (1000 * 1000)
+                        peso_final = peso_archivo / (1024 * 1024)
                         es_archivo_office = self.comprobar_extesiones_permitidas(nombreArchivo)                                                                                                                                                                                                                                                                                                                                                   
                         rutaCopiarLocal = rBaseLocalR / nombreArchivo                          
                         rutaCopiarRemoto = rBaseRemoR / nombreArchivo 
