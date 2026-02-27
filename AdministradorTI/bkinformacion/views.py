@@ -106,7 +106,7 @@ def descargar_cargo_backup(request,pk):
     hoja['C8'] = str(puesto_colaborador)
     hoja['C10'] = str(ip_colaborador)
     hoja['C11'] = mensaje_Observacion
-    hoja['G10'] = f"{int(tamaño_archivo)} GB"
+    hoja['G10'] = f"{int(tamaño_archivo)} MB"
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename=colaborador_{nombre_colaborador}.xlsx'
     libro.save(response)
