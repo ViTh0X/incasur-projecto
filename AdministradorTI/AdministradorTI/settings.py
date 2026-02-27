@@ -156,6 +156,11 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'America/Lima'
+
+# 1. LIMITAR CONCURRENCIA (Crucial para el CPU)
+# Obliga a Celery a usar un solo proceso worker. 
+# Esto evitará que el CPU llegue al 80-90% constantemente.
+CELERY_WORKER_CONCURRENCY = 1
 # Configuración de Celery
 # Asegura que las tareas sean reconocidas solo después de ser completadas
 CELERY_TASK_ACKS_LATE = True
@@ -173,7 +178,10 @@ CELERY_TASK_TIME_LIMIT = 43200
 # 6000 segundos = 1 hora y 40 minutos.
 CELERY_TASK_SOFT_TIME_LIMIT = 41400
 #Limite de memoria ram 300MB
-CELERY_WORKER_MAX_MEMORY_PER_CHILD = 300000
+CELERY_WORKER_MAX_MEMORY_PER_CHILD = 500000
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 10
+
+
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'visibility_timeout': 45000, 
 }
