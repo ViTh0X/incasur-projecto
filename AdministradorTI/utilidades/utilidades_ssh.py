@@ -688,6 +688,13 @@ class SSHManager(logArchivos):
         else:
             print("No se encontro ningun pst")                
             
+    def comprobar_extesiones_permitidas(self,nombre_archivo):
+        lista_extensiones = ['.xls','.xlsx','.csv','.doc','.docx','.csv','.ppt','.pptx']
+        for extension in lista_extensiones:
+            if extension in str(nombre_archivo):
+                return True
+        return False
+            
     def realizarBKUP(self,rBaseRemo:str,rBaseLocal:str,nombreCarpeta:str):                                        
         # --- VALIDACIÓN CRÍTICA ---
         transport = self.conexionSSH.get_transport() if self.conexionSSH else None
@@ -724,7 +731,8 @@ class SSHManager(logArchivos):
                         self.realizarBKUP(rBaseRemoR,rBaseLocalR,nombreArchivo)                                            
                     else:                
                         peso_archivo = archivo.st_size
-                        peso_final = peso_archivo / (1024 * 1024)        
+                        peso_final = peso_archivo / (1024 ** 3)
+                        es_archivo_office = self.comprobar_extesiones_permitidas(nombreArchivo)                                                                                                                                                                                                                                                                                                                                                   
                         rutaCopiarLocal = rBaseLocalR / nombreArchivo                          
                         rutaCopiarRemoto = rBaseRemoR / nombreArchivo 
                         existeLocal = os.path.exists(str(rutaCopiarLocal))                        
@@ -734,9 +742,10 @@ class SSHManager(logArchivos):
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
                                 mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
                                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)  
-                                try:        
-                                    with self.canalSFTP.open(str(rutaCopiarRemoto),'r+') as prueba_abrir:
-                                        pass                                                                              
+                                try:
+                                    if not es_archivo_office:        
+                                        with self.canalSFTP.open(str(rutaCopiarRemoto),'r+') as prueba_abrir:
+                                            pass                                                                                                                  
                                     self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))                                    
                                     mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
@@ -764,8 +773,9 @@ class SSHManager(logArchivos):
                                     mensaje = f"De {rutaCopiarRemoto} --> {rutaCopiarLocal}"
                                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)                                                                                                              
                                     try:
-                                        with self.canalSFTP.open(str(rutaCopiarRemoto),'r+') as prueba_abrir:
-                                            pass                                                                                                                           
+                                        if not es_archivo_office:        
+                                            with self.canalSFTP.open(str(rutaCopiarRemoto),'r+') as prueba_abrir:
+                                                pass                                                                                                                           
                                         self.canalSFTP.get(str(rutaCopiarRemoto),str(rutaCopiarLocal))
                                         mensaje = f"Archivo {nombreArchivo} salvado con EXITO"
                                         self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
@@ -784,9 +794,10 @@ class SSHManager(logArchivos):
                                         print(f"No copio el archivo {e} - {rutaCopiarRemoto}")
                                         if "Socket is closed" in str(e):
                                             self.cerrarConexiones()                                                                     
-                                else:
+                                else:                                    
                                     mensaje = f"El archivo {nombreArchivo} ya fue guardado de manera local"
-                                    self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)             
+                                    self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)        
+                                    self.peso_archivo_final += int(peso_final)     
                         except FileNotFoundError as e:                        
                             print(f"Error posiblemente el archivo no existe : {e} - {rutaCopiarRemoto}")
                             mensaje = f"Error posiblemente el archivo no existe : {e} - {rutaCopiarRemoto}"
