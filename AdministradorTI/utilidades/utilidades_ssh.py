@@ -676,8 +676,12 @@ class SSHManager(logArchivos):
                     self.registrarLog(mensaje,"INF",ruta_retoma,self.hostname) 
                     print("Intentando copiar el PST")                        
                     mensaje = f"De {ruta_retoma} --> {self.archivos_bloqueados_path_local[ubicacion]}"
-                    self.registrarLog(mensaje,"INF",ruta_retoma,self.hostname)  
-                    self.canalSFTP.get(str(ruta_retoma),str(self.archivos_bloqueados_path_local[ubicacion]))
+                    self.registrarLog(mensaje,"INF",ruta_retoma,self.hostname)
+                    ruta_remo = str(ruta_retoma)
+                    ruta_loca = str(self.archivos_bloqueados_path_local[ubicacion])
+                    print(f"Intentando copiar de {ruta_remo}")
+                    print(f"Hacia ruta linux {ruta_loca}")                    
+                    self.canalSFTP.get(ruta_remo,ruta_loca)
                     mensaje = f"Archivo {self.archivos_bloqueados_nombre[ubicacion]} salvado con EXITO"
                     self.registrarLog(mensaje,"INF",ruta_retoma,self.hostname)
                     self.peso_archivo_final += self.archivos_bloqueados_peso[ubicacion]  

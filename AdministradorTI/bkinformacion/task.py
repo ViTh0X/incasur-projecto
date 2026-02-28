@@ -220,7 +220,8 @@ def ejecutar_backup_individual(ip):
                     SSH_instancia.copiar_pst()                                            
                 except Exception as e:
                     print(f"No ejecufo copiar Pst {e}")                    
-                print("Termino La ejecucion del Backup")                                
+                print("Termino La ejecucion del Backup")
+                SSH_instancia.cerrarConexiones()                                
                 existen_errores = SSH_instancia.verificar_archivos_logs(host=ip,año_actual=año_actual,mes_actual=mes_actual,dia_actual=dia_actual)
                 peso = SSH_instancia.peso_archivo_final
                 nombre_log = SSH_instancia.nombre_archivo_log
