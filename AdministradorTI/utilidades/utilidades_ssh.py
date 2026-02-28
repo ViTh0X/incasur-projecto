@@ -689,7 +689,7 @@ class SSHManager(logArchivos):
             print("No se encontro ningun pst")                
             
     def comprobar_extesiones_permitidas(self,nombre_archivo):
-        lista_extensiones = ['.xls','.xlsx','.csv','.doc','.docx','.csv','.ppt','.pptx']
+        lista_extensiones = ['.xls','.xlsx','.csv','.doc','.docx','.csv','.ppt','.pptx','.pdf']
         for extension in lista_extensiones:
             if extension in str(nombre_archivo):
                 return True
