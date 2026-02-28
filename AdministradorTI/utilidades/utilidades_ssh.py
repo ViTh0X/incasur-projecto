@@ -672,6 +672,7 @@ class SSHManager(logArchivos):
             ubicacion = 0
             for ruta_retoma in self.archivos_bloqueados_path_remoto:                        
                 try:
+                    print("Primer log se va ejecutar")
                     mensaje = f"Copiando archivo {self.archivos_bloqueados_nombre[ubicacion]}"
                     self.registrarLog(mensaje,"INF",ruta_retoma,self.hostname) 
                     print("Intentando copiar el PST")                        
