@@ -671,8 +671,7 @@ class SSHManager(logArchivos):
         if len(self.archivos_bloqueados_nombre) > 0:
             ubicacion = 0
             for ruta_retoma in self.archivos_bloqueados_path_remoto:                        
-                try:
-                    print("Primer log se va ejecutar")
+                try:                    
                     mensaje = f"Copiando archivo {self.archivos_bloqueados_nombre[ubicacion]}"
                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname) 
                     print("Intentando copiar el PST")                        
@@ -688,7 +687,7 @@ class SSHManager(logArchivos):
                     self.peso_archivo_final += self.archivos_bloqueados_peso[ubicacion]  
                 except IOError as e:
                     mensaje = f"No se pudo copiar {self.archivos_bloqueados_nombre[ubicacion]} (¿Archivo en uso?): {e}"
-                    self.registrarLog(mensaje, "ERR",self.rutaArchivo self.hostname)                    
+                    self.registrarLog(mensaje, "ERR",self.rutaArchivo, self.hostname)                    
                 ubicacion += 1
         else:
             print("No se encontro ningun pst")                
