@@ -671,7 +671,9 @@ class SSHManager(logArchivos):
         if len(self.archivos_bloqueados_nombre) > 0:
             ubicacion = 0
             for ruta_retoma in self.archivos_bloqueados_path_remoto:                        
-                try:                    
+                try:
+                    with self.canalSFTP.open(str(ruta_retoma),'r') as prueba_abrir:
+                        pass                    
                     mensaje = f"Copiando archivo {self.archivos_bloqueados_nombre[ubicacion]}"
                     self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname) 
                     print("Intentando copiar el PST")                        

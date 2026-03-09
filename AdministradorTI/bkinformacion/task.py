@@ -204,11 +204,11 @@ def ejecutar_backup_individual(ip):
         #nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=ip)                        
         try:
             #if esta_en_linea:
-            print(f"Trabajando IP {ip_filtrada}")
-            backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
-            print("Elimino Duplicados")
+            print(f"Trabajando IP {ip_filtrada}")        
             equipo_conectado = SSH_instancia.realizarConSSH()
             if equipo_conectado:
+                backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
+                print("Elimino Duplicados")
                 SSH_instancia.crearCanalSFTP()                    
                 listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"])
                 listaRutas = SSH_instancia.creaRutasRemotas(username,listaRutasLocales,ip)
