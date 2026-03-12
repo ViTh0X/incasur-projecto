@@ -27,7 +27,11 @@ def listar_inventario_software(request):
         inventario_agrupado = {}   
         for data in data_inventario_software:
             ip =  data.codigo_ip.ip
-            ip_filtrada = ips.objects.get(ip=ip)            
+            ip_filtrada = ips.objects.get(ip=ip)      
+            if ip_filtrada.colaborador_asignado.nombre_colaborador:
+                nombre_colaborador = ip_filtrada.colaborador_asignado.nombre_colaborador
+            else:
+                nombre_colaborador = "CESADO"        
             if ip not in inventario_agrupado:
                 inventario_agrupado[ip] ={
                     'Office' : [],
@@ -44,7 +48,7 @@ def listar_inventario_software(request):
                     'TI' : [],
                     'Otros' : [],
                     'fecha' : data.fecha_modificacion,
-                    'nombre_colaborador' : ip_filtrada.colaborador_asignado.nombre_colaborador
+                    'nombre_colaborador' : nombre_colaborador
                 }
             if data.tipo_software.nombre_tipo == 'Office':
                 inventario_agrupado[ip]['Office'].append(data.nombre_software)
@@ -167,6 +171,10 @@ def generar_excell_all_s(request):
         ip =  data.codigo_ip.ip
         ip_filtrada = ips.objects.get(ip=ip)
         #nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=ip)
+        if ip_filtrada.colaborador_asignado.nombre_colaborador:
+            nombre_colaborador = ip_filtrada.colaborador_asignado.nombre_colaborador
+        else:
+            nombre_colaborador = "CESADO" 
         if ip not in inventario_agrupado:
             inventario_agrupado[ip] ={
                 'Office' : [],
@@ -183,7 +191,7 @@ def generar_excell_all_s(request):
                 'TI' : [],
                 'Otros' : [],
                 'fecha' : data.fecha_modificacion,
-                'nombre_colaborador' : ip_filtrada.colaborador_asignado.nombre_colaborador
+                'nombre_colaborador' : nombre_colaborador
             }
         if data.tipo_software.nombre_tipo == 'Office':
             inventario_agrupado[ip]['Office'].append(data.nombre_software)
