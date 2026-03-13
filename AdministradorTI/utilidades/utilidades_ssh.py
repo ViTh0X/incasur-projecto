@@ -162,7 +162,7 @@ class SSHManager(logArchivos):
                 
                 print(f"Salida: {out}")
                 
-                if "EXITO_POLITICA_APLICADA" in out:
+                if "EXITO_VIA_REGISTRO_DIRECTO" in out:
                     return "Actualizado"
                 else:
                     if error:
