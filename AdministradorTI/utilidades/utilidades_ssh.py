@@ -583,12 +583,12 @@ class SSHManager(logArchivos):
         lsRutaBKUP = []
         rBaseRemoC = "C:/Users/"        
         try:
-            '''if ip == "192.168.1.30":
+            if ip == "192.168.1.122":
                 for rLocal in listaRutaLocales:
                     lsR = {}
                     rutaTexto = str(rLocal)
                     if "Discos" in rutaTexto:                                                                            
-                        ruta ="D:\JSALASBACKUP"
+                        ruta ="C:\Users\Incasuro\Documents"
                         local = Path(rLocal)/"Disco_D"
                         os.makedirs(local,exist_ok=True)
                         lsR[local] = ruta
@@ -596,13 +596,57 @@ class SSHManager(logArchivos):
                         lsR = {}
                 mensaje = "Las rutas iniciales fueron preparadas con exito"
                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
-                return lsRutaBKUP   '''         
-            if ip == "192.168.1.36":
+                return lsRutaBKUP        
+            elif ip == "192.168.1.36":
                 for rLocal in listaRutaLocales:
                     lsR = {}
                     rutaTexto = str(rLocal)
                     if "Discos" in rutaTexto:                                                                            
                         ruta ="C:\Patrick"
+                        local = Path(rLocal)/"Disco_D"
+                        os.makedirs(local,exist_ok=True)
+                        lsR[local] = ruta
+                        lsRutaBKUP.append(lsR)
+                        lsR = {}
+                mensaje = "Las rutas iniciales fueron preparadas con exito"
+                self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+                return lsRutaBKUP
+            elif ip == "192.168.1.60":
+                for rLocal in listaRutaLocales:
+                    lsR = {}
+                    rutaTexto = str(rLocal)
+                    if "Discos" in rutaTexto:                                                                            
+                        ruta ="D:/"
+                        local = Path(rLocal)/"Disco_D"
+                        os.makedirs(local,exist_ok=True)
+                        lsR[local] = ruta
+                        lsRutaBKUP.append(lsR)
+                        lsR = {}
+                        ruta ="F:\Users\uhermoza\Documents"
+                        local = Path(rLocal)/"Disco_D"
+                        os.makedirs(local,exist_ok=True)
+                        lsR[local] = ruta
+                        lsRutaBKUP.append(lsR)
+                        lsR = {}
+                        ruta ="F:\PDTPLAME"
+                        local = Path(rLocal)/"Disco_D"
+                        os.makedirs(local,exist_ok=True)
+                        lsR[local] = ruta
+                        lsRutaBKUP.append(lsR)
+                        lsR = {}
+                        ruta ="F:\SUNAT"
+                        local = Path(rLocal)/"Disco_D"
+                        os.makedirs(local,exist_ok=True)
+                        lsR[local] = ruta
+                        lsRutaBKUP.append(lsR)
+                        lsR = {}
+                        ruta ="F:\SUNATPDT"
+                        local = Path(rLocal)/"Disco_D"
+                        os.makedirs(local,exist_ok=True)
+                        lsR[local] = ruta
+                        lsRutaBKUP.append(lsR)
+                        lsR = {}
+                        ruta ="F:\SUNATRTPS"
                         local = Path(rLocal)/"Disco_D"
                         os.makedirs(local,exist_ok=True)
                         lsR[local] = ruta

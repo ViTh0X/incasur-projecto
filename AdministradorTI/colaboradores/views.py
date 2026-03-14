@@ -9,9 +9,15 @@ import openpyxl
 import pandas as pd
 
 from datetime import datetime
+from django.db.models import Max, IntegerField
+from django.db.models.functions import Cast
 
+from bkinformacion.models import faltantes_backup_informacion
+from administracion_windows.models import FaltantesRevisionEquiposWindows
 from home.models import cuentas_forticlient
-from inventario_hardware.models import inventario_hardware
+from inventario_hardware.models import inventario_hardware, faltantes_inventario_hardware
+from inventario_software.models import faltantes_inventario_software
+
 from .models import colaboradores, colaboradorForm, estado_colaboradores,colaboradorForm_editar
 from ips.models import tipo_estado_ips, ips
 
@@ -31,8 +37,10 @@ def listar_colaboradores(request):
 @login_required(login_url="pagina_login")
 def agregar_colaborador(request):
     ip_disponibles = ips.objects.filter(codigo_estado=2)
-    cod_impresion_libre = colaboradores.objects.latest('fecha_modificacion').codigo_impresion_colaborador
-    codigo_impresion_mostrar= int(cod_impresion_libre)+1
+    cod_impresion_libre = colaboradores.objects.annotate(
+        codigo_numero=Cast('codigo_impresion_colaborador',IntegerField())
+    ).aggregate(maximo=Max('codigo_numero'))
+    codigo_impresion_mostrar = cod_impresion_libre['maximo'] if cod_impresion_libre['maximo'] is not None else 0
     if request.method == 'POST':
         formulario = colaboradorForm(request.POST)
         ip_colaborador_str = request.POST.get('ip_colaborador')
@@ -53,8 +61,14 @@ def agregar_colaborador(request):
             ip_colaborador = get_object_or_404(ips,ip=ip_colaborador_str)
             estado_ip_ocupada = get_object_or_404(tipo_estado_ips,codigo_estado=1)
             ip_colaborador.codigo_estado = estado_ip_ocupada
-            ip_colaborador.colaborador_asignado = add_colaborador
+            ip_colaborador.colaborador_asignado = add_colaborador                    
             ip_colaborador.save() 
+            faltantes_hardware = faltantes_inventario_hardware(codigo_ip=ip_colaborador,codigo_colaborador=ip_colaborador)
+            faltantes_hardware.save()
+            faltantes_software = faltantes_inventario_software(codigo_ip=ip_colaborador,codigo_colaborador=ip_colaborador)
+            faltantes_software.save()
+            faltantes_revision_windows = FaltantesRevisionEquiposWindows(codigo_ip=ip_colaborador,codigo_colaborador=ip_colaborador)
+            faltantes_revision_windows.save()
             #LLena usuario Plantilla                        
             
             return redirect('listar_colaboradores')
