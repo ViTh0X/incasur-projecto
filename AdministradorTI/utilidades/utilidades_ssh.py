@@ -588,7 +588,7 @@ class SSHManager(logArchivos):
                     lsR = {}
                     rutaTexto = str(rLocal)
                     if "Discos" in rutaTexto:                                                                            
-                        ruta ="C:\Users\Incasuro\Documents"
+                        ruta =r"C:\Users\Incasuro\Documents"
                         local = Path(rLocal)/"Disco_D"
                         os.makedirs(local,exist_ok=True)
                         lsR[local] = ruta
@@ -602,7 +602,7 @@ class SSHManager(logArchivos):
                     lsR = {}
                     rutaTexto = str(rLocal)
                     if "Discos" in rutaTexto:                                                                            
-                        ruta ="C:\Patrick"
+                        ruta =r"C:\Patrick"
                         local = Path(rLocal)/"Disco_D"
                         os.makedirs(local,exist_ok=True)
                         lsR[local] = ruta
@@ -622,31 +622,31 @@ class SSHManager(logArchivos):
                         lsR[local] = ruta
                         lsRutaBKUP.append(lsR)
                         lsR = {}
-                        ruta ="F:\Users\uhermoza\Documents"
+                        ruta =r"F:\Users\uhermoza\Documents"
                         local = Path(rLocal)/"Disco_D"
                         os.makedirs(local,exist_ok=True)
                         lsR[local] = ruta
                         lsRutaBKUP.append(lsR)
                         lsR = {}
-                        ruta ="F:\PDTPLAME"
+                        ruta =r"F:\PDTPLAME"
                         local = Path(rLocal)/"Disco_D"
                         os.makedirs(local,exist_ok=True)
                         lsR[local] = ruta
                         lsRutaBKUP.append(lsR)
                         lsR = {}
-                        ruta ="F:\SUNAT"
+                        ruta =r"F:\SUNAT"
                         local = Path(rLocal)/"Disco_D"
                         os.makedirs(local,exist_ok=True)
                         lsR[local] = ruta
                         lsRutaBKUP.append(lsR)
                         lsR = {}
-                        ruta ="F:\SUNATPDT"
+                        ruta =r"F:\SUNATPDT"
                         local = Path(rLocal)/"Disco_D"
                         os.makedirs(local,exist_ok=True)
                         lsR[local] = ruta
                         lsRutaBKUP.append(lsR)
                         lsR = {}
-                        ruta ="F:\SUNATRTPS"
+                        ruta =r"F:\SUNATRTPS"
                         local = Path(rLocal)/"Disco_D"
                         os.makedirs(local,exist_ok=True)
                         lsR[local] = ruta
