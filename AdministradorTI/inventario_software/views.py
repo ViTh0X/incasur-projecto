@@ -160,12 +160,12 @@ def iniciar_faltantes_software(request):
     return redirect('listar_inventario_hardware')
 
 @login_required(login_url="pagina_login")
-def generar_excell_all_s(request):
+def generar_excell_all_s(request):    
     fecha_hora = datetime.now()
     año_actual = datetime.now().year
     mes_actual = datetime.now().month
-    data_inventario_software = inventario_software.objects.all()
-    #data_inventario_software = inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual)
+    #data_inventario_software = inventario_software.objects.all()
+    data_inventario_software = inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual)
     inventario_agrupado = {}   
     for data in data_inventario_software:
         ip =  data.codigo_ip.ip
