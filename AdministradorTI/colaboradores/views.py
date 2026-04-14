@@ -41,6 +41,7 @@ def agregar_colaborador(request):
         codigo_numero=Cast('codigo_impresion_colaborador',IntegerField())
     ).aggregate(maximo=Max('codigo_numero'))
     codigo_impresion_mostrar = cod_impresion_libre['maximo'] if cod_impresion_libre['maximo'] is not None else 0
+    codigo_impresion_mostrar = codigo_impresion_mostrar + 1 
     if request.method == 'POST':
         formulario = colaboradorForm(request.POST)
         ip_colaborador_str = request.POST.get('ip_colaborador')
