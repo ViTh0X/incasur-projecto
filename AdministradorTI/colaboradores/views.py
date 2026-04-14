@@ -63,11 +63,11 @@ def agregar_colaborador(request):
             ip_colaborador.codigo_estado = estado_ip_ocupada
             ip_colaborador.colaborador_asignado = add_colaborador                    
             ip_colaborador.save() 
-            faltantes_hardware = faltantes_inventario_hardware(codigo_ip=ip_colaborador,codigo_colaborador=ip_colaborador)
+            faltantes_hardware = faltantes_inventario_hardware(codigo_ip=ip_colaborador,codigo_colaborador=add_colaborador)
             faltantes_hardware.save()
-            faltantes_software = faltantes_inventario_software(codigo_ip=ip_colaborador,codigo_colaborador=ip_colaborador)
+            faltantes_software = faltantes_inventario_software(codigo_ip=ip_colaborador,codigo_colaborador=add_colaborador)
             faltantes_software.save()
-            faltantes_revision_windows = FaltantesRevisionEquiposWindows(codigo_ip=ip_colaborador,codigo_colaborador=ip_colaborador)
+            faltantes_revision_windows = FaltantesRevisionEquiposWindows(codigo_ip=ip_colaborador,codigo_colaborador=add_colaborador)
             faltantes_revision_windows.save()
             #LLena usuario Plantilla                        
             
