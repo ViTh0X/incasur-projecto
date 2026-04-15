@@ -171,6 +171,11 @@ def cesar_colaborador(request,pk):
         colaborador.save()
         
         estado_ocupado_ip = get_object_or_404(tipo_estado_ips,codigo_estado=2)
+        ip_colaborador.colaborador_asignado = None
+        ip_colaborador.tipo_equipo_asignado = None
+        ip_colaborador.marca_equipo_asignado = None
+        ip_colaborador.modelo_equipo_asignado = None
+        ip_colaborador.oficina = None
         ip_colaborador.codigo_estado = estado_ocupado_ip
         ip_colaborador.save()
         
