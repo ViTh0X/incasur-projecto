@@ -588,7 +588,7 @@ class SSHManager(logArchivos):
                     lsR = {}
                     rutaTexto = str(rLocal)
                     if "Discos" in rutaTexto:                                                                            
-                        ruta =r"C:\Users\Incasuro\Documents"
+                        ruta =r"C:\Users\Incasuro\Desktop"
                         local = Path(rLocal)/"Disco_D"
                         os.makedirs(local,exist_ok=True)
                         lsR[local] = ruta
