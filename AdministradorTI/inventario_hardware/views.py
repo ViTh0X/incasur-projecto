@@ -76,9 +76,10 @@ def listar_faltantes_hardware(request):
 
 @login_required(login_url="pagina_login")
 def generar_excell_all_h(request):
-    fecha_hora = datetime.now()
-    inventarios_hardware = inventario_hardware.objects.all()
-    data_df = inventarios_hardware.values('codigo_ip__ip','codigo_colaborador__nombre_colaborador','nombre_equipo','placa','procesador','ram','video_integrada','video_dedicada','so','almacenamiento','puertas_enlace','fecha_modificacion')
+    ano_actual = datetime.now().year    
+    mes_actual = datetime.now().month
+    inventarios_hardware = inventario_hardware.objects.filter(fecha_modificacion__year=ano_actual,fecha_modificacion__month=mes_actual)
+    data_df = inventarios_hardware.values('codigo_ip__ip','codigo_colaborador__nombre_colaborador','nombre_equipo','placa','procesador','ram','video_integrada','video_dedicada','so','almacenamiento','puertas_enlace')
     df = pd.DataFrame(list(data_df))
     df = df.rename(columns={
         'codigo_ip':'IP',
@@ -91,11 +92,10 @@ def generar_excell_all_h(request):
         'video_dedicada':'Info Video Dedicada',
         'so':'Info SO',
         'almacenamiento':'Info Almacenamiento',
-        'puertas_enlace':'Info Puertas de Enlace',
-        'fecha_modificacion':'Fecha Ejecutado'
+        'puertas_enlace':'Info Puertas de Enlace'        
     })
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename="InventarioHardware{fecha_hora}.xlsx"'
+    response['Content-Disposition'] = f'attachment; filename="InventarioHardware{ano_actual}-{mes_actual}.xlsx"'
     df.to_excel(response,index=False,sheet_name='InventarioHardware')
     return response
 
