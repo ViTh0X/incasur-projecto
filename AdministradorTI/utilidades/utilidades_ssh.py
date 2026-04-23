@@ -270,7 +270,7 @@ class SSHManager(logArchivos):
                     "foreach ($u in $usuarios) {"
                     "  try {"
                     "    $username = $u.Name;"
-                    "    & net user \"$username\" 2026_informacion /y | Out-Null;"
+                    "    & net user \"$username\" 2026_monitor /y | Out-Null;"
                     "    & net user \"$username\" /logonpasswordchg:yes | Out-Null;"
                     "    Write-Output ('EXITO_CAMBIO: ' + $username);"
                     "  } catch {"

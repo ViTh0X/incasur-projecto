@@ -214,6 +214,8 @@ def cambiar_usb_solo_lectura(ip):
         try:
             print(f"Trabajando IP {ip_filtrada}")            
             resultado = SSH_instancia.ejecutar_cambiar_usb_solo_lectura()
+            windows_actualizacion.estato_actualizacion = "Ejecutando..."
+            windows_actualizacion.save()
             print(f"Resultado de Ejecucion comando: {resultado}")                
             if not resultado == 'No Actualizado':
                 windows_actualizacion.estado_puertos_usb = "Solo Lectura"                                                                   
@@ -241,7 +243,9 @@ def cambiar_usb_bloqueo_total(ip):
         puerto = os.getenv('SSH_PORT')
         keyfile = os.getenv('SSH_KEYFILE')
         passphrase = os.getenv('SSH_PASSPHRASE')
-        SSH_instancia = SSHManager(ip,username,puerto,keyfile,passphrase)        
+        SSH_instancia = SSHManager(ip,username,puerto,keyfile,passphrase)
+        windows_actualizacion.estato_actualizacion = "Ejecutando..."
+        windows_actualizacion.save()        
         try:
             print(f"Trabajando IP {ip_filtrada}")
             resultado = SSH_instancia.ejecutar_bloqueo_total_usb()            
@@ -267,6 +271,8 @@ def cambiar_usb_bloqueo_total(ip):
 def cambiar_usb_desbloqueo_total(ip):
     ip_filtrada = ips.objects.get(ip=ip)
     windows_actualizacion = EstadoAccionesWindows.objects.get(id_ip=ip_filtrada.id)
+    windows_actualizacion.estato_actualizacion = "Ejecutando..."
+    windows_actualizacion.save()
     try:
         username = "Administrador"
         puerto = os.getenv('SSH_PORT')
@@ -297,6 +303,8 @@ def cambiar_usb_desbloqueo_total(ip):
 def hacer_reset_contraseña_windows(ip):
     ip_filtrada = ips.objects.get(ip=ip)
     windows_actualizacion = EstadoAccionesWindows.objects.get(id_ip=ip_filtrada.id)
+    windows_actualizacion.estato_actualizacion = "Ejecutando..."
+    windows_actualizacion.save()
     try:
         username = "Administrador"
         puerto = os.getenv('SSH_PORT')
