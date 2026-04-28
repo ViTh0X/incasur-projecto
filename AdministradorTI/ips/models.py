@@ -56,6 +56,30 @@ class oficinas(models.Model):
         
     def __str__(self):
         return self.nombre_oficina    
+
+class switches(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=150,unique=True)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'switches'
+        
+    def __str__(self):
+        return self.nombre
+    
+    
+class vlans(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=150,unique=True)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'vlans'
+        
+    def __str__(self):
+        return self.nombre
+
         
 class ips(models.Model):  
     id = models.AutoField(primary_key=True)  
@@ -71,7 +95,12 @@ class ips(models.Model):
     modelo_equipo_asignado = models.CharField(max_length=120,null=True,blank=True)
     oficina = models.ForeignKey(oficinas,on_delete=models.CASCADE,null=True,blank=True)
     codigo_estado = models.ForeignKey(tipo_estado_ips,on_delete=models.CASCADE,null=True,blank=True)
+    vlan = models.ForeignKey(vlans,on_delete=models.CASCADE,null=True,blank=True)
+    switch = models.ForeignKey(switches,on_delete=models.CASCADE,null=True,blank=True)
+    puerto = models.CharField(max_length=3)
+    mac = models.CharField(max_length=200)
     fecha_modificacion = models.DateField(auto_now=True)
+    
     
     class Meta:
         db_table = 'ips'
@@ -104,4 +133,4 @@ class historial_accionForm(forms.ModelForm):
 class ipForm(forms.ModelForm):
     class Meta:
         model = ips
-        fields = ['ip','roll_ip','colaborador_asignado','seccion','nivel_firewall','tipo_equipo_asignado','marca_equipo_asignado','modelo_equipo_asignado','oficina','codigo_estado']            
+        fields = ['ip','roll_ip','colaborador_asignado','seccion','nivel_firewall','tipo_equipo_asignado','marca_equipo_asignado','modelo_equipo_asignado','oficina','codigo_estado','vlan','switch','puerto','mac']            

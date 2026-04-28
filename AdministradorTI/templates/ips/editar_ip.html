@@ -16,6 +16,34 @@
                             </div>                             
                         </div>
                         <div class="campo">
+                            <label class="campo--label">VLan :</label>
+                            <div class="campos__formulario--listbox">
+                                {{ formulario.vlan }}
+                                {{ formulario.vlan.errors }}
+                            </div>                             
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Switch :</label>
+                            <div class="campos__formulario--listbox">
+                                {{ formulario.switch }}
+                                {{ formulario.switch.errors }}
+                            </div>                             
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">Puerto :</label>
+                            <div class="campos__formulario--normal">
+                                {{ formulario.puerto }}
+                                {{ formulario.puerto.errors }}
+                            </div>                             
+                        </div>
+                        <div class="campo">
+                            <label class="campo--label">MAC :</label>
+                            <div class="campos__formulario--normal">
+                                {{ formulario.mac }}
+                                {{ formulario.mac.errors }}
+                            </div>                             
+                        </div>
+                        <div class="campo">
                             <label class="campo--label">Roll de la IP :</label>
                             <div class="campos__formulario--normal">
                                 {{ formulario.roll_ip }}

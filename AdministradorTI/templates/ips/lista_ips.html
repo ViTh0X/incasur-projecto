@@ -35,7 +35,11 @@
                 <thead>
                     <tr>
                         <th>IP</th>
-                        <th>Roll Asignado</th>                        
+                        <th>VLan</th>
+                        <th>Switch</th>
+                        <th>Puerto</th>
+                        <th>Mac</th>
+                        <th>Roll</th>                        
                         <th>Nombre Colaborador</th>
                         <th>Seccion</th>
                         <th>Nivel Firewall</th>
@@ -51,6 +55,10 @@
                     {% for ip in listado_ips %}                    
                         <tr>
                             <td>{{ ip.ip }}</td>
+                            <td>{{ ip.vlan }}</td>
+                            <td>{{ ip.switch }}</td>
+                            <td>{{ ip.puerto }}</td>
+                            <td>{{ ip.mac }}</td>
                             <td>{{ ip.roll_ip }}</td>                        
                             <td>{{ ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</td>
                             <td>{{ ip.seccion.nombre_seccion|default:"None" }}</td>
