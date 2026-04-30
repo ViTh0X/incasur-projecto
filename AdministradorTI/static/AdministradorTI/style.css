@@ -44,7 +44,7 @@ ul {
 .contenedor__grande{
     width: min(95% 140rem);
     margin: 0 auto;
-    padding: 2rem 2rem 2rem 2rem;
+    padding: 2rem 0 2rem 0;
 }
 h1{    
     height: 5.5rem;
