@@ -22,7 +22,7 @@ def listar_ips(request):
     #resultado = {
     #        'ips':ips
     #}
-    listado_ips = ips.objects.all()            
+    listado_ips = ips.objects.exclude(codigo_estado__id=5)            
     return render (request,'ips/lista_ips.html',{'listado_ips':listado_ips})
     
 @login_required(login_url="pagina_login")    
@@ -60,7 +60,7 @@ def reiniciar_data_ip(request,pk):
 @login_required(login_url="pagina_login")
 def generar_excel_ip(request):
     fecha_hora = datetime.now()
-    listado_ips = ips.objects.all()
+    listado_ips = ips.objects.exclude(codigo_estado__id=5)
     data_df = listado_ips.values('id',
                                  'ip',
                                  'vlan__nombre',
