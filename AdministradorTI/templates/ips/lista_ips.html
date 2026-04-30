@@ -52,7 +52,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for ip in listado_ips %}                    
+                    {% for ip in listado_ips %}
+                    {% if ip.codigo_estado != 5 %}                    
                         <tr>
                             <td>{{ ip.ip }}</td>
                             <td>{{ ip.vlan }}</td>
@@ -105,6 +106,7 @@
                                 </div>                            
                             </td>
                         </tr>
+                    {% endif %}
                     {% endfor %}
                 </tbody>
             </table>                                                          
