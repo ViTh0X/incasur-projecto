@@ -63,6 +63,10 @@ def generar_excel_ip(request):
     listado_ips = ips.objects.all()
     data_df = listado_ips.values('id',
                                  'ip',
+                                 'vlan',
+                                 'switch',
+                                 'puerto',
+                                 'mac',
                                  'roll_ip',
                                  'colaborador_asignado__nombre_colaborador',
                                  'seccion__nombre_seccion',
