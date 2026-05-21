@@ -11,6 +11,7 @@ class cargo_colaboradores(models.Model):
     
     class Meta:
         db_table = 'cargo_colaboradores'
+        ordering = ['nombre_cargo']
         
     def __str__(self):
         return self.nombre_cargo
@@ -45,7 +46,7 @@ class colaboradores(models.Model):
     fecha_modificacion = models.DateTimeField(auto_now=True)
     
     class Meta:
-        db_table = 'colaboradores'
+        db_table = 'colaboradores'        
     
     def __str__(self):
         return self.nombre_colaborador        
