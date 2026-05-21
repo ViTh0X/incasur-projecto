@@ -29,8 +29,8 @@ body{
 
 /*Globales*/
 .contenedor{
-    width: min(90% , 120rem);
-    margin: 0 auto;
+    width: min(90% , auto);
+    /*margin: 0 auto;*/
     padding: 0.1rem 2rem 0 2rem;       
 }
 
@@ -93,7 +93,10 @@ h1{
         color: var(--color2);    
     }    
 }
-
+.menu_opciones{
+    display: flex;
+    align-items: center;
+}
 .header__titulo--imagen{    
     height: 8rem;
     width: 8rem;
@@ -103,6 +106,7 @@ h1{
     flex-direction: column;
     justify-content: space-around;
     text-align: center;
+    margin-left: 1rem;
 }
 @media (min-width: 768px) {
     .menu{
@@ -110,14 +114,14 @@ h1{
     }
 }
 .menu a{
-    text-decoration: none;
-    text-transform: uppercase;
+    text-decoration: none;    
     font-weight: bold; 
     color: var(--blanco);
     padding: 1rem;    
 }
 .menu a:hover{
     background-color: var(--color2);
+    border-radius: 0.5rem;
     color: var(--oscuro);
 }
 
