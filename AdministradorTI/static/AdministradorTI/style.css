@@ -421,7 +421,8 @@ h1{
 /**********Formulario Edicion - Asignar**************/
 .formulario{    
     background-color: var(--grisOscuro);
-    width: min(55rem, auto);    
+    width: auto;
+    max-width: 60rem;
     margin: 0 auto;
     padding: 2rem;
     border-radius: 1rem;    
