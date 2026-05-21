@@ -7,85 +7,137 @@
             <h1 class="no-margin">Crear Nuevo Colaborador: COD IMPRESION LIBRE {{codigo_impresion_mostrar}}</h1>
                 <form class="formulario" method="POST">
                     {% csrf_token %}                    
-                    <div class="contenedor-campos">
-                        <div class="campo">
-                            <label class="campo--label">Nombre :</label>
-                            <div class="campos__formulario--amplio">
-                                {{ formulario.nombre_colaborador }}
-                                {{ formulario.nombre_colaborador.errors }}
+                    <div class="contenedor_doble_campos">
+                        <div class="contenedor-campos">
+                            <h3 class="no-margin">Datos Usuario:</h3>
+                            <div class="campo">
+                                <label class="campo--label">Nombre :</label>
+                                <div class="campos__formulario--amplio">
+                                    {{ formulario.nombre_colaborador }}
+                                    {{ formulario.nombre_colaborador.errors }}
+                                </div>                            
+                            </div>                            
+                            <div class="campo">
+                                <label class="campo--label">Usuario FTIA :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario.usuario_sistema }}
+                                    {{ formulario.usuario_sistema.errors }}
+                                </div>                            
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Correo Incasur:</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario.correo }}
+                                    {{ formulario.correo.errors }}
+                                </div>                            
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Usuario Sentinel :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario.usuario_sentinel }}
+                                    {{ formulario.usuario_sentinel.errors }}
+                                </div>                            
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Usuario SBS :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario.usuario_sbs }}
+                                    {{ formulario.usuario_sbs.errors }}
+                                </div>                            
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Usuario Windows :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario.usuario_windows }}
+                                    {{ formulario.usuario_windows.errors }}
+                                </div>                            
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Usuario Marcacion :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario.usuario_reloj_control }}
+                                    {{ formulario.usuario_reloj_control.errors }}
+                                </div>                            
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Codigo Impresion :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario.codigo_impresion_colaborador }}
+                                    {{ formulario.codigo_impresion_colaborador.errors }}
+                                </div>                            
+                            </div>                        
+                            <div class="campo">
+                                <label class="campo--label">Cargo :</label>
+                                <div class="campos__formulario--listbox">
+                                    {{ formulario.cargo_colaborador }}
+                                    {{ formulario.cargo_colaborador.errors }}
+                                </div>                            
                             </div>                            
                         </div>
-                        <div class="campo">
-                            <label class="campo--label">IP :</label>
-                            <div class="campos__formulario--listbox">
-                                <select name="ip_colaborador">                                
-                                    {% for ip in ip_disponibles %}
-                                    <option value="{{ ip.ip }}">{{ ip.ip }}</option>
-                                    {% endfor %}
-                                </select>                                 
-                            </div>                            
+                        <div class="contenedor-campos">
+                            <h3 class="no-margin">Datos PC o Laptop:</h3>
+                            <div class="campo">
+                                <label class="campo--label">IP: </label>
+                                <div class="campos__formulario--amplio">
+                                    {{ formulario_ip.ip }}
+                                    {{ formulario_ip.ip.errors }}
+                                </div>                            
+                            </div>                           
+                            <div class="campo">
+                                <label class="campo--label">MAC: </label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario_ip.mac }}
+                                    {{ formulario_ip.mac.errors }}
+                                </div>                            
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Seccion: </label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario_ip.seccion }}
+                                    {{ formulario_ip.seccion.errors }}
+                                </div>                            
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Nivel Firewall: </label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario_ip.nivel_firewall }}
+                                    {{ formulario_ip.nivel_firewall.errors }}
+                                </div>                            
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Tipo Equipo :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario_ip.tipo_equipo_asignado }}
+                                    {{ formulario_ip.tipo_equipo_asignado.errors }}
+                                </div>                            
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Marca :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario_ip.marca_equipo_asignado }}
+                                    {{ formulario_ip.marca_equipo_asignado.errors }}
+                                </div>                            
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Modelo :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario_ip.modelo_equipo_asignado }}
+                                    {{ formulario_ip.modelo_equipo_asignado.errors }}
+                                </div>                            
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Oficina :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario_ip.oficina }}
+                                    {{ formulario_ip.oficina.errors }}
+                                </div>                            
+                            </div>                                                    
+                            <div class="botones-formularios">
+                                <a href="{% url 'listar_colaboradores' %}">Volver a la Lista</a>
+                                <button type="submit">Agregar</button>                
+                            </div>  
                         </div>
-                        <div class="campo">
-                            <label class="campo--label">Usuario FTIA :</label>
-                            <div class="campos__formulario--normal">
-                                {{ formulario.usuario_sistema }}
-                                {{ formulario.usuario_sistema.errors }}
-                            </div>                            
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Correo Incasur:</label>
-                            <div class="campos__formulario--normal">
-                                {{ formulario.correo }}
-                                {{ formulario.correo.errors }}
-                            </div>                            
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Usuario Sentinel :</label>
-                            <div class="campos__formulario--normal">
-                                {{ formulario.usuario_sentinel }}
-                                {{ formulario.usuario_sentinel.errors }}
-                            </div>                            
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Usuario SBS :</label>
-                            <div class="campos__formulario--normal">
-                                {{ formulario.usuario_sbs }}
-                                {{ formulario.usuario_sbs.errors }}
-                            </div>                            
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Usuario Windows :</label>
-                            <div class="campos__formulario--normal">
-                                {{ formulario.usuario_windows }}
-                                {{ formulario.usuario_windows.errors }}
-                            </div>                            
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Usuario Marcacion :</label>
-                            <div class="campos__formulario--normal">
-                                {{ formulario.usuario_reloj_control }}
-                                {{ formulario.usuario_reloj_control.errors }}
-                            </div>                            
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Codigo Impresion :</label>
-                            <div class="campos__formulario--normal">
-                                {{ formulario.codigo_impresion_colaborador }}
-                                {{ formulario.codigo_impresion_colaborador.errors }}
-                            </div>                            
-                        </div>                        
-                        <div class="campo">
-                            <label class="campo--label">Cargo :</label>
-                            <div class="campos__formulario--listbox">
-                                {{ formulario.cargo_colaborador }}
-                                {{ formulario.cargo_colaborador.errors }}
-                            </div>                            
-                        </div>
-                        <div class="botones-formularios">
-                            <a href="{% url 'listar_colaboradores' %}">Volver a la Lista</a>
-                            <button type="submit">Agregar</button>                
-                        </div>  
-                    </div>
+                    </div>                    
                 </form>                    
         </section>
     </main>

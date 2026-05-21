@@ -19,7 +19,7 @@ from inventario_hardware.models import inventario_hardware, faltantes_inventario
 from inventario_software.models import faltantes_inventario_software
 
 from .models import colaboradores, colaboradorForm, estado_colaboradores,colaboradorForm_editar
-from ips.models import tipo_estado_ips, ips
+from ips.models import tipo_estado_ips, ips, ipForm
 
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -44,15 +44,17 @@ def agregar_colaborador(request):
     codigo_impresion_mostrar = codigo_impresion_mostrar + 1 
     if request.method == 'POST':
         formulario = colaboradorForm(request.POST)
+        formulario_ip = ipForm(request.POST)
         ip_colaborador_str = request.POST.get('ip_colaborador')
         #formulario.fields['ip_colaborador'].queryset = ip_disponibles
-        if formulario.is_valid():
+        if formulario.is_valid() and formulario_ip.is_valid():
             #Obtenemos un objeto ip de la lista de ips
             #ip_colaborador = formulario.cleaned_data['ip_colaborador']            
             #Aqui cambiar la actualioacion de nombre para hardware y tambien para 
             #ip                                    
             #Por medio del formulario obtenemos un objeto de lista_colaboradores
             add_colaborador = formulario.save(commit=False)
+            ip = formulario_ip.save(commit=False)            
             estado_colaborador_activo = get_object_or_404(estado_colaboradores,pk=1)            
             add_colaborador.estado_colaboradores = estado_colaborador_activo
             add_colaborador.save()
@@ -61,9 +63,12 @@ def agregar_colaborador(request):
             #id_colaborador = get_object_or_404(colaboradores,pk=add_colaborador.)
             ip_colaborador = get_object_or_404(ips,ip=ip_colaborador_str)
             estado_ip_ocupada = get_object_or_404(tipo_estado_ips,codigo_estado=1)
-            ip_colaborador.codigo_estado = estado_ip_ocupada
-            ip_colaborador.colaborador_asignado = add_colaborador                    
-            ip_colaborador.save() 
+            ip.roll_ip = "Computador de Colaborador"
+            ip.codigo_estado = estado_ip_ocupada
+            ip.save()
+            #ip_colaborador.codigo_estado = estado_ip_ocupada
+            #ip_colaborador.colaborador_asignado = add_colaborador                    
+            #ip_colaborador.save() 
             faltantes_hardware = faltantes_inventario_hardware(codigo_ip=ip_colaborador,codigo_colaborador=add_colaborador)
             faltantes_hardware.save()
             faltantes_software = faltantes_inventario_software(codigo_ip=ip_colaborador,codigo_colaborador=add_colaborador)
@@ -75,9 +80,10 @@ def agregar_colaborador(request):
             return redirect('listar_colaboradores')
     else:        
         formulario =  colaboradorForm()
+        formulario_ip = ipForm()
         #formulario.fields['ip_colaborador'].queryset = ip_disponibles
     
-    return render(request,'colaboradores/agregar_colaborador.html',{'formulario':formulario,'ip_disponibles':ip_disponibles,'codigo_impresion_mostrar':codigo_impresion_mostrar})
+    return render(request,'colaboradores/agregar_colaborador.html',{'formulario':formulario,'formulario_ip':formulario_ip,'ip_disponibles':ip_disponibles,'codigo_impresion_mostrar':codigo_impresion_mostrar})
 
 @login_required(login_url="pagina_login")
 def generar_excel_nuevocolab(request,pk):

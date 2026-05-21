@@ -577,3 +577,8 @@ h1{
     overflow-x: auto;
     -webkit-overflow-scrolling: touch; /* Para un desplazamiento más suave en iOS */
 }  
+.contenedor_doble_campos{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+}
