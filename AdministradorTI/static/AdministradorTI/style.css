@@ -421,7 +421,7 @@ h1{
 /**********Formulario Edicion - Asignar**************/
 .formulario{    
     background-color: var(--grisOscuro);
-    width: min(55rem, fit-content);
+    width: min(55rem, 100%);    
     margin: 0 auto;
     padding: 2rem;
     border-radius: 1rem;    
@@ -433,6 +433,26 @@ h1{
     border: none;    
 }
 .formulario legend{
+    color: var(--color2);        
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 3rem;
+}
+.formulario_grande{    
+    background-color: var(--grisOscuro);
+    width: auto;    
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 1rem;    
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+.formulario_grande fieldset{
+    border: none;    
+}
+.formulario_grande legend{
     color: var(--color2);        
     font-weight: bold;
     text-transform: uppercase;

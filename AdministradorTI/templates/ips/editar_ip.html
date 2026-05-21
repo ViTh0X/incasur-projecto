@@ -5,116 +5,116 @@
     <main class="contenedor">
         <section>
             <h1 class="no-margin">Modificar la ip existente</h1>            
-                <form class="formulario" method="POST">
+                <form class="formulario_grande" method="POST">
                     {% csrf_token %}
-                    <div class="contenedor-campos">
-                        <div class="campo">
-                            <label class="campo--label">IP :</label>
-                            <div class="campos__formulario--normal">
-                                {{ formulario.ip }}
-                                {{ formulario.ip.errors }}
-                            </div>                             
+                    <div class="contenedor_doble_campos">
+                        <div class="contenedor-campos">
+                            <div class="campo">
+                                <label class="campo--label">IP :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario.ip }}
+                                    {{ formulario.ip.errors }}
+                                </div>                             
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">VLan :</label>
+                                <div class="campos__formulario--listbox">
+                                    {{ formulario.vlan }}
+                                    {{ formulario.vlan.errors }}
+                                </div>                             
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Switch :</label>
+                                <div class="campos__formulario--listbox">
+                                    {{ formulario.switch }}
+                                    {{ formulario.switch.errors }}
+                                </div>                             
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Puerto :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario.puerto }}
+                                    {{ formulario.puerto.errors }}
+                                </div>                             
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">MAC :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario.mac }}
+                                    {{ formulario.mac.errors }}
+                                </div>                             
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Roll de la IP :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario.roll_ip }}
+                                    {{ formulario.roll_ip.errors }}
+                                </div>                             
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Colaborador :</label>
+                                <div class="campos__formulario--listbox">
+                                    {{ formulario.colaborador_asignado }}
+                                    {{ formulario.colaborador_asignado.errors }}
+                                </div>                             
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Seccion :</label>
+                                <div class="campos__formulario--listbox">
+                                    {{ formulario.seccion }}
+                                    {{ formulario.seccion.errors }}
+                                </div> 
+                            </div>
                         </div>
-                        <div class="campo">
-                            <label class="campo--label">VLan :</label>
-                            <div class="campos__formulario--listbox">
-                                {{ formulario.vlan }}
-                                {{ formulario.vlan.errors }}
-                            </div>                             
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Switch :</label>
-                            <div class="campos__formulario--listbox">
-                                {{ formulario.switch }}
-                                {{ formulario.switch.errors }}
-                            </div>                             
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Puerto :</label>
-                            <div class="campos__formulario--normal">
-                                {{ formulario.puerto }}
-                                {{ formulario.puerto.errors }}
-                            </div>                             
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">MAC :</label>
-                            <div class="campos__formulario--normal">
-                                {{ formulario.mac }}
-                                {{ formulario.mac.errors }}
-                            </div>                             
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Roll de la IP :</label>
-                            <div class="campos__formulario--normal">
-                                {{ formulario.roll_ip }}
-                                {{ formulario.roll_ip.errors }}
-                            </div>                             
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Colaborador :</label>
-                            <div class="campos__formulario--listbox">
-                                {{ formulario.colaborador_asignado }}
-                                {{ formulario.colaborador_asignado.errors }}
-                            </div>                             
-                        </div>
-                        <!--<div class="campo">
-                            <label class="campo--label">Nombre :</label>
-                            <label class="campo--data">{{ data_usuario.nombre_colaborador }}</label>
-                        </div>-->
-                        <div class="campo">
-                            <label class="campo--label">Seccion :</label>
-                            <div class="campos__formulario--listbox">
-                                {{ formulario.seccion }}
-                                {{ formulario.seccion.errors }}
+                        <div class="contenedor-campos">
+                            <div class="campo">
+                                <label class="campo--label">Nivel Firewall :</label>
+                                <div class="campos__formulario--listbox">
+                                    {{ formulario.nivel_firewall }}
+                                    {{ formulario.nivel_firewall.errors }}
+                                </div> 
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Tipo Equipo :</label>
+                                <div class="campos__formulario--listbox">
+                                    {{ formulario.tipo_equipo_asignado }}
+                                    {{ formulario.tipo_equipo_asignado.errors }}
+                                </div> 
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Marca Equipo :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario.marca_equipo_asignado }}
+                                    {{ formulario.marca_equipo_asignado.errors }}
+                                </div> 
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Modelo Equipo :</label>
+                                <div class="campos__formulario--normal">
+                                    {{ formulario.modelo_equipo_asignado }}
+                                    {{ formulario.modelo_equipo_asignado.errors }}
+                                </div> 
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Oficina :</label>
+                                <div class="campos__formulario--listbox">
+                                    {{ formulario.oficina }}
+                                    {{ formulario.oficina.errors }}
+                                </div> 
+                            </div>
+                            <div class="campo">
+                                <label class="campo--label">Estado :</label>
+                                <div class="campos__formulario--listbox">
+                                    {{ formulario.codigo_estado }}
+                                    {{ formulario.codigo_estado.errors }}
+                                </div> 
+                            </div>
+                            <div class="botones-formularios">
+                                <a href="{% url 'listar_ips' %}">Volver a la Lista</a>
+                                <button type="submit">Actualizar</button>                
                             </div> 
                         </div>
-                        <div class="campo">
-                            <label class="campo--label">Nivel Firewall :</label>
-                             <div class="campos__formulario--listbox">
-                                {{ formulario.nivel_firewall }}
-                                {{ formulario.nivel_firewall.errors }}
-                            </div> 
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Tipo Equipo :</label>
-                             <div class="campos__formulario--listbox">
-                                {{ formulario.tipo_equipo_asignado }}
-                                {{ formulario.tipo_equipo_asignado.errors }}
-                            </div> 
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Marca Equipo :</label>
-                             <div class="campos__formulario--normal">
-                                {{ formulario.marca_equipo_asignado }}
-                                {{ formulario.marca_equipo_asignado.errors }}
-                            </div> 
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Modelo Equipo :</label>
-                             <div class="campos__formulario--normal">
-                                {{ formulario.modelo_equipo_asignado }}
-                                {{ formulario.modelo_equipo_asignado.errors }}
-                            </div> 
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Oficina :</label>
-                             <div class="campos__formulario--listbox">
-                                {{ formulario.oficina }}
-                                {{ formulario.oficina.errors }}
-                            </div> 
-                        </div>
-                        <div class="campo">
-                            <label class="campo--label">Estado :</label>
-                             <div class="campos__formulario--listbox">
-                                {{ formulario.codigo_estado }}
-                                {{ formulario.codigo_estado.errors }}
-                            </div> 
-                        </div>
-                        <div class="botones-formularios">
-                            <a href="{% url 'listar_ips' %}">Volver a la Lista</a>
-                            <button type="submit">Actualizar</button>                
-                        </div> 
-                    </div>
+                    </div>                                                                                                                
                 </form>
         </section>
     </main>
