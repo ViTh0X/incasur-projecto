@@ -235,6 +235,9 @@ h1{
     height: 4rem;
     border-radius: 0.5rem;            
 }
+.opciones__table--buscador button:hover{
+    cursor: pointer;
+}
 
 .opciones__table--iconos{
     border-radius: 0.5rem;
