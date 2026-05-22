@@ -71,7 +71,9 @@
                                             </ul>
                                             <h3>Opciones:</h3>
                                             <ul>
-                                                <li><a title="EDITAR DATOS DE LA IP" href="{% url 'editar_ip' pk=ip.pk %}">
+                                                <li>
+                                                    <a title="EDITAR DATOS DE LA IP" href="{% url 'editar_ip' pk=ip.pk %}">
+                                                        <span>Editar:</span>
                                                         <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         width="28"
@@ -88,6 +90,7 @@
                                                         </svg>
                                                     </a>
                                                     <a title="HISTORIAL DE ACCIONES" href="{% url 'ver_historial_acciones' pk=ip.pk %}">
+                                                        <span>Ver Historial:</span>
                                                         <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         width="28"
