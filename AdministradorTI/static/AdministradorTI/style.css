@@ -604,14 +604,14 @@ h1{
 }
 .listado{
     margin: 2rem 15rem 2rem 15rem;
+    border-radius: 1rem;
+    border: 0.5rem solid var(--color1);
+    padding: 1rem 2rem 1rem 2rem;    
 }
 .listado_informacion{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 2rem;
-    border-radius: 1rem;
-    border: 0.5rem solid var(--color1);
-    margin: 1rem 2rem 1rem 2rem;    
+    column-gap: 2rem;    
 }
 .listado_informacion_data{
     font-size: 2rem;
