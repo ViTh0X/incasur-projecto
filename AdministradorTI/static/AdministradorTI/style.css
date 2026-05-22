@@ -614,10 +614,13 @@ h1{
     column-gap: 2rem;    
 }
 .listado_informacion_data{
-    font-size: 2rem;
+    font-size: 2.6rem;
 }
 .listado_informacion_data h3{
     text-decoration: underline;
+}
+.listado_informacion_data ul{
+    font-size: 2.2rem;
 }
 .listado_informacion_data span{
     font-weight: bold;
