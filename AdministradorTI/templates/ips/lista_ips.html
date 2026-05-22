@@ -32,7 +32,7 @@
                              
             </div>
             <table class="table">
-                <thead>
+                <!--<thead>
                     <tr>
                         <th>IP</th>
                         <th>VLan</th>
@@ -50,11 +50,79 @@
                         <th>Estado</th>
                         <th>Opciones</th>                        
                     </tr>
-                </thead>
+                </thead>-->
                 <tbody>
                     {% for ip in listado_ips %}                    
                         <tr>
-                            <td>{{ ip.ip }}</td>
+                            <td>
+                                <div>
+                                    <div>
+                                        <div>
+                                            <h3>Colaborador: {{ ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</h3>                                            
+                                        </div>                                    
+                                        <div>
+                                            <h3>Redes:</h3>
+                                            <ul>
+                                                <li>IP: {{ ip.ip }}</li>
+                                                <li>VLan: {{ ip.vlan }}</li>
+                                                <li>Switch: {{ ip.switch }}</li>
+                                                <li>Puerto: {{ ip.puerto }}</li>
+                                                <li>Mac: {{ ip.mac }}</li>
+                                            </ul>
+                                            <h3>Opciones:</h3>
+                                            <ul>
+                                                <li><a title="EDITAR DATOS DE LA IP" href="{% url 'editar_ip' pk=ip.pk %}">
+                                                        <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="28"
+                                                        height="28"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="#5856d6"
+                                                        stroke-width="1.5"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        >
+                                                        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                                        <path d="M13.5 6.5l4 4" />
+                                                        </svg>
+                                                    </a>
+                                                </li>
+                                                <li><a title="HISTORIAL DE ACCIONES" href="{% url 'ver_historial_acciones' pk=ip.pk %}">
+                                                    <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="28"
+                                                    height="28"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="#b0745e"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    >
+                                                    <path d="M12 8l0 4l2 2" />
+                                                    <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
+                                                    </svg>
+                                                    </a> 
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h3>Caracteristicas:</h3>
+                                            <ul>
+                                                <li>Tipo: {{ ip.tipo_equipo_asignado.nombre_tipo_equipo|default:"None" }}</li>
+                                                <li>Rol: {{ ip.roll_ip }}</li>
+                                                <li>Seccion: {{ ip.seccion.nombre_seccion|default:"None" }}</li>                                                
+                                                <li>Marca: {{ ip.marca_equipo_asignado|default:"None" }}</li>
+                                                <li>Modeo: {{ ip.modelo_equipo_asignado|default:"None" }}</li>
+                                                <li>Nivel-Firewall: {{ ip.nivel_firewall.nombre_nivel|default:"None" }}</li>
+                                                <li>Ubicacion: {{ ip.oficina.nombre_oficina|default:"None" }}</li>
+                                            </ul>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                            </td>
+                            <!--<td>{{ ip.ip }}</td>
                             <td>{{ ip.vlan }}</td>
                             <td>{{ ip.switch }}</td>
                             <td>{{ ip.puerto }}</td>
@@ -104,7 +172,7 @@
                                     </a>                             
                                 </div>                            
                             </td>
-                        </tr>                    
+                        </tr>-->                    
                     {% endfor %}
                 </tbody>
             </table>                                                          
