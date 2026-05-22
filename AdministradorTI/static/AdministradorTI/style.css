@@ -603,12 +603,17 @@ h1{
     column-gap: 4rem;
 }
 .listado{
-    margin: 1rem 8rem 1rem 8rem;
+    margin: 2rem 15rem 2rem 15rem;
 }
 .listado_informacion{
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 2rem;
+    border-radius: 1rem;
+    border: 0.5rem solid var(--color1);
+}
+.listado_informacion_data span{
+    font-weight: bold;
 }
 .listado_informacion_data:nth-child(1){
     grid-column: 1/3;
