@@ -58,10 +58,10 @@
                                 <div class="listado">
                                     <div class="listado_informacion">
                                         <div class="listado_informacion_data">
-                                            <p><span>Colaborador:</span> {{ ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</p>                                            
+                                            <p class="no-margin"><span>Colaborador:</span> {{ ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</p>                                            
                                         </div>                                    
                                         <div class="listado_informacion_data">
-                                            <h3>Redes:</h3>
+                                            <h3 class="no-margin">Redes:</h3>
                                             <ul>
                                                 <li><span>IP:</span> {{ ip.ip }}</li>
                                                 <li><span>VLan:</span> {{ ip.vlan }}</li>
@@ -69,7 +69,7 @@
                                                 <li><span>Puerto:</span> {{ ip.puerto }}</li>
                                                 <li><span>Mac:</span> {{ ip.mac }}</li>
                                             </ul>
-                                            <h3>Opciones:</h3>
+                                            <h3 class="no-margin">Opciones:</h3>
                                             <ul>
                                                 <li>
                                                     <a title="EDITAR DATOS DE LA IP" href="{% url 'editar_ip' pk=ip.pk %}">
@@ -110,7 +110,7 @@
                                             </ul>
                                         </div>
                                         <div class="listado_informacion_data">
-                                            <h3>Caracteristicas:</h3>
+                                            <h3 class="no-margin">Caracteristicas:</h3>
                                             <ul>
                                                 <li><span>Tipo:</span> {{ ip.tipo_equipo_asignado.nombre_tipo_equipo|default:"None" }}</li>
                                                 <li><span>Rol:</span> {{ ip.roll_ip }}</li>

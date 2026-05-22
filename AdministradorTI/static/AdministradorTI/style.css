@@ -624,6 +624,7 @@ h1{
 }
 .listado_informacion_data span{
     font-weight: bold;
+    text-decoration: none;
 }
 .listado_informacion_data:nth-child(1){
     grid-column: 1/3;
