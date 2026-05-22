@@ -220,7 +220,7 @@ h1{
 .opciones__table--buscador input{
     width: 35rem;
     height: 100%;
-    font-size: 2.5rem;
+    font-size: 2rem;
     border-radius: 0.3rem;
     border: 0.2rem solid var(--color1);
 }

@@ -7,7 +7,7 @@
             <h1 class="no-margin">Colaboradores Incasur : </h1>
             <div class="opciones__table">
                 <div class="opciones__table--buscador">
-                    <input type="text" name="nombre" id="pista_nombre" placeholder="Ingrese Nombres">
+                    <input type="text" name="nombre" id="pista_nombre" placeholder="Ingrese Nombres o Apellidos">
                     <button hx-get="{% url 'filtrar_usuarios_nombres' %}"
                     hx-target="#listado_colaboradores"
                     hx-include="#pista_nombre"
