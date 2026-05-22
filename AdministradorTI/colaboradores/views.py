@@ -233,4 +233,4 @@ def generar_excel_colab(request):
 def filtrar_usuarios_nombres(request):
     pista_nombre = request.GET.get('nombre','').strip()
     lista_colaboradores = colaboradores.objects.filter(nombre_colaborador__icontains=pista_nombre)    
-    return render(request,'colaboradores/colaboradores_encontrados.html',{'lista_colaboradores':lista_colaboradores})
+    return render(request,'colaboradores/equipos_informaticos_filtrados.html',{'lista_colaboradores':lista_colaboradores})

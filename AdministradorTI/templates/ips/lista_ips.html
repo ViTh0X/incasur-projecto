@@ -4,8 +4,30 @@
 <body>
     <main class="contenedor__grande">
         <div class="contenido__table">                                    
-            <h1 class="no-margin">Lista de IPs:</h1>                       
+            <h1 class="no-margin">Lista de Equipos Informaticos Asignados:</h1>                                                
             <div class="opciones__table">
+                <div class="opciones__table--buscador">
+                    <input type="text" name="nombre" id="pista_nombre" placeholder="Ingrese Nombres o Apellidos">
+                    <button hx-get="{% url 'filtrar_equipos_nombres' %}"
+                    hx-target="#listado_equipos"
+                    hx-include="#pista_nombre"
+                    hx-indicator="#loading-spinner">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="40"
+                        height="40"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#047670"
+                        stroke-width="2.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                        <path d="M21 21l-6 -6" />
+                        </svg>
+                    </button>            
+                </div>   
                 <div class="opciones__table--boton">
                     <a title="AGREGAR ACCION REALIZADA A LA IP" href="{% url 'agregar_accion' %}">+ Agregar Acciones</a>                    
                 </div>                
@@ -31,83 +53,85 @@
                 </div>                                
                              
             </div>
-            <table class="table">              
-                <tbody>
-                    {% for ip in listado_ips %}                    
-                        <tr>
-                            <td>
-                                <div class="listado">
-                                    <div class="listado_informacion">
-                                        <div class="listado_informacion_data">
-                                            <p class="no-margin"><span>Colaborador:</span> {{ ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</p>                                            
-                                        </div>                                    
-                                        <div class="listado_informacion_data">
-                                            <h3 class="no-margin">Redes:</h3>
-                                            <ul>
-                                                <li><span>IP:</span> {{ ip.ip }}</li>
-                                                <li><span>VLan:</span> {{ ip.vlan }}</li>
-                                                <li><span>Switch:</span> {{ ip.switch }}</li>
-                                                <li><span>Puerto:</span> {{ ip.puerto }}</li>
-                                                <li><span>Mac:</span> {{ ip.mac }}</li>
-                                            </ul>
-                                            <h3 class="no-margin">Opciones:</h3>
-                                            <ul>
-                                                <li>
-                                                    <a title="EDITAR DATOS DE LA IP" href="{% url 'editar_ip' pk=ip.pk %}">
-                                                        <span>Editar:</span>
-                                                        <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="28"
-                                                        height="28"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="#5856d6"
-                                                        stroke-width="1.5"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        >
-                                                        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-                                                        <path d="M13.5 6.5l4 4" />
-                                                        </svg>
-                                                    </a>
-                                                    <a title="HISTORIAL DE ACCIONES" href="{% url 'ver_historial_acciones' pk=ip.pk %}">
-                                                        <span>Ver Historial:</span>
-                                                        <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="28"
-                                                        height="28"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="#b0745e"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        >
-                                                        <path d="M12 8l0 4l2 2" />
-                                                        <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
-                                                        </svg>
-                                                    </a> 
-                                                </li>                                                
-                                            </ul>
+            <div class="listado_equipos">
+                <table class="table">              
+                    <tbody>
+                        {% for ip in listado_ips %}                    
+                            <tr>
+                                <td>
+                                    <div class="listado">
+                                        <div class="listado_informacion">
+                                            <div class="listado_informacion_data">
+                                                <p class="no-margin"><span>Colaborador:</span> {{ ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</p>                                            
+                                            </div>                                    
+                                            <div class="listado_informacion_data">
+                                                <h3 class="no-margin">Redes:</h3>
+                                                <ul>
+                                                    <li><span>IP:</span> {{ ip.ip }}</li>
+                                                    <li><span>VLan:</span> {{ ip.vlan }}</li>
+                                                    <li><span>Switch:</span> {{ ip.switch }}</li>
+                                                    <li><span>Puerto:</span> {{ ip.puerto }}</li>
+                                                    <li><span>Mac:</span> {{ ip.mac }}</li>
+                                                </ul>
+                                                <h3 class="no-margin">Opciones:</h3>
+                                                <ul>
+                                                    <li>
+                                                        <a title="EDITAR DATOS DE LA IP" href="{% url 'editar_ip' pk=ip.pk %}">
+                                                            <span>Editar:</span>
+                                                            <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            width="28"
+                                                            height="28"
+                                                            viewBox="0 0 24 24"
+                                                            fill="none"
+                                                            stroke="#5856d6"
+                                                            stroke-width="1.5"
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            >
+                                                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                                            <path d="M13.5 6.5l4 4" />
+                                                            </svg>
+                                                        </a>
+                                                        <a title="HISTORIAL DE ACCIONES" href="{% url 'ver_historial_acciones' pk=ip.pk %}">
+                                                            <span>Ver Historial:</span>
+                                                            <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            width="28"
+                                                            height="28"
+                                                            viewBox="0 0 24 24"
+                                                            fill="none"
+                                                            stroke="#b0745e"
+                                                            stroke-width="2"
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            >
+                                                            <path d="M12 8l0 4l2 2" />
+                                                            <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
+                                                            </svg>
+                                                        </a> 
+                                                    </li>                                                
+                                                </ul>
+                                            </div>
+                                            <div class="listado_informacion_data">
+                                                <h3 class="no-margin">Caracteristicas:</h3>
+                                                <ul>
+                                                    <li><span>Tipo:</span> {{ ip.tipo_equipo_asignado.nombre_tipo_equipo|default:"None" }}</li>
+                                                    <li><span>Rol:</span> {{ ip.roll_ip }}</li>
+                                                    <li><span>Seccion:</span> {{ ip.seccion.nombre_seccion|default:"None" }}</li>                                                
+                                                    <li><span>Marca:</span> {{ ip.marca_equipo_asignado|default:"None" }}</li>
+                                                    <li><span>Modelo:</span> {{ ip.modelo_equipo_asignado|default:"None" }}</li>
+                                                    <li><span>Nivel-Firewall:</span> {{ ip.nivel_firewall.nombre_nivel|default:"None" }}</li>
+                                                    <li><span>Ubicacion:</span> {{ ip.oficina.nombre_oficina|default:"None" }}</li>
+                                                </ul>
+                                            </div>                                        
                                         </div>
-                                        <div class="listado_informacion_data">
-                                            <h3 class="no-margin">Caracteristicas:</h3>
-                                            <ul>
-                                                <li><span>Tipo:</span> {{ ip.tipo_equipo_asignado.nombre_tipo_equipo|default:"None" }}</li>
-                                                <li><span>Rol:</span> {{ ip.roll_ip }}</li>
-                                                <li><span>Seccion:</span> {{ ip.seccion.nombre_seccion|default:"None" }}</li>                                                
-                                                <li><span>Marca:</span> {{ ip.marca_equipo_asignado|default:"None" }}</li>
-                                                <li><span>Modelo:</span> {{ ip.modelo_equipo_asignado|default:"None" }}</li>
-                                                <li><span>Nivel-Firewall:</span> {{ ip.nivel_firewall.nombre_nivel|default:"None" }}</li>
-                                                <li><span>Ubicacion:</span> {{ ip.oficina.nombre_oficina|default:"None" }}</li>
-                                            </ul>
-                                        </div>                                        
                                     </div>
-                                </div>
-                            </td>                                       
-                    {% endfor %}
-                </tbody>
-            </table>                                                          
+                                </td>                                       
+                        {% endfor %}
+                    </tbody>
+                </table>                           
+            </div>                                           
         </div>
     </main>
 </body>    

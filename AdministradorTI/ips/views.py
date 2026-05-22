@@ -142,3 +142,9 @@ def ver_historial_acciones(request,pk):
         return render(request,'ips/historial_vacio.html')
     else:
         return render(request,'ips/ver_historial_acciones.html',{'historiales':historiales})    
+    
+    
+def filtrar_equipos_nombres(request):
+    pista_nombre = request.GET.get('nombre','').strip()
+    listado_ips = ips.objects.filter(colaborador_asignado__nombre_colaborador__icontains=pista_nombre)    
+    return render(request,'colaboradores/colaboradores_encontrados.html',{'listado_ips':listado_ips})
