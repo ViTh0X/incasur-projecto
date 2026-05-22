@@ -13,8 +13,15 @@ from colaboradores.models import colaboradores, estado_colaboradores
 
 from django.contrib.auth.decorators import login_required
 
+
+
 @login_required(login_url="pagina_login")
-def listar_ips(request):
+def equipos_informaticos(request):
+    return render(request,'ips/menu_opciones_equipos_informaticos.html')
+    
+    
+@login_required(login_url="pagina_login")
+def listar_laptops_pc(request):
     #query_sql = """
     #select *,(select nombre_colaborador from lista_colaboradores as c where c.ip_colaborador_id = i.ip and c.estado_colaboradores_id = 1) as nombre_colaborador from lista_ips as i order by id asc
     #"""
@@ -23,7 +30,7 @@ def listar_ips(request):
     #        'ips':ips
     #}
     listado_ips = ips.objects.exclude(codigo_estado__pk=5)            
-    return render (request,'ips/lista_ips.html',{'listado_ips':listado_ips})
+    return render (request,'ips/listar_pcs_laptops.html',{'listado_ips':listado_ips})
     
 @login_required(login_url="pagina_login")    
 def editar_ip(request,pk):

@@ -1,0 +1,19 @@
+{% extends '../layout.html' %}
+{% block titulo %}Equipos Informaticos{% endblock  %}
+{% block contenido %}
+<body>
+    <main class="contenedor__grande">
+        <div class="contenido__table">                                    
+            <h1 class="no-margin">Elija que Equipos Desea ver:</h1>                                                
+            <div class="opciones__table">                
+                <div class="opciones__table--boton">
+                    <a title="" href="{% url 'listar_laptops_pc' %}">Laptop o PCs</a>                    
+                </div>
+                <div class="opciones__table--boton">
+                    <a title="AGREGAR ACCION REALIZADA A LA IP" href="{% url 'agregar_accion' %}">Equipos Informaticos TI</a>                    
+                </div>                                
+            </div>                                           
+        </div>
+    </main>
+</body>    
+{% endblock  %}

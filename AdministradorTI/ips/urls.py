@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('',views.listar_ips,name='listar_ips'),
+    path('',views.equipos_informaticos,name='equipos_informaticos'),
+    path('listar-laptops-pc',views.listar_laptops_pc,name='listar_laptops_pc'),
     path('editar-ip/<int:pk>/',views.editar_ip,name='editar_ip'),
     path('reiniciar-data-ip/<int:pk>/',views.reiniciar_data_ip,name='reiniciar_data_ip'),
     path("agregar-accion/",views.agregar_accion, name="agregar_accion"),

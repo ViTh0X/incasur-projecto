@@ -1,5 +1,5 @@
 {% extends '../layout.html' %}
-{% block titulo %}Ip-Manager{% endblock  %}
+{% block titulo %}Equipos Informaticos{% endblock  %}
 {% block contenido %}
 <body>
     <main class="contenedor__grande">
@@ -28,6 +28,9 @@
                         </svg>
                     </button>            
                 </div>   
+                <div class="opciones__table--boton">
+                    <a title="AGREGAR ACCION REALIZADA A LA IP" href="{% url 'agregar_accion' %}">+ Agregar un Equipo Nuevo</a>                    
+                </div>
                 <div class="opciones__table--boton">
                     <a title="AGREGAR ACCION REALIZADA A LA IP" href="{% url 'agregar_accion' %}">+ Agregar Acciones</a>                    
                 </div>                
