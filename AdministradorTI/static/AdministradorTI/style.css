@@ -611,6 +611,10 @@ h1{
     column-gap: 2rem;
     border-radius: 1rem;
     border: 0.5rem solid var(--color1);
+    margin: 1rem 2rem 1rem 2rem;    
+}
+.listado_informacion_data{
+    font-size: 2rem;
 }
 .listado_informacion_data span{
     font-weight: bold;
