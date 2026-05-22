@@ -248,50 +248,76 @@ class SSHManager(logArchivos):
                     key_filename=self.keyfile,
                     passphrase=self.passphrase
                 )
-                script_ps = (
-                    # 1. Obtener nombre del grupo de admins por SID (S-1-5-32-544)
-                    "$adminGroupName = (Get-LocalGroup -SID 'S-1-5-32-544').Name;"
-                    
-                    # 2. Obtener nombres limpios de los miembros del grupo admin
-                    "$admins = (Get-LocalGroupMember -Group $adminGroupName).Name | ForEach-Object { $_ -split '\\\\' | Select-Object -Last 1 };"
-                    
-                    # 3. FILTRO MEJORADO: 
-                    # - Debe estar habilitado
-                    # - NO debe estar en la lista de admins
-                    # - NO debe llamarse 'Administrador' o 'Administrator'
-                    # - Su SID NO debe terminar en -500 (que es la cuenta admin integrada)
-                    "$usuarios = Get-LocalUser | Where-Object { "
-                    "  $_.Enabled -eq $true -and "
-                    "  $admins -notcontains $_.Name -and "
-                    "  $_.Name -notmatch 'Administrador|Administrator' -and "
-                    "  $_.SID.Value -notmatch '-500$'"
-                    "};"
-                    
-                    "foreach ($u in $usuarios) {"
-                    "  try {"
-                    "    $username = $u.Name;"
-                    "    & net user \"$username\" 2026_monitor /y | Out-Null;"
-                    "    & net user \"$username\" /logonpasswordchg:yes | Out-Null;"
-                    "    Write-Output ('EXITO_CAMBIO: ' + $username);"
-                    "  } catch {"
-                    "    Write-Output ('ERROR_EN: ' + $u.Name);"
-                    "  }"
-                    "}"
-                )
-                comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& {{ {script_ps} }}\""                                
-                                
-                stdin, stdout, stderr = conexionSSH.exec_command(comando,timeout=60)
                 
-                error = stderr.read().decode('cp1252', errors='replace').strip()
-                if error:
-                    # Si hay error (ej. permisos insuficientes), devolvemos "No Actualizado"
-                    print(error)
+                # Usamos una triple comilla para mantener el script limpio y sin errores de escape
+                script_ps = """
+                $adminGroupName = (Get-LocalGroup -SID 'S-1-5-32-544').Name
+                $admins = (Get-LocalGroupMember -Group $adminGroupName).Name | ForEach-Object { $_ -split '\\\\' | Select-Object -Last 1 }
+                
+                $usuarios = Get-LocalUser | Where-Object { 
+                    $_.Enabled -eq $true -and 
+                    $admins -notcontains $_.Name -and 
+                    $_.Name -notmatch 'Administrador|Administrator' -and 
+                    $_.SID.Value -notmatch '-500$'
+                }
+                
+                $cambiosRealizados = 0
+                $erroresDetectados = 0
+
+                foreach ($u in $usuarios) {
+                    try {
+                        # Convertimos la contraseña a String Seguro (Requerido por Set-LocalUser)
+                        $passwordSegura = ConvertTo-SecureString "2026_monitor" -AsPlainText -Force
+                        
+                        # Cambiamos la contraseña usando el método nativo de PowerShell
+                        Set-LocalUser -Name $u.Name -Password $passwordSegura -ErrorAction Stop
+                        
+                        # Forzamos el cambio en el próximo inicio de sesión
+                        Set-LocalUser -Name $u.Name -PasswordNeverExpires $false
+                        & net user "$($u.Name)" /logonpasswordchg:yes | Out-Null
+                        
+                        Write-Output "EXITO_CAMBIO: $($u.Name)"
+                        $cambiosRealizados++
+                    } catch {
+                        Write-Output "ERROR_EN: $($u.Name) - Motivo: $($_.Exception.Message)"
+                        $erroresDetectados++
+                    }
+                }
+                
+                if ($cambiosRealizados -eq 0 -and $erroresDetectados -gt 0) {
+                    Write-Error "Ninguna contrasena pudo ser cambiada."
+                }
+                """
+                
+                # Pasamos el script codificado en Base64 para evitar CUALQUIER problema de comillas con SSH
+                import base64
+                script_bytes = script_ps.encode('utf-16-le')
+                script_b64 = base64.b64encode(script_bytes).decode('utf-8')
+                comando = f"powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand {script_b64}"
+                                                
+                stdin, stdout, stderr = conexionSSH.exec_command(comando, timeout=60)
+                
+                # Es vital leer tanto el canal de salida como el de error
+                salida_estandar = stdout.read().decode('cp1252', errors='replace').strip()
+                error_estandar = stderr.read().decode('cp1252', errors='replace').strip()
+                
+                # Para depuración (puedes ver en tu consola qué pasó realmente)
+                if salida_estandar:
+                    print("Salida de PowerShell:\n", salida_estandar)
+                
+                if error_estandar:
+                    print("Errores de PowerShell:\n", error_estandar)
                     return "No Actualizado"
                 
-                return "Actualizado"
+                # Si no hubo errores en el canal de errores y hubo al menos un cambio exitoso
+                if "EXITO_CAMBIO" in salida_estandar:
+                    return "Actualizado"
+                else:
+                    return "No Actualizado"
+                    
         except Exception as e:
-            print(f"Error es {e}")
-            return "No Actualizado"                 
+            print(f"Error crítico en la conexión SSH: {e}")
+            return "No Actualizado"             
                                         
     def ejecuta_inventario_hardware(self):                       
         try:
