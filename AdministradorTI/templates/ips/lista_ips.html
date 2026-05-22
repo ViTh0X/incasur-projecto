@@ -55,19 +55,19 @@
                     {% for ip in listado_ips %}                    
                         <tr>
                             <td>
-                                <div>
-                                    <div>
-                                        <div>
-                                            <h3>Colaborador: {{ ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</h3>                                            
+                                <div class="listado">
+                                    <div class="listado_informacion">
+                                        <div class="listado_informacion_data">
+                                            <h3><span>Colaborador:</span> {{ ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</h3>                                            
                                         </div>                                    
-                                        <div>
+                                        <div class="listado_informacion_data">
                                             <h3>Redes:</h3>
                                             <ul>
-                                                <li>IP: {{ ip.ip }}</li>
-                                                <li>VLan: {{ ip.vlan }}</li>
-                                                <li>Switch: {{ ip.switch }}</li>
-                                                <li>Puerto: {{ ip.puerto }}</li>
-                                                <li>Mac: {{ ip.mac }}</li>
+                                                <li><span>IP:</span> {{ ip.ip }}</li>
+                                                <li><span>VLan:</span> {{ ip.vlan }}</li>
+                                                <li><span>Switch:</span> {{ ip.switch }}</li>
+                                                <li><span>Puerto:</span> {{ ip.puerto }}</li>
+                                                <li><span>Mac:</span> {{ ip.mac }}</li>
                                             </ul>
                                             <h3>Opciones:</h3>
                                             <ul>
@@ -87,36 +87,35 @@
                                                         <path d="M13.5 6.5l4 4" />
                                                         </svg>
                                                     </a>
-                                                </li>
-                                                <li><a title="HISTORIAL DE ACCIONES" href="{% url 'ver_historial_acciones' pk=ip.pk %}">
-                                                    <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="28"
-                                                    height="28"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="#b0745e"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    >
-                                                    <path d="M12 8l0 4l2 2" />
-                                                    <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
-                                                    </svg>
+                                                    <a title="HISTORIAL DE ACCIONES" href="{% url 'ver_historial_acciones' pk=ip.pk %}">
+                                                        <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="28"
+                                                        height="28"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="#b0745e"
+                                                        stroke-width="2"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        >
+                                                        <path d="M12 8l0 4l2 2" />
+                                                        <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
+                                                        </svg>
                                                     </a> 
-                                                </li>
+                                                </li>                                                
                                             </ul>
                                         </div>
-                                        <div>
+                                        <div class="listado_informacion_data">
                                             <h3>Caracteristicas:</h3>
                                             <ul>
-                                                <li>Tipo: {{ ip.tipo_equipo_asignado.nombre_tipo_equipo|default:"None" }}</li>
-                                                <li>Rol: {{ ip.roll_ip }}</li>
-                                                <li>Seccion: {{ ip.seccion.nombre_seccion|default:"None" }}</li>                                                
-                                                <li>Marca: {{ ip.marca_equipo_asignado|default:"None" }}</li>
-                                                <li>Modeo: {{ ip.modelo_equipo_asignado|default:"None" }}</li>
-                                                <li>Nivel-Firewall: {{ ip.nivel_firewall.nombre_nivel|default:"None" }}</li>
-                                                <li>Ubicacion: {{ ip.oficina.nombre_oficina|default:"None" }}</li>
+                                                <li><span>Tipo:</span> {{ ip.tipo_equipo_asignado.nombre_tipo_equipo|default:"None" }}</li>
+                                                <li><span>Rol:</span> {{ ip.roll_ip }}</li>
+                                                <li><span>Seccion:</span> {{ ip.seccion.nombre_seccion|default:"None" }}</li>                                                
+                                                <li><span>Marca:</span> {{ ip.marca_equipo_asignado|default:"None" }}</li>
+                                                <li><span>Modelo:</span> {{ ip.modelo_equipo_asignado|default:"None" }}</li>
+                                                <li><span>Nivel-Firewall:</span> {{ ip.nivel_firewall.nombre_nivel|default:"None" }}</li>
+                                                <li><span>Ubicacion:</span> {{ ip.oficina.nombre_oficina|default:"None" }}</li>
                                             </ul>
                                         </div>                                        
                                     </div>
