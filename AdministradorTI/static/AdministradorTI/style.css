@@ -184,6 +184,7 @@ h1{
     font-size: 1.6rem;
     /* margin-bottom: 0.5rem; */
 }
+
 .opciones__table--boton a{
     background-color: var(--color1);
     color: var(--blanco);  
@@ -209,12 +210,19 @@ h1{
 .opciones__table--boton button:hover{
     cursor: pointer;
 }
+.opciones__table--buscador{
+    display: flex;    
+    column-gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;    
+}
 .opciones__table--buscador input{
-    width: 20rem;
+    width: 35rem;
     height: 100%;
     font-size: 2.5rem;
     border-radius: 0.3rem;
-    
+    border: none;
 }
 .opciones__table--buscador button{
     border: none;
