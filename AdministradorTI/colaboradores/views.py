@@ -228,3 +228,9 @@ def generar_excel_colab(request):
     response['Content-Disposition'] = f'attachment; filename="Colaboradores {fecha_hora}.xlsx"'
     df.to_excel(response,index=False,sheet_name='IPs')
     return response
+
+
+def filtrar_usuarios_nombres(request):
+    pista_nombre = request.GET.get('nombre','').strip()
+    lista_colaboradores = colaboradores.objects.filter(nombre_colaborador__icontains=pista_nombre)    
+    return render(request,'colaboradores/colaboradores_encontrados.html',{'lista_colaboradores':lista_colaboradores})

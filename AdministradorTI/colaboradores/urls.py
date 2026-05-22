@@ -8,4 +8,5 @@ urlpatterns = [
     path('editar-colaborador/<int:pk>/',views.editar_colaborador,name='editar_colaborador'),
     path('cesar-colaborador/<int:pk>/',views.cesar_colaborador,name='cesar_colaborador'), 
     path('generar-excel-colab',views.generar_excel_colab,name='generar_excel_colab'),   
+    path('filtrar-usuarios-nombres',views.filtrar_usuarios_nombres,name='filtrar_usuarios_nombres'),
 ]

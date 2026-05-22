@@ -3,10 +3,31 @@
 {% block contenido %}
 <body>
     <main class="contenedor__grande">
-        <div class="contenido__table">
-            
+        <div class="contenido__table">            
             <h1 class="no-margin">Colaboradores Incasur : </h1>
             <div class="opciones__table">
+                <div class="opciones__table--boton">
+                    <input type="text" name="nombre" id="pista_nombre" placeholder="Ingrese Nombres">
+                    <button hx-get="{% url 'filtrar_usuarios_nombres' %}"
+                    hx-target="#listado_colaboradores"
+                    hx-include="#pista_nombre"
+                    hx-indicator="#loading-spinner">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="40"
+                        height="40"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#047670"
+                        stroke-width="2.25"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        >
+                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                        <path d="M21 21l-6 -6" />
+                        </svg>
+                    </button>            
+                </div>
                 <div class="opciones__table--boton">
                     <a title="AGREGAR COLABORADOR NUEVO" href="{% url 'agregar_colaborador' %}">AGREGAR COLABORADOR</a>                                        
                 </div>                            
@@ -29,95 +50,96 @@
                     <path d="M10 17l4 -5" />
                     </svg>
                     </a>   
-                </div> 
-                
+                </div>                 
             </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <!--<th>IP asignada</th>-->
-                        <th>Codigo FTIA</th>
-                        <th>Correo Empresarial</th>
-                        <th>Usuario Sentinel</th>
-                        <th>Usuario SBS</th>
-                        <th>Usuario Windows</th>
-                        <th>Cod Impresion</th>
-                        <th>Cargo Colaborador</th>
-                        <th>Estado</th>
-                        <th>Opciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for colaborador in lista_colaboradores %}
-                    <tr>
-                        <td>{{ colaborador.nombre_colaborador }}</td>                        
-                        <td>{{ colaborador.usuario_sistema }}</td>
-                        <td>{{ colaborador.correo }}</td>
-                        <td>{{ colaborador.usuario_sentinel }}</td>
-                        <td>{{ colaborador.usuario_sbs }}</td>
-                        <td>{{ colaborador.usuario_windows }}</td>
-                        <td>{{ colaborador.codigo_impresion_colaborador }}</td>                        
-                        <td>{{ colaborador.cargo_colaborador.nombre_cargo }}</td>           
-                        <td>{{ colaborador.estado_colaboradores }}</td> 
-                        <td>
-                            <div>
-                                <a title="EDITAR COLABORADOR" href="{% url 'editar_colaborador' pk=colaborador.codigo_colaborador %}">
-                                    <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="28"
-                                    height="28"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="#5856d6"
-                                    stroke-width="1.5"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    >
-                                    <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-                                    <path d="M13.5 6.5l4 4" />
-                                    </svg>
-                                </a>
-                                <a title="GENERAR FICHA USUARIOS NUEVOS" href="{% url 'generar_excel_nuevocolab' pk=colaborador.codigo_colaborador %}">
-                                    <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="#41b955"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    >
-                                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
-                                    <path d="M10 12l4 5" />
-                                    <path d="M10 17l4 -5" />
-                                    </svg>
-                                </a>
-                                <a title="CESAR COLABORADOR" href="{% url 'cesar_colaborador' pk=colaborador.codigo_colaborador %}">
-                                    <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="28"
-                                    height="28"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="#ff2d55"
-                                    stroke-width="1.5"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    >
-                                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                                    <path d="M10 10l4 4m0 -4l-4 4" />
-                                    </svg>
-                                </a>                                                              
-                            </div>
-                        </td>            
-                    </tr>
-                    {% endfor %}                    
-                </tbody>
-            </table>
+            <div id="listado_colaboradores">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <!--<th>IP asignada</th>-->
+                            <th>Codigo FTIA</th>
+                            <th>Correo Empresarial</th>
+                            <th>Usuario Sentinel</th>
+                            <th>Usuario SBS</th>
+                            <th>Usuario Windows</th>
+                            <th>Cod Impresion</th>
+                            <th>Cargo Colaborador</th>
+                            <th>Estado</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for colaborador in lista_colaboradores %}
+                        <tr>
+                            <td>{{ colaborador.nombre_colaborador }}</td>                        
+                            <td>{{ colaborador.usuario_sistema }}</td>
+                            <td>{{ colaborador.correo }}</td>
+                            <td>{{ colaborador.usuario_sentinel }}</td>
+                            <td>{{ colaborador.usuario_sbs }}</td>
+                            <td>{{ colaborador.usuario_windows }}</td>
+                            <td>{{ colaborador.codigo_impresion_colaborador }}</td>                        
+                            <td>{{ colaborador.cargo_colaborador.nombre_cargo }}</td>           
+                            <td>{{ colaborador.estado_colaboradores }}</td> 
+                            <td>
+                                <div>
+                                    <a title="EDITAR COLABORADOR" href="{% url 'editar_colaborador' pk=colaborador.codigo_colaborador %}">
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="28"
+                                        height="28"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="#5856d6"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        >
+                                        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                        <path d="M13.5 6.5l4 4" />
+                                        </svg>
+                                    </a>
+                                    <a title="GENERAR FICHA USUARIOS NUEVOS" href="{% url 'generar_excel_nuevocolab' pk=colaborador.codigo_colaborador %}">
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="#41b955"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        >
+                                        <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+                                        <path d="M10 12l4 5" />
+                                        <path d="M10 17l4 -5" />
+                                        </svg>
+                                    </a>
+                                    <a title="CESAR COLABORADOR" href="{% url 'cesar_colaborador' pk=colaborador.codigo_colaborador %}">
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="28"
+                                        height="28"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="#ff2d55"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        >
+                                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                        <path d="M10 10l4 4m0 -4l-4 4" />
+                                        </svg>
+                                    </a>                                                              
+                                </div>
+                            </td>            
+                        </tr>
+                        {% endfor %}                    
+                    </tbody>
+                </table>
+            </div>            
         </div>
     </main>
 </body>    
