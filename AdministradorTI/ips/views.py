@@ -147,4 +147,4 @@ def ver_historial_acciones(request,pk):
 def filtrar_equipos_nombres(request):
     pista_nombre = request.GET.get('nombre','').strip()
     listado_ips = ips.objects.filter(colaborador_asignado__nombre_colaborador__icontains=pista_nombre)    
-    return render(request,'colaboradores/colaboradores_encontrados.html',{'listado_ips':listado_ips})
+    return render(request,'colaboradores/equipos_informaticos_filtrados.html',{'listado_ips':listado_ips})
