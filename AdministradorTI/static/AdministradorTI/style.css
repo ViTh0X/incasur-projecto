@@ -623,7 +623,9 @@ h1{
     font-size: 2.2rem;
 }
 .listado_informacion_data span{
-    font-weight: bold;
+    font-weight: bold;    
+}
+.listado_informacion_data a{
     text-decoration: none;
 }
 .listado_informacion_data:nth-child(1){
