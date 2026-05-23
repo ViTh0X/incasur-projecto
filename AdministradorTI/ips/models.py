@@ -177,8 +177,8 @@ class EquiposInformaticosForm(forms.ModelForm):
         fields = ['ip','roll_ip','colaborador_asignado','seccion','nivel_firewall','tipo_equipo_asignado','marca_equipo_asignado','modelo_equipo_asignado','oficina','codigo_estado','vlan','switch','puerto','mac','placa','procesador','ram','video_integrada','video_dedicada','so','almacenamiento']            
         
         
-        def __init__(self, *args, **kwargs):
-            super(EquiposInformaticosForm, self).__init___(*args,**kwargs)
-            
-            if 'colaborador_asignado' in self.fields:
-                self.fields['colaborador_asignado'].queryset = self.fields['colaborador_asignado'].queryset.exclude(estado_colaboradores=2)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        if 'colaborador_asignado' in self.fields:
+            self.fields['colaborador_asignado'].queryset = self.fields['colaborador_asignado'].queryset.exclude(estado_colaboradores=2)
