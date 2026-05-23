@@ -1,0 +1,89 @@
+<table class="table">              
+    <tbody>
+        {% for equipo in equipos_ti %}                    
+            <tr>
+                <td>
+                    <div class="listado">
+                        <div class="listado_informacion_2">
+                            <div class="listado_informacion_2_data">
+                                <p class="no-margin"><span>Colaborador:</span> {{ equipo.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</p>                                            
+                            </div>                                    
+                            <div class="listado_informacion_2_data">
+                                <h3 class="no-margin">Redes:</h3>
+                                <ul>
+                                    <li><span>IP:</span> {{ equipo.ip }}</li>
+                                    <li><span>VLan:</span> {{ equipo.vlan }}</li>
+                                    <li><span>Switch:</span> {{ equipo.switch }}</li>
+                                    <li><span>Puerto:</span> {{ equipo.puerto }}</li>
+                                    <li><span>Mac:</span> {{ equipo.mac }}</li>
+                                </ul>
+                                <h3 class="no-margin">Opciones:</h3>
+                                <ul>
+                                    <li>
+                                        <a title="EDITAR DATOS DE LA IP" href="{% url 'editar_equipo_informatico_ti' pk=equipo.pk %}">
+                                            <span>Editar:</span>
+                                            <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="28"
+                                            height="28"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="#5856d6"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            >
+                                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                            <path d="M13.5 6.5l4 4" />
+                                            </svg>
+                                        </a>
+                                        <a title="HISTORIAL DE ACCIONES" href="{% url 'ver_historial_acciones' pk=equipo.pk %}">
+                                            <span>Ver Historial:</span>
+                                            <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="28"
+                                            height="28"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="#b0745e"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            >
+                                            <path d="M12 8l0 4l2 2" />
+                                            <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
+                                            </svg>
+                                        </a> 
+                                    </li>                                                
+                                </ul>
+                            </div>
+                            <div class="listado_informacion_2_data">
+                                <h3 class="no-margin">Caracteristicas:</h3>
+                                <ul>
+                                    <li><span>Tipo:</span> {{ equipo.tipo_equipo_asignado.nombre_tipo_equipo|default:"None" }}</li>
+                                    <li><span>Rol:</span> {{ equipo.roll_ip }}</li>
+                                    <li><span>Seccion:</span> {{ equipo.seccion.nombre_seccion|default:"None" }}</li>                                                
+                                    <li><span>Marca:</span> {{ equipo.marca_equipo_asignado|default:"None" }}</li>
+                                    <li><span>Modelo:</span> {{ equipo.modelo_equipo_asignado|default:"None" }}</li>
+                                    <li><span>Nivel-Firewall:</span> {{ equipo.nivel_firewall.nombre_nivel|default:"None" }}</li>
+                                    <li><span>Ubicacion:</span> {{ equipo.oficina.nombre_oficina|default:"None" }}</li>
+                                </ul>
+                            </div>
+                            <div class="listado_informacion_2_data">
+                                <h3 class="no-margin">Hardware:</h3>
+                                <ul>
+                                    <li><span>Placa:</span> {{ equipo.placa|default:"" }}</li>
+                                    <li><span>Procesador:</span> {{ equipo.procesador|default:"" }}</li>
+                                    <li><span>Ram:</span> {{ equipo.ram|default:"" }}</li>                                                
+                                    <li><span>V/integrada:</span> {{ equipo.video_integrada|default:"" }}</li>
+                                    <li><span>V/dedicada:</span> {{ equipo.video_dedicada|default:"" }}</li>
+                                    <li><span>S.O.:</span> {{ equipo.so|default:"" }}</li>
+                                    <li><span>Almacenamiento:</span> {{ equipo.almacenamiento|default:"" }}</li>
+                                </ul>
+                            </div>                                        
+                        </div>
+                    </div>
+                </td>                                       
+        {% endfor %}
+    </tbody>
+</table>         

@@ -8,7 +8,7 @@
             <div class="opciones__table">
                 <div class="opciones__table--buscador">
                     <input type="text" name="nombre" id="pista_nombre" placeholder="Ingrese Nombres o Apellidos">
-                    <button hx-get="{% url 'filtrar_equipos_nombres' %}"
+                    <button hx-get="{% url 'filtrar_equipos_ti_nombres' %}"
                     hx-target="#listado_equipos"
                     hx-include="#pista_nombre"
                     hx-indicator="#loading-spinner">

@@ -14,4 +14,5 @@ urlpatterns = [
     path("historial-acciones/<int:pk>/",views.ver_historial_acciones, name="ver_historial_acciones"),
     path('generar-excel-ip',views.generar_excel_ip,name='generar_excel_ip'),
     path('filtrar-equipos-nombres',views.filtrar_equipos_nombres,name='filtrar_equipos_nombres'),    
+    path('filtrar-equipos-ti-nombres',views.filtrar_equipos_ti_nombres,name='filtrar_equipos_ti_nombres'),    
 ]

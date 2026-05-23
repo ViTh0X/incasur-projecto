@@ -183,6 +183,12 @@ def filtrar_equipos_nombres(request):
     listado_ips = ips.objects.filter(colaborador_asignado__nombre_colaborador__icontains=pista_nombre)    
     return render(request,'ips/equipos_informaticos_filtrados.html',{'listado_ips':listado_ips})
 
+@login_required(login_url="pagina_login")    
+def filtrar_equipos_ti_nombres(request):
+    pista_nombre = request.GET.get('nombre','').strip()
+    equipos_ti = equipos_informaticos_ti.objects.filter(colaborador_asignado__nombre_colaborador__icontains=pista_nombre)    
+    return render(request,'ips/equipos_informaticos_filtrados_ti.html',{'equipos_ti':equipos_ti})
+
 @login_required(login_url="pagina_login")
 def listar_equipos_informaticos_ti(request):
     equipos_ti = equipos_informaticos_ti.objects.all()
