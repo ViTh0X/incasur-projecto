@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path('',views.equipos_informaticos,name='equipos_informaticos'),
-    path('agregar-laptop-pc',views.agregar_laptop_pc,name='agregar_laptop_pc'),
+    #path('agregar-laptop-pc',views.agregar_laptop_pc,name='agregar_laptop_pc'),
     path('listar-laptops-pc',views.listar_laptops_pc,name='listar_laptops_pc'),
     path('agregar-equipo-informatico-ti',views.agregar_equipo_informatico_ti,name='agregar_equipo_informatico_ti'),
     path('listar-equipos-informaticos-ti',views.listar_equipos_informaticos_ti,name='listar_equipos_informaticos_ti'),
