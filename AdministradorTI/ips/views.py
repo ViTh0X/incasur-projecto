@@ -166,7 +166,7 @@ def agregar_intervencion_ti(request,ip):
     else:
         formulario = historial_accionForm(
             initial={
-                'ip_historial' =  equipo_encontrado.ip               
+                'ip_historial':equipo_encontrado.ip               
             }           
         )
     
