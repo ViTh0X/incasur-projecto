@@ -174,9 +174,8 @@ def agregar_intervencion_ti(request,ip):
 
 
 @login_required(login_url="pagina_login")            
-def ver_historial_acciones(request,pk):    
-    ip_seleccionada = ips.objects.get(pk=pk)
-    historiales = historial_acciones.objects.filter(ip_historial=ip_seleccionada)
+def ver_historial_acciones(request,ip):        
+    historiales = historial_acciones.objects.filter(ip_historial=ip)
     if not historiales: 
         return render(request,'ips/historial_vacio.html')
     else:
