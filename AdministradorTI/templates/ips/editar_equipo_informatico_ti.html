@@ -1,5 +1,5 @@
 {% extends '../layout.html' %}
-{% block titulo %}Agregar equipo de TI{% endblock  %}
+{% block titulo %}Editar equipo de TI{% endblock  %}
 {% block contenido %}
 <body>
     <main class="contenedor">
@@ -76,14 +76,7 @@
                                 </div> 
                             </div>                            
                         </div>
-                        <div class="contenedor-campos">                                                                                                                                            
-                            <!--<div class="campo">
-                                <label class="campo--label">Estado :</label>
-                                <div class="campos__formulario--listbox">
-                                    {{ formulario.codigo_estado }}
-                                    {{ formulario.codigo_estado.errors }}
-                                </div> 
-                            </div>EN DUDA************-->
+                        <div class="contenedor-campos">                                                                                                                                                                        
                             <div class="campo">
                                 <label class="campo--label">Marca Equipo :</label>
                                 <div class="campos__formulario--normal">
@@ -138,9 +131,16 @@
                                     {{ formulario.almacenamiento }}                                    
                                 </div> 
                             </div>
+                            <div class="campo">
+                                <label class="campo--label">Estado :</label>
+                                <div class="campos__formulario--listbox">
+                                    {{ formulario.codigo_estado }}
+                                    {{ formulario.codigo_estado.errors }}
+                                </div> 
+                            </div>
                             <div class="botones-formularios">
                                 <a href="{% url 'listar_equipos_informaticos_ti' %}">Volver a la Lista</a>
-                                <button type="submit">Guardar</button>                
+                                <button type="submit">ACTUALIZAR</button>                
                                 <ul>
                                     <li>{{ formulario.ip.errors }}</li>
                                     <li>{{ formulario.vlan.errors }}</li>

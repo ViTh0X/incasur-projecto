@@ -46,7 +46,19 @@ def agregar_equipo_informatico_ti(request):
         formulario =  EquiposInformaticosForm()    
     return render(request,'ips/agregar_equipo_informatico_ti.html',{'formulario':formulario})
 
-
+@login_required(login_url="pagina_login")
+def editar_equipo_informatico_ti(request,pk):
+    equipo_informatico = equipos_informaticos_ti.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = EquiposInformaticosForm(request.POST, instance=equipos_informaticos_ti)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_equipos_informaticos_ti')
+    else:
+        formulario = EquiposInformaticosForm(instance=equipo_informatico)
+    return render(request,'ips/editar_equipo_informatico_ti.html',{'formulario':formulario})
+    
+    
 @login_required(login_url="pagina_login")    
 def editar_ip(request,pk):
     ip = get_object_or_404(ips,pk=pk)         
