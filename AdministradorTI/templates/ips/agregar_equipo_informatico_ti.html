@@ -80,6 +80,22 @@
                                 </div> 
                             </div>
                             <div class="campo">
+                                <label class="campo--label">Ubicacion :</label>
+                                <div class="campos__formulario--listbox">
+                                    {{ formulario.oficina }}
+                                    {{ formulario.oficina.errors }}
+                                </div> 
+                            </div>                            
+                        </div>
+                        <div class="contenedor-campos">                                                                                                                                            
+                            <!--<div class="campo">
+                                <label class="campo--label">Estado :</label>
+                                <div class="campos__formulario--listbox">
+                                    {{ formulario.codigo_estado }}
+                                    {{ formulario.codigo_estado.errors }}
+                                </div> 
+                            </div>EN DUDA************-->
+                            <div class="campo">
                                 <label class="campo--label">Marca Equipo :</label>
                                 <div class="campos__formulario--normal">
                                     {{ formulario.marca_equipo_asignado }}
@@ -93,22 +109,6 @@
                                     {{ formulario.modelo_equipo_asignado.errors }}
                                 </div> 
                             </div>
-                        </div>
-                        <div class="contenedor-campos">                                                                                                                
-                            <div class="campo">
-                                <label class="campo--label">Oficina :</label>
-                                <div class="campos__formulario--listbox">
-                                    {{ formulario.oficina }}
-                                    {{ formulario.oficina.errors }}
-                                </div> 
-                            </div>
-                            <div class="campo">
-                                <label class="campo--label">Estado :</label>
-                                <div class="campos__formulario--listbox">
-                                    {{ formulario.codigo_estado }}
-                                    {{ formulario.codigo_estado.errors }}
-                                </div> 
-                            </div><!--EN DUDA************-->
                             <div class="campo">
                                 <label class="campo--label">Placa :</label>
                                 <div class="campos__formulario--normal">
