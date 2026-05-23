@@ -50,7 +50,7 @@ def agregar_equipo_informatico_ti(request):
 def editar_equipo_informatico_ti(request,pk):
     equipo_informatico = equipos_informaticos_ti.objects.get(pk=pk)
     if request.method == 'POST':
-        form = EquiposInformaticosForm(request.POST, instance=equipos_informaticos_ti)
+        form = EquiposInformaticosForm(request.POST, instance=equipo_informatico)
         if form.is_valid():
             form.save()
             return redirect('listar_equipos_informaticos_ti')
