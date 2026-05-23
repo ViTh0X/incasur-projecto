@@ -670,3 +670,40 @@ h1{
     grid-column: 2/3;
     grid-row: 2/3;    
 }
+
+.listado_informacion_2{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 2rem;    
+}
+.listado_informacion_2_data{
+    font-size: 2.6rem;
+}
+.listado_informacion_2_data h3{
+    text-decoration: underline;
+}
+.listado_informacion_2_data ul{
+    font-size: 2.2rem;
+}
+.listado_informacion_2_data span{
+    font-weight: bold;    
+}
+.listado_informacion_2_data a{
+    text-decoration: none;
+}
+.listado_informacion_2_data:nth-child(1){
+    grid-column: 1/4;
+    grid-row: 1/2;    
+}
+.listado_informacion_2_data:nth-child(2){
+    grid-column: 1/2;
+    grid-row: 2/3;    
+}
+.listado_informacion_2_data:nth-child(3){
+    grid-column: 2/3;
+    grid-row: 2/3;    
+}
+.listado_informacion_2_data:nth-child(3){
+    grid-column: 3/4;
+    grid-row: 2/3;    
+}

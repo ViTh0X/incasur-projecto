@@ -110,6 +110,41 @@ class ips(models.Model):
     def __str__(self):
         return self.ip
     
+class equipos_informaticos_ti(models.Model):  
+    id = models.AutoField(primary_key=True)  
+    ip = models.CharField(max_length=15,unique=True)    
+    roll_ip = models.CharField(max_length=120,null=True,blank=True)    
+    colaborador_asignado = models.ForeignKey(colaboradores,on_delete=models.CASCADE,null=True,blank=True)
+    seccion = models.ForeignKey(tipo_secciones,on_delete=models.CASCADE,null=True,blank=True)
+    nivel_firewall = models.ForeignKey(niveles_firewall,on_delete=models.CASCADE,null=True,blank=True)    
+    tipo_equipo_asignado = models.ForeignKey(tipo_equipos_informaticos,on_delete=models.CASCADE,null=True,blank=True)    
+    marca_equipo_asignado = models.CharField(max_length=120,null=True,blank=True)
+    modelo_equipo_asignado = models.CharField(max_length=120,null=True,blank=True)
+    oficina = models.ForeignKey(oficinas,on_delete=models.CASCADE,null=True,blank=True)
+    codigo_estado = models.ForeignKey(tipo_estado_ips,on_delete=models.CASCADE,null=True,blank=True)
+    vlan = models.ForeignKey(vlans,on_delete=models.CASCADE,null=True,blank=True)
+    switch = models.ForeignKey(switches,on_delete=models.CASCADE,null=True,blank=True)
+    puerto = models.CharField(max_length=3)
+    mac = models.CharField(max_length=200)
+    
+    placa = models.CharField(max_length=100,blank=True,null=True)
+    procesador = models.CharField(max_length=100,blank=True,null=True)
+    ram = models.CharField(max_length=6,blank=True,null=True)
+    video_integrada = models.CharField(max_length=100,blank=True,null=True)
+    video_dedicada = models.CharField(max_length=100,blank=True,null=True)
+    so = models.CharField(max_length=20,blank=True,null=True)
+    almacenamiento = models.CharField(max_length=200,null=True,blank=True)
+    fecha_modificacion = models.DateField(auto_now=True)
+        
+    class Meta:
+        db_table = 'equipos_informaticos_ti'
+        # Ordena los resultados por el campo 'ip' de forma ascendente
+        ordering = ['id']
+        
+    def __str__(self):
+        return self.ip
+    
+    
 class historial_acciones(models.Model):
     id = models.AutoField(primary_key=True)
     ip_historial = models.ForeignKey(ips,on_delete=models.CASCADE)

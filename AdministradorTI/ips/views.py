@@ -7,7 +7,7 @@ import pandas as pd
 import os
 from datetime import datetime
 
-from .models import historial_acciones, ipForm,historial_accionForm, ips
+from .models import historial_acciones, ipForm,historial_accionForm, ips, equipos_informaticos_ti
 from colaboradores.models import colaboradores, estado_colaboradores
 
 
@@ -155,3 +155,8 @@ def filtrar_equipos_nombres(request):
     pista_nombre = request.GET.get('nombre','').strip()
     listado_ips = ips.objects.filter(colaborador_asignado__nombre_colaborador__icontains=pista_nombre)    
     return render(request,'ips/equipos_informaticos_filtrados.html',{'listado_ips':listado_ips})
+
+def listar_equipos_informaticos_ti(request):
+    equipos_ti = equipos_informaticos_ti.objects.all()
+    return render(request,'ips/listar_equipos_informaticos_ti.html',{'equipos_ti':equipos_ti})
+    
