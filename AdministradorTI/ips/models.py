@@ -182,3 +182,7 @@ class EquiposInformaticosForm(forms.ModelForm):
         
         if 'colaborador_asignado' in self.fields:
             self.fields['colaborador_asignado'].queryset = self.fields['colaborador_asignado'].queryset.exclude(estado_colaboradores=2)
+            
+            
+        if 'tipo_equipo_asignado' in self.fields:
+            self.fields['tipo_equipo_asignado'].queryset = self.fields['tipo_equipo_asignado'].queryset.exclude(id__in=[1,2])
