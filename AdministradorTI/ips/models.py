@@ -169,3 +169,9 @@ class ipForm(forms.ModelForm):
     class Meta:
         model = ips
         fields = ['ip','roll_ip','colaborador_asignado','seccion','nivel_firewall','tipo_equipo_asignado','marca_equipo_asignado','modelo_equipo_asignado','oficina','codigo_estado','vlan','switch','puerto','mac']            
+        
+        
+class EquiposInformaticosForm(forms.ModelForm):
+    class Meta:
+        model = equipos_informaticos_ti
+        fields = ['ip','roll_ip','colaborador_asignado','seccion','nivel_firewall','tipo_equipo_asignado','marca_equipo_asignado','modelo_equipo_asignado','oficina','codigo_estado','vlan','switch','puerto','mac','placa','procesador','ram','video_integrada','video_dedicada','so','almacenamiento']            

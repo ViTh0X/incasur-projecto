@@ -7,7 +7,7 @@ import pandas as pd
 import os
 from datetime import datetime
 
-from .models import historial_acciones, ipForm,historial_accionForm, ips, equipos_informaticos_ti
+from .models import historial_acciones, ipForm,historial_accionForm, ips, equipos_informaticos_ti, EquiposInformaticosForm,tipo_estado_ips
 from colaboradores.models import colaboradores, estado_colaboradores
 
 
@@ -31,7 +31,22 @@ def listar_laptops_pc(request):
     #}
     listado_ips = ips.objects.exclude(codigo_estado__pk=5)            
     return render (request,'ips/listar_pcs_laptops.html',{'listado_ips':listado_ips})
-    
+
+@login_required(login_url="pagina_login")
+def agregar_equipo_informatico_ti(request):
+    if request.method == 'POST':
+        form = EquiposInformaticosForm(request.POST)
+        if form.is_valid():
+            form_pc_laptop = form.save(commit=False)
+            estado_equipo_activo = tipo_estado_ips.objects.get(codigo_estado=1)
+            form_pc_laptop.codigo_estado = estado_equipo_activo
+            form_pc_laptop.save()
+            return redirect('listar_equipos_informaticos_ti')
+    else:
+        formulario =  EquiposInformaticosForm()    
+    return render(request,'ips/agregar_equipo_informatico_ti.html',{'formulario':formulario})
+
+
 @login_required(login_url="pagina_login")    
 def editar_ip(request,pk):
     ip = get_object_or_404(ips,pk=pk)         
@@ -150,12 +165,13 @@ def ver_historial_acciones(request,pk):
     else:
         return render(request,'ips/ver_historial_acciones.html',{'historiales':historiales})    
     
-    
+@login_required(login_url="pagina_login")    
 def filtrar_equipos_nombres(request):
     pista_nombre = request.GET.get('nombre','').strip()
     listado_ips = ips.objects.filter(colaborador_asignado__nombre_colaborador__icontains=pista_nombre)    
     return render(request,'ips/equipos_informaticos_filtrados.html',{'listado_ips':listado_ips})
 
+@login_required(login_url="pagina_login")
 def listar_equipos_informaticos_ti(request):
     equipos_ti = equipos_informaticos_ti.objects.all()
     return render(request,'ips/listar_equipos_informaticos_ti.html',{'equipos_ti':equipos_ti})

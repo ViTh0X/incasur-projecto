@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path('',views.equipos_informaticos,name='equipos_informaticos'),
     path('listar-laptops-pc',views.listar_laptops_pc,name='listar_laptops_pc'),
+    path('agregar-equipo-informatico-ti',views.agregar_equipo_informatico_ti,name='agregar_equipo_informatico_ti'),
     path('listar-equipos-informaticos-ti',views.listar_equipos_informaticos_ti,name='listar_equipos_informaticos_ti'),
     path('editar-ip/<int:pk>/',views.editar_ip,name='editar_ip'),
     path('reiniciar-data-ip/<int:pk>/',views.reiniciar_data_ip,name='reiniciar_data_ip'),
