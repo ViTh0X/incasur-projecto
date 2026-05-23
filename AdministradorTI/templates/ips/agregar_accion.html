@@ -11,20 +11,22 @@
                         <div class="campo">
                             <label class="campo--label">Seleccione la ip :</label>
                             <div class="campos__formulario--listbox">
-                                {{ formulario.ip_historial }}
-                                {{ formulario.ip_historial.errors }}
+                                {{ formulario.ip_historial }}                                
                             </div>                            
                         </div>
                         <div class="campo">
                             <label class="campo--label">Ingrese el detalle :</label>
                             <div class="campos__formulario--areatexto">
-                                {{ formulario.accion_realizada }}
-                                {{ formulario.accion_realizada.errors }}
+                                {{ formulario.accion_realizada }}                                
                             </div>                            
                         </div>                                                
                         <div class="botones-formularios">
                             <a href="{% url 'listar_ips' %}">Volver a la Lista</a>
-                            <button type="submit">Guardar</button>                
+                            <button type="submit">Guardar</button>
+                            <ul>
+                                <li>{{ formulario.ip_historial.errors }}</li>
+                                <li>{{ formulario.accion_realizada.errors }}</li>
+                            </ul>                
                         </div>  
                     </div>
                 </form>                    

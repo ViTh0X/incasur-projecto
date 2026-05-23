@@ -147,7 +147,7 @@ class equipos_informaticos_ti(models.Model):
     
 class historial_acciones(models.Model):
     id = models.AutoField(primary_key=True)
-    ip_historial = models.ForeignKey(ips,on_delete=models.CASCADE)
+    ip_historial = models.CharField(max_length=20)
     nombre_colaborador = models.CharField(max_length=150)
     accion_realizada = models.TextField(max_length=500)
     fecha_realizacion = models.DateTimeField(auto_now=True)

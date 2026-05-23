@@ -147,23 +147,28 @@ def generar_excel_ip(request):
     })'''
 
 @login_required(login_url="pagina_login")
-def agregar_accion(request):
+def agregar_intervencion_ti(request,ip):
+    try:
+        equipo_encontrado = ips.objects.get(ip=ip)
+    except:
+        equipo_encontrado = equipos_informaticos_ti.objects.get(ip=ip)
     if request.method == 'POST':
         formulario = historial_accionForm(request.POST)
         if formulario.is_valid():            
-            agregar_accion = formulario.save(commit=False)                                                                
-            ip=formulario.cleaned_data['ip_historial']
-            ip_colaborador = get_object_or_404(ips,id=ip.id)            
-            if ip_colaborador.colaborador_asignado:
-                agregar_accion.nombre_colaborador = ip_colaborador.colaborador_asignado.nombre_colaborador                
+            agregar_accion = formulario.save(commit=False)                                                                            
+            agregar_accion.ip_historial = equipo_encontrado.ip            
+            if equipo_encontrado.colaborador_asignado:
+                agregar_accion.nombre_colaborador = equipo_encontrado.colaborador_asignado.nombre_colaborador                
             else:
                 agregar_accion.nombre_colaborador = "Sin Colaborador Asignado"
             agregar_accion.save()
-            return redirect('listar_ips')
+            return redirect('equipos_informaticos')
     else:
-        ip_disponibles = ips.objects.exclude(codigo_estado = 3)
-        formulario =  historial_accionForm()
-        formulario.fields['ip_historial'].queryset = ip_disponibles        
+        formulario = historial_accionForm(
+            initial={
+                'ip_historial' =  equipo_encontrado.ip               
+            }           
+        )
     
     return render(request,'ips/agregar_accion.html',{'formulario':formulario})            
 
