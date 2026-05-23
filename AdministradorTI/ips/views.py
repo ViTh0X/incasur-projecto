@@ -158,8 +158,10 @@ def agregar_intervencion_ti(request,ip):
             agregar_accion = formulario.save(commit=False)                                                                            
             agregar_accion.ip_historial = equipo_encontrado.ip            
             if equipo_encontrado.colaborador_asignado:
+                print(f"Encontro el trabajador {equipo_encontrado.colaborador_asignado.nombre_colaborador}")
                 agregar_accion.nombre_colaborador = equipo_encontrado.colaborador_asignado.nombre_colaborador                
             else:
+                print("NO encontro el trabajador")
                 agregar_accion.nombre_colaborador = "Sin Colaborador Asignado"
             agregar_accion.save()
             return redirect('equipos_informaticos')
