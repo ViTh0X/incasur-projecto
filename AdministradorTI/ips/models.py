@@ -174,7 +174,7 @@ class ipForm(forms.ModelForm):
         super().__init__(*args,**kwargs)
         
         if 'tipo_equipo_asignado' in self.fields:
-            self.fields['tipo_equipo_asignado'].queryset =self.fields['tipo_equipo_asignado'].queryset.filter(id_in=[1,2]) 
+            self.fields['tipo_equipo_asignado'].queryset =self.fields['tipo_equipo_asignado'].queryset.filter(id__in=[1,2]) 
         
     
 class EquiposInformaticosForm(forms.ModelForm):
