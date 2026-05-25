@@ -80,7 +80,7 @@ def editar_ip(request,pk):
         formulario = ipForm(request.POST, instance=ip)
         if formulario.is_valid():
             formulario.save()
-            return redirect('listar_ips')            
+            return redirect('listar_laptops_pc')            
     else:        
         trabajador_libre = get_object_or_404(estado_colaboradores,codigo_estado=1)
         formulario = ipForm(instance=ip)        
