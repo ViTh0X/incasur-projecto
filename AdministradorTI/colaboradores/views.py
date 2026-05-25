@@ -13,7 +13,7 @@ from django.db.models import Max, IntegerField
 from django.db.models.functions import Cast
 
 from bkinformacion.models import faltantes_backup_informacion
-from administracion_windows.models import FaltantesRevisionEquiposWindows
+from administracion_windows.models import FaltantesRevisionEquiposWindows, EstadoAccionesWindows
 from home.models import cuentas_forticlient
 from inventario_hardware.models import inventario_hardware, faltantes_inventario_hardware
 from inventario_software.models import faltantes_inventario_software
@@ -65,14 +65,13 @@ def agregar_colaborador(request):
             estado_ip_ocupada = get_object_or_404(tipo_estado_ips,codigo_estado=1)
             ip.roll_ip = "Computador de Colaborador"
             ip.codigo_estado = estado_ip_ocupada
-            ip.save()
-            #ip_colaborador.codigo_estado = estado_ip_ocupada
-            #ip_colaborador.colaborador_asignado = add_colaborador                    
-            #ip_colaborador.save() 
+            ip.save()            
             faltantes_hardware = faltantes_inventario_hardware(codigo_ip=ip_colaborador,codigo_colaborador=add_colaborador)
             faltantes_hardware.save()
             faltantes_software = faltantes_inventario_software(codigo_ip=ip_colaborador,codigo_colaborador=add_colaborador)
             faltantes_software.save()
+            revision_equipos_windows = EstadoAccionesWindows(id_ip=ip_colaborador)
+            revision_equipos_windows.save()
             faltantes_revision_windows = FaltantesRevisionEquiposWindows(codigo_ip=ip_colaborador,codigo_colaborador=add_colaborador)
             faltantes_revision_windows.save()
             #LLena usuario Plantilla                        
