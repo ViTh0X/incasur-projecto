@@ -4,7 +4,7 @@
 <body>
     <main class="contenedor">
         <section>
-            <h1 class="no-margin">Modificar la ip existente</h1>            
+            <h1 class="no-margin">Modificar la PC/Laptop</h1>            
                 <form class="formulario_grande" method="POST">
                     {% csrf_token %}
                     <div class="contenedor_doble_campos">
@@ -110,7 +110,7 @@
                                 </div> 
                             </div>
                             <div class="botones-formularios">
-                                <a href="{% url 'listar_ips' %}">Volver a la Lista</a>
+                                <a href="{% url 'listar_laptops_pc' %}">Volver PCs y Laptops</a>
                                 <button type="submit">Actualizar</button>                
                             </div> 
                         </div>
