@@ -4,7 +4,7 @@
 <body>
     <main class="contenedor">
         <section>
-            <h1 class="no-margin">Modificar la ip existente</h1>            
+            <h1 class="no-margin">Agregar Laptop o PC:</h1>            
                 <form class="formulario_grande" method="POST">
                     {% csrf_token %}
                     <div class="contenedor_doble_campos">
@@ -97,7 +97,22 @@
                             </div>
                             <div class="botones-formularios">
                                 <a href="{% url 'listar_ips' %}">Volver a la Lista</a>
-                                <button type="submit">Actualizar</button>                
+                                <button type="submit">Actualizar</button>  
+                                <ul>
+                                    <li>{{ formulario.ip.errors }}</li>
+                                    <li>{{ formulario.vlan.errors }}</li>
+                                    <li>{{ formulario.switch.errors }}</li>
+                                    <li>{{ formulario.puerto.errors }}</li>
+                                    <li>{{ formulario.mac.errors }}</li>
+                                    <li>{{ formulario.roll_ip.errors }}</li>
+                                    <li>{{ formulario.colaborador_asignado.errors }}</li>
+                                    <li>{{ formulario.seccion.errors }}</li>
+                                    <li>{{ formulario.nivel_firewall.errors }}</li>
+                                    <li>{{ formulario.tipo_equipo_asignado.errors }}</li>
+                                    <li>{{ formulario.oficina.errors }}</li>
+                                    <li>{{ formulario.marca_equipo_asignado.errors }}</li>
+                                    <li>{{ formulario.modelo_equipo_asignado.errors }}</li>                                                                                                            
+                                </ul>              
                             </div> 
                         </div>
                     </div>                                                                                                                

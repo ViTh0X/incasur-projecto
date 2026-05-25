@@ -170,7 +170,13 @@ class ipForm(forms.ModelForm):
         model = ips
         fields = ['ip','roll_ip','colaborador_asignado','seccion','nivel_firewall','tipo_equipo_asignado','marca_equipo_asignado','modelo_equipo_asignado','oficina','codigo_estado','vlan','switch','puerto','mac']            
         
+    def __init__(self, *args,**kwargs)    :
+        super().__init__(*args,**kwargs)
         
+        if 'tipo_equipo_asignado' in self.fields:
+            self.fields['tipo_equipo_asignado'].queryset =self.fields['tipo_equipo_asignado'].queryset.filter(id_in=[1,2]) 
+        
+    
 class EquiposInformaticosForm(forms.ModelForm):
     class Meta:
         model = equipos_informaticos_ti

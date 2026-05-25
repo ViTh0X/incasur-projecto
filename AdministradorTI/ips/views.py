@@ -37,14 +37,28 @@ def agregar_equipo_informatico_ti(request):
     if request.method == 'POST':
         form = EquiposInformaticosForm(request.POST)
         if form.is_valid():
-            form_pc_laptop = form.save(commit=False)
+            form_equipo_informatico = form.save(commit=False)
             estado_equipo_activo = tipo_estado_ips.objects.get(codigo_estado=1)
-            form_pc_laptop.codigo_estado = estado_equipo_activo
-            form_pc_laptop.save()
+            form_equipo_informatico.codigo_estado = estado_equipo_activo
+            form_equipo_informatico.save()
             return redirect('listar_equipos_informaticos_ti')
     else:
         formulario =  EquiposInformaticosForm()    
     return render(request,'ips/agregar_equipo_informatico_ti.html',{'formulario':formulario})
+
+@login_required(login_url="pagina_login")
+def agregar_laptop_pc(request):
+    if request.method == 'POST':
+        form = ipForm(request.POST)
+        if form.is_valid():
+            form_pc_laptop = form.save(commit=False)
+            estado_equipo_activo = tipo_estado_ips.objects.get(codigo_estado=1)
+            form_pc_laptop.codigo_estado = estado_equipo_activo
+            form_pc_laptop.save()
+            return redirect('listar_laptops_pc')
+    else:
+        formulario = ipForm()
+    return render(request,'ips/agregar_laptop_pc.html',{'formulario':formulario})
 
 @login_required(login_url="pagina_login")
 def editar_equipo_informatico_ti(request,pk):
