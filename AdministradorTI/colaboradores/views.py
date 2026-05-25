@@ -19,7 +19,7 @@ from inventario_hardware.models import inventario_hardware, faltantes_inventario
 from inventario_software.models import faltantes_inventario_software
 
 from .models import colaboradores, colaboradorForm, estado_colaboradores,colaboradorForm_editar
-from ips.models import tipo_estado_ips, ips, ipForm
+from ips.models import tipo_estado_ips, ips, ipForm, equipos_informaticos_ti
 
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -169,22 +169,17 @@ def editar_colaborador(request,pk):
 def cesar_colaborador(request,pk):
     colaborador = get_object_or_404(colaboradores,pk=pk)
     if request.method == 'POST':
-        ip_colaborador = get_object_or_404(ips,colaborador_asignado=colaborador)
+        pcs_laptops = ips.objects.filter(colaborador_asignado=colaborador)
+        equipos_informaticos = equipos_informaticos_ti.objects.filter(colaborador_asignado=colaborador)        
         nombre_colaborador = colaborador.nombre_colaborador
                         
         estado_colaborador = get_object_or_404(estado_colaboradores,pk=2)
         colaborador.estado_colaboradores = estado_colaborador
         colaborador.save()
         
-        estado_ocupado_ip = get_object_or_404(tipo_estado_ips,codigo_estado=2)
-        ip_colaborador.colaborador_asignado = None
-        ip_colaborador.tipo_equipo_asignado = None
-        ip_colaborador.marca_equipo_asignado = None
-        ip_colaborador.modelo_equipo_asignado = None
-        ip_colaborador.oficina = None
-        ip_colaborador.codigo_estado = estado_ocupado_ip
-        ip_colaborador.save()
-        
+        pcs_laptops.delete()        
+        equipos_informaticos.update(colaborador_asignado=None)
+        #MAs eficiente que editar con .save() porque lo hace todo de golpe
         try:      
             cuenta_forticlient = get_object_or_404(cuentas_forticlient,usuario_asignado=nombre_colaborador)
             cuenta_forticlient.usuario_asignado = None

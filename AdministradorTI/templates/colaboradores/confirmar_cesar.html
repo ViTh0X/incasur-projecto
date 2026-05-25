@@ -4,7 +4,7 @@
 <body>
     <div class="confirmar__cesar contenedor">
         <h1 class="no-margin">Confirmar Cese</h1>
-        <p class="no-margin" >¿Estás seguro de que quieres cesar a "{{ colaborador.nombre_colaborador }}"?</p>
+        <p class="no-margin" >¿Estás seguro de que quieres cesar a "{{ colaborador.nombre_colaborador }}"?  OJO Sus Equipos Asignados seran Eliminados</p>
         <div class="confirmar__cesar--opciones">
             <form method="POST">
                 {% csrf_token %}

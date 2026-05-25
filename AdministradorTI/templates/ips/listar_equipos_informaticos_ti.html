@@ -7,7 +7,7 @@
             <h1 class="no-margin">Lista de Equipos Informaticos TI:</h1>                                                
             <div class="opciones__table">
                 <div class="opciones__table--buscador">
-                    <input type="text" name="nombre" id="pista_nombre" placeholder="Ingrese Rol Ejm: Servidor Proxmox">
+                    <input type="text" name="nombre" id="pista_nombre" placeholder="Ingrese Rol Ejm: 'servidor' 'proxmox'">
                     <button hx-get="{% url 'filtrar_equipos_ti_nombres' %}"
                     hx-target="#listado_equipos"
                     hx-include="#pista_nombre"
