@@ -9,6 +9,7 @@ from datetime import datetime
 
 from .models import historial_acciones, ipForm,historial_accionForm, ips, equipos_informaticos_ti, EquiposInformaticosForm,tipo_estado_ips
 from colaboradores.models import colaboradores, estado_colaboradores
+from inventario_hardware.models import inventario_hardware
 
 
 from django.contrib.auth.decorators import login_required
@@ -108,26 +109,58 @@ def reiniciar_data_ip(request,pk):
 @login_required(login_url="pagina_login")
 def generar_excel_ip(request):
     fecha_hora = datetime.now()
-    listado_ips = ips.objects.exclude(codigo_estado__pk=5)
-    data_df = listado_ips.values('id',
-                                 'ip',
+    listado_pcs_laptops = ips.objects.exclude(codigo_estado__pk=5)
+    ano_actual = datetime.now().year    
+    mes_actual = datetime.now().month
+    inventarios_hardware = inventario_hardware.objects.filter(fecha_modificacion__year=ano_actual,fecha_modificacion__month=mes_actual)
+    data_inventario_hardware = inventarios_hardware.values('codigo_ip__ip',                                          
+                                          'placa',
+                                          'procesador',
+                                          'ram',
+                                          'video_integrada',
+                                          'video_dedicada',
+                                          'so',
+                                          'almacenamiento')
+    df_inventario_hardware = pd.DataFrame(list(data_inventario_hardware))
+    listado_equipos_ti = equipos_informaticos_ti.objects.exclude(codigo_estado__pk=5)
+    pcs_laptops = listado_pcs_laptops.values('ip',
                                  'vlan__nombre',
                                  'switch__nombre',
                                  'puerto',
                                  'mac',
                                  'roll_ip',
-                                 'colaborador_asignado__nombre_colaborador',
-                                 'seccion__nombre_seccion',
+                                 'colaborador_asignado__nombre_colaborador',                                 
+                                 'nivel_firewall__nombre_nivel',
+                                 'tipo_equipo_asignado__nombre_tipo_equipo',
+                                 'marca_equipo_asignado',
+                                 'modelo_equipo_asignado')
+    df_pc_laptops = pd.DataFrame(list(pcs_laptops))
+    df_final = pd.merge(df_pc_laptops,df_inventario_hardware,left_on='ip',right_on='codigo_ip__ip',how='left')
+    df_final = df_final.drop(columns=['codigo_ip__ip'])
+    df_final = df_final.fillna("Sin Informacion")
+    equipos_ti = listado_equipos_ti.values('ip',
+                                 'vlan__nombre',
+                                 'switch__nombre',
+                                 'puerto',
+                                 'mac',
+                                 'roll_ip',
+                                 'colaborador_asignado__nombre_colaborador',                                 
                                  'nivel_firewall__nombre_nivel',
                                  'tipo_equipo_asignado__nombre_tipo_equipo',
                                  'marca_equipo_asignado',
                                  'modelo_equipo_asignado',
-                                 'oficina__nombre_oficina',
-                                 'codigo_estado__nombre_estado')
-    df = pd.DataFrame(list(data_df))
+                                 'placa',
+                                 'procesador',
+                                 'ram',
+                                 'video_integrada',
+                                 'video_dedicada',
+                                 'so',
+                                 'almacenamiento')
+    df_equipos_ti = pd.DataFrame(list(equipos_ti))
+    
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename="Lista de IPs {fecha_hora}.xlsx"'
-    df.to_excel(response,index=False,sheet_name='IPs')
+    df_final.to_excel(response,index=False,sheet_name='IPs')
     return response   
 @login_required(login_url="pagina_login")
 def agregar_intervencion_ti(request,ip):
