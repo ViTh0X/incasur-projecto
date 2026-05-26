@@ -157,7 +157,7 @@ def generar_excel_ip(request):
                                  'so',
                                  'almacenamiento')
     df_equipos_ti = pd.DataFrame(list(equipos_ti))
-    
+    df_final = pd.concat([df_final,df_equipos_ti],ignore_index=True)
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename="Lista de IPs {fecha_hora}.xlsx"'
     df_final.to_excel(response,index=False,sheet_name='IPs')
