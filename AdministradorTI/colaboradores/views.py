@@ -175,8 +175,8 @@ def cesar_colaborador(request,pk):
         estado_colaborador = get_object_or_404(estado_colaboradores,pk=2)
         colaborador.estado_colaboradores = estado_colaborador
         colaborador.save()
-        
-        pcs_laptops.delete()        
+        estado_ip_de_baja = tipo_estado_ips.objects.get(pk=5)
+        pcs_laptops.update(codigo_estado=estado_ip_de_baja)   
         equipos_informaticos.update(colaborador_asignado=None)
         #MAs eficiente que editar con .save() porque lo hace todo de golpe
         try:      

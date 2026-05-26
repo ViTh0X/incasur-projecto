@@ -128,38 +128,7 @@ def generar_excel_ip(request):
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename="Lista de IPs {fecha_hora}.xlsx"'
     df.to_excel(response,index=False,sheet_name='IPs')
-    return response
-    #query_sql = """
-    #select *,(select nombre_colaborador from lista_colaboradores as c where c.#ip_colaborador_id = i.ip and c.estado_colaboradores_id = 1) as #nombre_colaborador from lista_ips as i order by id asc
-    #"""                
-    #ips = ips.objects.raw(query_sql)
-    #data_list = []
-    '''for item in ips:
-        data_list.append({
-            'ip': item.ip,
-            'nombre_colaborador': item.nombre_colaborador,
-            'ip_seccion_id': item.ip_seccion_id,
-            'ip_nivel_firewall_id': item.ip_nivel_firewall_id,
-            'tipo_equipo_id': item.tipo_equipo_id,
-            'marca_equipo': item.marca_equipo,
-            'modelo_equipo': item.modelo_equipo,
-            'oficina_id': item.oficina_id,
-            'codigo_estado_id': item.codigo_estado_id,
-        })
-    df = pd.DataFrame(data_list)
-    df['codigo_estado_id'] = df['codigo_estado_id'].replace({1:'OCUPADA',2:'LIBRE',3:'SIN NIVEL'})
-    df = df.rename(columns={
-        'ip': 'IP del Equipo',
-        'nombre_colaborador': 'Nombre Completo',
-        'marca_equipo': 'Marca del Equipo',
-        'modelo_equipo': 'Modelo de Equipo',
-        'ip_nivel_firewall_id': 'Nivel Firewall',
-        'oficina_id': 'Oficina',
-        'tipo_equipo_id': 'Tipo de Equipo',
-        'codigo_estado_id':'Estado de la IP',
-        'ip_seccion_id' :'Seccion IP'        
-    })'''
-
+    return response   
 @login_required(login_url="pagina_login")
 def agregar_intervencion_ti(request,ip):
     try:
