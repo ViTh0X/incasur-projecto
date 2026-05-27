@@ -169,10 +169,9 @@ def generar_excell_all_s(request):
     inventario_agrupado = {}   
     for data in data_inventario_software:
         ip =  data.codigo_ip.ip
-        ip_filtrada = ips.objects.get(ip=ip)
-        #nombre_colab_filtrado = lista_colaboradores.objects.get(ip_colaborador=ip)
+        ip_filtrada = ips.objects.get(ip=ip)                
         try:
-            nombre_colaborador = ip_filtrada.colaborador_asignado.nombre_colaborador
+            nombre_colaborador =  data.codigo_colaborador.nombre_colaborador
         except:
             nombre_colaborador = "CESADO" 
         if ip not in inventario_agrupado:
