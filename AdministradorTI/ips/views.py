@@ -9,7 +9,9 @@ from datetime import datetime
 
 from .models import historial_acciones, ipForm,historial_accionForm, ips, equipos_informaticos_ti, EquiposInformaticosForm,tipo_estado_ips
 from colaboradores.models import colaboradores, estado_colaboradores
-from inventario_hardware.models import inventario_hardware
+from inventario_hardware.models import inventario_hardware, faltantes_inventario_hardware
+from inventario_software.models import inventario_software, faltantes_inventario_software
+from administracion_windows.models import EstadoAccionesWindows, FaltantesRevisionEquiposWindows 
 
 
 from django.contrib.auth.decorators import login_required
@@ -22,14 +24,7 @@ def equipos_informaticos(request):
     
     
 @login_required(login_url="pagina_login")
-def listar_laptops_pc(request):
-    #query_sql = """
-    #select *,(select nombre_colaborador from lista_colaboradores as c where c.ip_colaborador_id = i.ip and c.estado_colaboradores_id = 1) as nombre_colaborador from lista_ips as i order by id asc
-    #"""
-    #ips = lista_ips.objects.raw(query_sql)
-    #resultado = {
-    #        'ips':ips
-    #}
+def listar_laptops_pc(request):    
     listado_ips = ips.objects.exclude(codigo_estado__pk=5)            
     return render (request,'ips/listar_pcs_laptops.html',{'listado_ips':listado_ips})
 
@@ -50,12 +45,22 @@ def agregar_equipo_informatico_ti(request):
 @login_required(login_url="pagina_login")
 def agregar_laptop_pc(request):
     if request.method == 'POST':
-        form = ipForm(request.POST)
+        form = ipForm(request.POST)        
         if form.is_valid():
+            colaborador =  form.cleaned_data['colaborador_asignado']
             form_pc_laptop = form.save(commit=False)
             estado_equipo_activo = tipo_estado_ips.objects.get(codigo_estado=1)
             form_pc_laptop.codigo_estado = estado_equipo_activo
             form_pc_laptop.save()
+            faltantes_hardware = faltantes_inventario_hardware(codigo_ip=form_pc_laptop,codigo_colaborador=colaborador)
+            faltantes_hardware.save()
+            faltantes_software = faltantes_inventario_software(codigo_ip=form_pc_laptop,codigo_colaborador=colaborador)
+            faltantes_software.save()
+            revision_equipos_windows = EstadoAccionesWindows(id_ip=form_pc_laptop)
+            revision_equipos_windows.save()
+            faltantes_revision_windows = FaltantesRevisionEquiposWindows(codigo_ip=form_pc_laptop,codigo_colaborador=colaborador)
+            faltantes_revision_windows.save()                                  
+            
             return redirect('listar_laptops_pc')
     else:
         formulario = ipForm()

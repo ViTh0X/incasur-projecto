@@ -150,7 +150,7 @@ class historial_acciones(models.Model):
     ip_historial = models.CharField(max_length=20)
     nombre_colaborador = models.CharField(max_length=150)
     accion_realizada = models.TextField(max_length=500)
-    fecha_realizacion = models.DateTimeField(auto_now=True)
+    fecha_realizacion = models.DateTimeField(auto_now=True)    
     
     class Meta:
         db_table = 'historial_acciones'

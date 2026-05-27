@@ -7,10 +7,7 @@
             <h1 class="no-margin">Inventario Software <span>{{ fecha_software }}</span>: </h1>
             <div class="opciones__table">
                 <div class="opciones__table--boton">
-                    <button id="ejecutar_inventario_s">Ejecutar Inventario</button>
-                    <!-- <a title="ACTUALIZA EL INVENTARIO DE HARDWARE" href="{% url 'agregar_colaborador' %}">Ejecutar Inventario</a>                                         -->                     
-                     <!-- <button id="ejecutar_inventario_faltantes">Ejecutar Faltantes</button>
-                                          -->
+                    <button id="ejecutar_inventario_s">Ejecutar Inventario</button>                    
                      <a title="VER LISTA DE IPS FALTANTES" href="{% url 'listar_faltantes_software' %}">Ver Faltantes</a>
                      <a title="VER LOGS DE LA EJECUCION" href="{% url 'listar_logs_s' %}">Ver Logs</a>                                        
                      <button id="actualizar_ejecutable_s">Actualizar Ejecutable</button>
@@ -65,7 +62,7 @@
                             <td>
                                 <ul>
                                     <li>•{{ item.ip }}</li>
-                                    <li>•{{ item.nombre_colaborador }}</li>
+                                    <li>•{{ item.ip.colaborador_asignado }}</li>
                                 </ul>                                             
                             </td>
                             <td>
