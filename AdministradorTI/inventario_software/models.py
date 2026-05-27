@@ -32,6 +32,7 @@ class faltantes_inventario_software(models.Model):
 class inventario_software(models.Model):
     id_inventario_s = models.AutoField(primary_key=True)
     codigo_ip = models.ForeignKey(ips,on_delete=models.CASCADE)
+    codigo_colaborador = models.ForeignKey(colaboradores,on_delete=models.CASCADE,blank=True,null=True)
     tipo_software = models.ForeignKey(tipo_software,on_delete=models.CASCADE)
     nombre_software = models.CharField(max_length=120)
     fecha_modificacion = models.DateField(auto_now=True)

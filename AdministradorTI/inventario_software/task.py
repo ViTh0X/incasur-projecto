@@ -46,6 +46,7 @@ def ejecutar_inventario_software():
                         for software in lista_software:
                             modelado_inventario_software = inventario_software(
                                 codigo_ip = ip_filtrada,
+                                codigo_colaborador = ip_filtrada.colaborador_asignado,
                                 tipo_software = categoria,
                                 nombre_software =software                                
                             )
@@ -115,6 +116,7 @@ def ejecutar_faltantes_inventario_software():
                         for software in lista_software:
                             modelado_inventario_software = inventario_software(
                                 codigo_ip = ip_filtrada,
+                                codigo_colaborador = ip_filtrada.colaborador_asignado,
                                 tipo_software = categoria,
                                 nombre_software =software                                
                             )
