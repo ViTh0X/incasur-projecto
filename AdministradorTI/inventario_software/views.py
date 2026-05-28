@@ -20,11 +20,23 @@ from io import BytesIO
 def listar_inventario_software(request):
     año_actual = datetime.now().year
     mes_actual = datetime.now().month
-    data_inventario_software = inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual)
+    #data_inventario_software = inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual)
+    data_inventario_software = inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual).values('codigo_ip__ip','codigo_colaborador__nombre_colaborador','tipo_software','nombre_software')
     if not data_inventario_software:
         return render(request,'inventario_software/no_realizo_inventario_este_mes.html')
     else:
-        inventario_agrupado = {}   
+        df_software=pd.DataFrame(list(data_inventario_software)) 
+        df_software=df_software.rename(columns={
+            'codigo_ip__ip':'IP',
+            'codigo_colaborador__nombre_colaborador':'NombreColaborador',
+            'tipo_software__nombre_tipo':'Categoria',
+            'nombre_software':'Programas'
+        })
+        df_pivot=df_software.pivot_table(index=["NombreColaborador","IP"],columns="Categoria",values="Programas",aggfunc=lambda x: "\n".join(f"- {v}"for v in x)).reset_index()
+        df_pivot.columns = df_pivot.columns.str.replace(' ','_')
+        df_html = df_pivot.replace(r'\n','<br>',regex=True)
+        lista_inventarios = df_html.to_dict(orient='records')
+        '''inventario_agrupado = {}   
         for data in data_inventario_software:
             ip =  data.codigo_ip.ip
             ip_filtrada = ips.objects.get(ip=ip)
@@ -97,7 +109,7 @@ def listar_inventario_software(request):
                 'TI' : datos['TI'],
                 'Otros' : datos['Otros'],
                 'fecha' : datos['fecha']
-            })
+            })'''
         if mes_actual < 10:
             fecha_software = f"{año_actual} - 0{mes_actual}"
         else:

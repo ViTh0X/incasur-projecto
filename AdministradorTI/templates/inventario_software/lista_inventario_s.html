@@ -57,114 +57,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in lista_inventarios %}
+                        {% for software in lista_inventarios %}
                         <tr>
                             <td>
                                 <ul>
-                                    <li>•{{ item.ip }}</li>
-                                    <li>•{{ item.nombre_colaborador }}</li>
+                                    <li>•{{ software.IP }}</li>
+                                    <li>•{{ software.NombreColaborador }}</li>
                                 </ul>                                             
                             </td>
-                            <td>
-                                <ul>
-                                    {% for office in item.Office %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <td>
-                                <ul>
-                                    {% for office in item.Acceso_Remoto %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <td>
-                                <ul>
-                                    {% for office in item.Editores_Texto %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <!--<td>
-                                <ul>
-                                    {% for office in item.Base_Datos %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>-->
-                            <td>
-                                <ul>
-                                    {% for office in item.PDF %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <!--<td>
-                                <ul>
-                                    {% for office in item.FTIA %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>-->
-                            <td>
-                                <ul>
-                                    {% for office in item.Impresoras %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <td>
-                                <ul>
-                                    {% for office in item.Navegadores %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <td>
-                                <ul>
-                                    {% for office in item.Compresores %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>                            
-                            <td>
-                                <ul>
-                                    {% for office in item.Drive %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <td>
-                                <ul>
-                                    {% for office in item.TI %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                                <ul>
-                                    {% for office in item.FTIA %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                                <ul>
-                                    {% for office in item.Base_Datos %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>                            
-                            <td>
-                                <ul>
-                                    {% for office in item.Otros %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>                                
-                                <ul>
-                                    {% for office in item.Drivers %}
-                                    <li>•{{ office }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <!-- <td>{{ item.fecha|date:"m-Y" }}</td>-->
+                            <td>{{ software.Office|safe }}</td>
+                            <td>{{ software.Acceso Remoto|safe }}</td>
+                            <td>{{ software.Editores Texto|safe }}</td>
+                            <td>{{ software.PDF|safe }}</td>
+                            <td>{{ software.Impresoras|safe }}</td>
+                            <td>{{ software.Navegadores|safe }}</td>
+                            <td>{{ software.Compresores|safe }}</td>
+                            <td>{{ software.Drive|safe }}</td>
+                            <td>{{ software.Base de datos|safe }}<br>{{ software.FTIA|safe }}<br>{{ software.Drivers|safe }}<br>{{ software.TI|safe }}</td>
+                            <td>{{ software.Otros|safe }}</td>
                         </tr>
                         {% endfor %}                    
                     </tbody> 
