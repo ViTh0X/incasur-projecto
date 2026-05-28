@@ -21,7 +21,7 @@ def listar_inventario_software(request):
     año_actual = datetime.now().year
     mes_actual = datetime.now().month
     #data_inventario_software = inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual)
-    data_inventario_software = inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual).values('codigo_ip__ip','codigo_colaborador__nombre_colaborador','tipo_software','nombre_software')
+    data_inventario_software = inventario_software.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual).values('codigo_ip__ip','codigo_colaborador__nombre_colaborador','tipo_software__nombre_tipo','nombre_software')
     if not data_inventario_software:
         return render(request,'inventario_software/no_realizo_inventario_este_mes.html')
     else:
