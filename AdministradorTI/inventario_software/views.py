@@ -33,8 +33,8 @@ def listar_inventario_software(request):
             'nombre_software':'Programas'
         })
         df_pivot=df_software.pivot_table(index=["NombreColaborador","IP"],columns="Categoria",values="Programas",aggfunc=lambda x: "\n".join(f"- {v}"for v in x)).reset_index()
-        df_pivot.columns = df_pivot.columns.str.replace(' ','_')
-        df_pivot.columns = df_pivot.columns.str.replace('nan','')
+        df_pivot = df_pivot.fillna('')
+        df_pivot.columns = df_pivot.columns.str.replace(' ','_')        
         df_html = df_pivot.replace(r'\n','<br>',regex=True)
         lista_inventarios = df_html.to_dict(orient='records')
         '''inventario_agrupado = {}   
