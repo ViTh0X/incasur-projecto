@@ -10,7 +10,7 @@ from utilidades.utilidades_ssh import SSHManager
 
 lista_acceso_total = ['Gerente General','Gerente Comercial','Gerente De TI','Gerente De Auditoria Interna','Gerente De Riesgos','Gerente De Investigación, Desarrollo E Innovacion','Gerente De Administracion Y Finanzas','Jefe De Marketing E Inteligencia Comercial','Asistente De Rrhh Y Logistica','Asistente de Producción']
 lista_solo_lectura = ['Jefe De Operaciones Central','Jefe De Productos Negocios','Asistente De Finanzas']
-ip_cajas = ['192.168.1.56','192.168.1.57']
+ip_cajas = ['192.168.20.4','192.168.20.3']
 
 @shared_task
 def verificacion_usb_all():
@@ -205,6 +205,8 @@ def verificacion_usb_faltantes():
 def cambiar_usb_solo_lectura(ip):
     ip_filtrada = ips.objects.get(ip=ip)
     windows_actualizacion = EstadoAccionesWindows.objects.get(id_ip=ip_filtrada.id)
+    windows_actualizacion.estato_actualizacion = "Ejecutando..."
+    windows_actualizacion.save()
     try:
         username = "Administrador"
         puerto = os.getenv('SSH_PORT')
@@ -213,9 +215,7 @@ def cambiar_usb_solo_lectura(ip):
         SSH_instancia = SSHManager(ip,username,puerto,keyfile,passphrase)        
         try:
             print(f"Trabajando IP {ip_filtrada}")            
-            resultado = SSH_instancia.ejecutar_cambiar_usb_solo_lectura()
-            windows_actualizacion.estato_actualizacion = "Ejecutando..."
-            windows_actualizacion.save()
+            resultado = SSH_instancia.ejecutar_cambiar_usb_solo_lectura()            
             print(f"Resultado de Ejecucion comando: {resultado}")                
             if not resultado == 'No Actualizado':
                 windows_actualizacion.estado_puertos_usb = "Solo Lectura"                                                                   
@@ -238,14 +238,14 @@ def cambiar_usb_solo_lectura(ip):
 def cambiar_usb_bloqueo_total(ip):
     ip_filtrada = ips.objects.get(ip=ip)
     windows_actualizacion = EstadoAccionesWindows.objects.get(id_ip=ip_filtrada.id)
+    windows_actualizacion.estato_actualizacion = "Ejecutando..."
+    windows_actualizacion.save()
     try:
         username = "Administrador"
         puerto = os.getenv('SSH_PORT')
         keyfile = os.getenv('SSH_KEYFILE')
         passphrase = os.getenv('SSH_PASSPHRASE')
-        SSH_instancia = SSHManager(ip,username,puerto,keyfile,passphrase)
-        windows_actualizacion.estato_actualizacion = "Ejecutando..."
-        windows_actualizacion.save()        
+        SSH_instancia = SSHManager(ip,username,puerto,keyfile,passphrase)                
         try:
             print(f"Trabajando IP {ip_filtrada}")
             resultado = SSH_instancia.ejecutar_bloqueo_total_usb()            
