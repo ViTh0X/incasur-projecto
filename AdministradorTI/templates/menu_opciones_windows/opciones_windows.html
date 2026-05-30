@@ -14,7 +14,8 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>IP</th>                        
+                        <th>IP</th>
+                        <th>Roll Computador</th>                        
                         <th>Nombre Colaborador</th>
                         <th>USB-ESTADO</th>
                         <th>USB-ACCIONES</th>
@@ -25,7 +26,8 @@
                 <tbody>
                     {% for data in acciones_windows %}                    
                     <tr>
-                        <td>{{ data.id_ip.ip }}</td>                        
+                        <td>{{ data.id_ip.ip }}</td>   
+                        <td>{{ data.id_ip.roll_ip }}</td>                     
                         <td>{{ data.id_ip.colaborador_asignado.nombre_colaborador|default:"Sin colaborador Asignado" }}</td>                        
                         <td>{{ data.estado_puertos_usb|default:"No Ejecutado" }}</td>                                                                                           
                         <td>
