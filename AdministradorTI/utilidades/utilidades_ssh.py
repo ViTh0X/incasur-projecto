@@ -251,6 +251,8 @@ class SSHManager(logArchivos):
                 
                 # Usamos una triple comilla para mantener el script limpio y sin errores de escape
                 script_ps = """
+                $ProgressPreference = 'SilentlyContinue'
+                
                 $adminGroupName = (Get-LocalGroup -SID 'S-1-5-32-544').Name
                 $admins = (Get-LocalGroupMember -Group $adminGroupName).Name | ForEach-Object { $_ -split '\\\\' | Select-Object -Last 1 }
                 
@@ -306,14 +308,16 @@ class SSHManager(logArchivos):
                     print("Salida de PowerShell:\n", salida_estandar)
                 
                 if error_estandar:
-                    print("Errores de PowerShell:\n", error_estandar)
-                    return "No Actualizado"
+                    print("Errores de PowerShell:\n", error_estandar)                    
                 
                 # Si no hubo errores en el canal de errores y hubo al menos un cambio exitoso
                 if "EXITO_CAMBIO" in salida_estandar:
                     return "Actualizado"
-                else:
+                
+                if error_estandar or "CRITICAL_ERROR" in salida_estandar:
                     return "No Actualizado"
+                
+                return "No Actualizado"
                     
         except Exception as e:
             print(f"Error crítico en la conexión SSH: {e}")
