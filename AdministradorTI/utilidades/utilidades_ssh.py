@@ -321,6 +321,7 @@ class SSHManager(logArchivos):
                     
                     return "No Actualizado"
             else:
+                print("Es pc admin")
                 with paramiko.SSHClient() as conexionSSH:
                     conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                     conexionSSH.connect(
@@ -336,12 +337,11 @@ class SSHManager(logArchivos):
                     script_ps = """
                     $ProgressPreference = 'SilentlyContinue'
                     
-                    $adminGroupName = (Get-LocalGroup -SID 'S-1-5-32-544').Name
-                    $admins = (Get-LocalGroupMember -Group $adminGroupName).Name | ForEach-Object { $_ -split '\\\\' | Select-Object -Last 1 }
-                    
+                    # En las PCs de TI permitimos cuentas del grupo Administradores ($admins),
+                    # pero protegemos estrictamente las cuentas raíz/nativas del sistema.
                     $usuarios = Get-LocalUser | Where-Object { 
                         $_.Enabled -eq $true -and 
-                        $admins -notcontains $_.Name -and                          
+                        $_.Name -notmatch '^Administrador$|^Administrator$' -and 
                         $_.SID.Value -notmatch '-500$'
                     }
                     
@@ -350,13 +350,9 @@ class SSHManager(logArchivos):
 
                     foreach ($u in $usuarios) {
                         try {
-                            # Convertimos la contraseña a String Seguro (Requerido por Set-LocalUser)
                             $passwordSegura = ConvertTo-SecureString "2026_monitor" -AsPlainText -Force
                             
-                            # Cambiamos la contraseña usando el método nativo de PowerShell
                             Set-LocalUser -Name $u.Name -Password $passwordSegura -ErrorAction Stop
-                            
-                            # Forzamos el cambio en el próximo inicio de sesión
                             Set-LocalUser -Name $u.Name -PasswordNeverExpires $false
                             & net user "$($u.Name)" /logonpasswordchg:yes | Out-Null
                             
@@ -369,7 +365,7 @@ class SSHManager(logArchivos):
                     }
                     
                     if ($cambiosRealizados -eq 0 -and $erroresDetectados -gt 0) {
-                        Write-Error "Ninguna contrasena pudo ser cambiada."
+                        Write-Output "CRITICAL_ERROR: Ninguna contrasena pudo ser cambiada."
                     }
                     """
                     
