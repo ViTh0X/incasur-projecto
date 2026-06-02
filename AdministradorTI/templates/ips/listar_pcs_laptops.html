@@ -7,7 +7,11 @@
             <h1 class="no-margin">Lista de PCs y Laptops Asignados:</h1>                                                
             <div class="opciones__table">
                 <div class="opciones__table--buscador">
-                    <input type="text" name="nombre" id="pista_nombre" placeholder="Ingrese Nombres o Apellidos">
+                    <input type="text" name="nombre" id="pista_nombre" placeholder="Ingrese Nombres o Apellidos"
+                    hx-get="{% url 'filtrar_equipos_nombres' %}"
+                    hx-target="#listado_equipos"
+                    hx-trigger="keyup[key=='Enter']"
+                    hx-indicator="#loading-spinner">
                     <button hx-get="{% url 'filtrar_equipos_nombres' %}"
                     hx-target="#listado_equipos"
                     hx-include="#pista_nombre"
