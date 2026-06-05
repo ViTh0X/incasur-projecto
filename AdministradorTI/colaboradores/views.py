@@ -158,21 +158,29 @@ def editar_colaborador(request,pk):
 def cesar_colaborador(request,pk):
     colaborador = get_object_or_404(colaboradores,pk=pk)
     if request.method == 'POST':
-        pcs_laptops = ips.objects.filter(colaborador_asignado=colaborador)
-        equipos_informaticos = equipos_informaticos_ti.objects.filter(colaborador_asignado=colaborador)        
+                        
         nombre_colaborador = colaborador.nombre_colaborador
                         
         estado_colaborador = get_object_or_404(estado_colaboradores,pk=2)
         colaborador.estado_colaboradores = estado_colaborador
-        colaborador.save()
-        estado_ip_de_baja = tipo_estado_ips.objects.get(pk=5)
-        pcs_laptops.update(codigo_estado=estado_ip_de_baja)   
-        equipos_informaticos.update(colaborador_asignado=None)
-        #MAs eficiente que editar con .save() porque lo hace todo de golpe
+        colaborador.save()        
+                        
+        equipo_libre = tipo_estado_ips.objects.get(pk=2)
+        pcs_laptops = ips.objects.filter(colaborador_asignado=colaborador)
+        equipos_informaticos = equipos_informaticos_ti.objects.filter(colaborador_asignado=colaborador)
+        pcs_laptops.update(colaborador_asignado=None,codigo_estado=equipo_libre)        
+        equipos_informaticos.update(colaborador_asignado=None,codigo_estado=equipo_libre)
+        
+                        
         try:      
             cuenta_forticlient = get_object_or_404(cuentas_forticlient,usuario_asignado=nombre_colaborador)
             cuenta_forticlient.usuario_asignado = None
             cuenta_forticlient.save()
+            FaltantesRevisionEquiposWindows.objects.filter(codigo_ip__in=pcs_laptops).delete()
+            faltantes_backup_informacion.objects.filter(codigo_ip__in=pcs_laptops).delete()
+            faltantes_inventario_hardware.objects.filter(codigo_ip__in=pcs_laptops).delete()
+            faltantes_inventario_software.objects.filter(codigo_ip__in=pcs_laptops).delete()
+            
         except Exception as e:
             print(e)
         
