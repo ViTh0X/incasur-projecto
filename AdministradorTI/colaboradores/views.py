@@ -168,7 +168,7 @@ def cesar_colaborador(request,pk):
         equipo_libre = tipo_estado_ips.objects.get(pk=2)
         pcs_laptops = ips.objects.filter(colaborador_asignado=colaborador)
         equipos_informaticos = equipos_informaticos_ti.objects.filter(colaborador_asignado=colaborador)
-        pcs_laptops.update(colaborador_asignado=None,codigo_estado=equipo_libre)        
+        pcs_laptops.update(colaborador_asignado=None,codigo_estado=equipo_libre,switch=None,puerto='?')        
         equipos_informaticos.update(colaborador_asignado=None,codigo_estado=equipo_libre)
         
                         
