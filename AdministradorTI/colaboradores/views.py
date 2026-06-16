@@ -45,26 +45,24 @@ def agregar_colaborador(request):
     if request.method == 'POST':
         formulario = colaboradorForm(request.POST)
         formulario_ip = ipForm(request.POST)
-        ip_colaborador_str = request.POST.get('ip_colaborador')        
+        pk_equipo_asignado = request.POST.get('ip_equipo_asignado')        
         if formulario.is_valid() and formulario_ip.is_valid():            
-            add_colaborador = formulario.save(commit=False)
-            ip = formulario_ip.save(commit=False)            
+            add_colaborador = formulario.save(commit=False)            
             estado_colaborador_activo = get_object_or_404(estado_colaboradores,pk=1)            
             add_colaborador.estado_colaboradores = estado_colaborador_activo
             add_colaborador.save()            
-            ip_colaborador = get_object_or_404(ips,ip=ip_colaborador_str)
-            estado_ip_ocupada = get_object_or_404(tipo_estado_ips,codigo_estado=1)
-            ip.roll_ip = "Computador de Colaborador"
-            ip.codigo_estado = estado_ip_ocupada
-            ip.save()            
-            faltantes_hardware = faltantes_inventario_hardware(codigo_ip=ip_colaborador,codigo_colaborador=add_colaborador)
-            faltantes_hardware.save()
-            faltantes_software = faltantes_inventario_software(codigo_ip=ip_colaborador,codigo_colaborador=add_colaborador)
-            faltantes_software.save()
-            revision_equipos_windows = EstadoAccionesWindows(id_ip=ip_colaborador)
-            revision_equipos_windows.save()
-            faltantes_revision_windows = FaltantesRevisionEquiposWindows(codigo_ip=ip_colaborador,codigo_colaborador=add_colaborador)
-            faltantes_revision_windows.save()                                  
+            if pk_equipo_asignado:
+                equipo_colaborador = ips.objects.get(pk=pk_equipo_asignado)            
+                equipo_colaborador.colaborador_asignado = add_colaborador
+                equipo_colaborador.save()
+                faltantes_hardware = faltantes_inventario_hardware(codigo_ip=equipo_colaborador,codigo_colaborador=add_colaborador)
+                faltantes_hardware.save()
+                faltantes_software = faltantes_inventario_software(codigo_ip=equipo_colaborador,codigo_colaborador=add_colaborador)
+                faltantes_software.save()
+                revision_equipos_windows = EstadoAccionesWindows(id_ip=equipo_colaborador)
+                revision_equipos_windows.save()
+                faltantes_revision_windows = FaltantesRevisionEquiposWindows(codigo_ip=equipo_colaborador,codigo_colaborador=add_colaborador)
+                faltantes_revision_windows.save()                                  
             
             return redirect('listar_colaboradores')
     else:        
