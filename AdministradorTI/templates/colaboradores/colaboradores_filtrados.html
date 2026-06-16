@@ -62,7 +62,7 @@
                         <path d="M10 17l4 -5" />
                         </svg>
                     </a>
-                    {% if  colaborador.estado_colaboradores != 'Cesado' %}                    
+                    {% if  colaborador.estado_colaboradores.nombre_estado != 'Cesado' %}                    
                     <a title="CESAR COLABORADOR" href="{% url 'cesar_colaborador' pk=colaborador.codigo_colaborador %}">
                         <svg
                         xmlns="http://www.w3.org/2000/svg"
