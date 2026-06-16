@@ -178,10 +178,10 @@ def cesar_colaborador(request,pk):
             print(e)        
         
         #lista_ids_ips = list(ips.objects.filter(colaborador_asignado=colaborador).values_list('id', flat=True))            
-        # FaltantesRevisionEquiposWindows.objects.filter(codigo_ip__in=lista_ids_ips).delete()        
-        #faltantes_backup_informacion.objects.filter(codigo_ip__in=lista_ids_ips).delete()
-        #faltantes_inventario_hardware.objects.filter(codigo_ip=122).delete()
-        faltantes_inventario_software.objects.filter(codigo_ip__in=[122]).delete()
+        FaltantesRevisionEquiposWindows.objects.filter(codigo_ip__in=pcs_laptops.id).delete()        
+        faltantes_backup_informacion.objects.filter(codigo_ip__in=pcs_laptops.id).delete()
+        faltantes_inventario_hardware.objects.filter(codigo_ip__in=pcs_laptops.id).delete()
+        faltantes_inventario_software.objects.filter(codigo_ip__in=pcs_laptops.id).delete()
         
                    
             
