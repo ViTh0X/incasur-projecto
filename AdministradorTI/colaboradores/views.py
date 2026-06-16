@@ -160,7 +160,6 @@ def cesar_colaborador(request,pk):
     if request.method == 'POST':
                         
         nombre_colaborador = colaborador.nombre_colaborador
-                        
         estado_colaborador = get_object_or_404(estado_colaboradores,pk=2)
         colaborador.estado_colaboradores = estado_colaborador
         colaborador.save()        
@@ -171,7 +170,7 @@ def cesar_colaborador(request,pk):
         pcs_laptops.update(colaborador_asignado=None,codigo_estado=equipo_libre,switch=None,puerto='?')        
         equipos_informaticos.update(colaborador_asignado=None,codigo_estado=equipo_libre)
         
-                        
+        '''                        
         try:      
             cuenta_forticlient = get_object_or_404(cuentas_forticlient,usuario_asignado=nombre_colaborador)
             cuenta_forticlient.usuario_asignado = None
@@ -183,7 +182,7 @@ def cesar_colaborador(request,pk):
             
         except Exception as e:
             print(e)
-        
+        '''
         return redirect('listar_colaboradores')
     
     return render(request,'colaboradores/confirmar_cesar.html',{'colaborador':colaborador})
