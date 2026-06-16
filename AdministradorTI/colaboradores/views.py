@@ -169,20 +169,19 @@ def cesar_colaborador(request,pk):
         equipos_informaticos = equipos_informaticos_ti.objects.filter(colaborador_asignado=colaborador)
         pcs_laptops.update(colaborador_asignado=None,codigo_estado=equipo_libre,switch=None,puerto='?')        
         equipos_informaticos.update(colaborador_asignado=None,codigo_estado=equipo_libre)
-        
-        '''                        
+                                 
         try:      
-            cuenta_forticlient = get_object_or_404(cuentas_forticlient,usuario_asignado=nombre_colaborador)
+            cuenta_forticlient = get_object_or_404(cuentas_forticlient,usuario_asignado=colaborador)
             cuenta_forticlient.usuario_asignado = None
-            cuenta_forticlient.save()
-            FaltantesRevisionEquiposWindows.objects.filter(codigo_ip__in=pcs_laptops).delete()
-            faltantes_backup_informacion.objects.filter(codigo_ip__in=pcs_laptops).delete()
-            faltantes_inventario_hardware.objects.filter(codigo_ip__in=pcs_laptops).delete()
-            faltantes_inventario_software.objects.filter(codigo_ip__in=pcs_laptops).delete()
-            
+            cuenta_forticlient.save()            
         except Exception as e:
-            print(e)
-        '''
+            print(e)        
+        
+        FaltantesRevisionEquiposWindows.objects.filter(codigo_ip__in=pcs_laptops).delete()        
+        faltantes_backup_informacion.objects.filter(codigo_ip__in=pcs_laptops).delete()
+        faltantes_inventario_hardware.objects.filter(codigo_ip__in=pcs_laptops).delete()
+        faltantes_inventario_software.objects.filter(codigo_ip__in=pcs_laptops).delete()            
+            
         return redirect('listar_colaboradores')
     
     return render(request,'colaboradores/confirmar_cesar.html',{'colaborador':colaborador})
