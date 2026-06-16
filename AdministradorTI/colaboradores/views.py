@@ -158,34 +158,48 @@ def editar_colaborador(request,pk):
 def cesar_colaborador(request,pk):
     colaborador = get_object_or_404(colaboradores,pk=pk)
     if request.method == 'POST':
-                        
         nombre_colaborador = colaborador.nombre_colaborador
-        estado_colaborador = get_object_or_404(estado_colaboradores,pk=2)
+        
+        # 1. Cambiar estado del colaborador
+        estado_colaborador = get_object_or_404(estado_colaboradores, pk=2)
         colaborador.estado_colaboradores = estado_colaborador
         colaborador.save()        
-                        
         
-        pcs_laptops = ips.objects.filter(colaborador_asignado=colaborador)        
-        for pc_laptop in pcs_laptops:                        
+        # 2. CAPTURAR LAS IPS EN MEMORIA INMEDIATAMENTE (CON LIST)
+        # Esto guarda los objetos reales en la RAM y evita que el .update() de abajo los borre de la lista
+        pcs_laptops_lista = list(ips.objects.filter(colaborador_asignado=colaborador))
+        
+        # 3. EJECUTAR LOS DELETES EN EL BUCLE FOR (CERRANDO BIEN EL BUCLE)
+        for pc_laptop in pcs_laptops_lista:                                            
             FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=pc_laptop.pk).delete()
             faltantes_backup_informacion.objects.filter(codigo_ip=pc_laptop.pk).delete()                    
             faltantes_inventario_hardware.objects.filter(codigo_ip=pc_laptop.pk).delete()
             faltantes_inventario_software.objects.filter(codigo_ip=pc_laptop.pk).delete()  
-            
-            
+        
+        # 4. AHORA SÍ, FUERA DEL BUCLE, ACTUALIZAMOS LOS EQUIPOS EN LA BD
         equipo_libre = tipo_estado_ips.objects.get(pk=2)          
-        equipos_informaticos = equipos_informaticos_ti.objects.filter(colaborador_asignado=colaborador)         
-        pcs_laptops.update(colaborador_asignado=None,codigo_estado=equipo_libre,switch=None,puerto='?')        
-        equipos_informaticos.update(colaborador_asignado=None,codigo_estado=equipo_libre)
-                                 
+        
+        # Hacemos los updates usando filtros directos sobre la BD
+        ips.objects.filter(colaborador_asignado=colaborador).update(
+            colaborador_asignado=None,
+            codigo_estado=equipo_libre,
+            switch=None,
+            puerto='?'
+        )
+        
+        equipos_informaticos_ti.objects.filter(colaborador_asignado=colaborador).update(
+            colaborador_asignado=None,
+            codigo_estado=equipo_libre
+        )
+                                  
+        # 5. MANEJO SEGURO DE FORTICLIENT (CON GET NORMAL, NO 404)
         try:      
-            cuenta_forticlient = get_object_or_404(cuentas_forticlient,usuario_asignado=colaborador)
+            # Usamos .get() que sí es atrapado correctamente por Exception
+            cuenta_forticlient = cuentas_forticlient.objects.get(usuario_asignado=colaborador)
             cuenta_forticlient.usuario_asignado = None
             cuenta_forticlient.save()            
         except Exception as e:
-            print(e)        
-                                                
-                                       
+            print(f"No se encontró cuenta Forticlient o ya estaba vacía: {e}")
         return redirect('listar_colaboradores')
     
     return render(request,'colaboradores/confirmar_cesar.html',{'colaborador':colaborador})
