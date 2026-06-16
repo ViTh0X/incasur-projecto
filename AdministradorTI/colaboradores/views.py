@@ -166,7 +166,11 @@ def cesar_colaborador(request,pk):
                         
         equipo_libre = tipo_estado_ips.objects.get(pk=2)
         pcs_laptops = ips.objects.filter(colaborador_asignado=colaborador)        
-        pcs_laptops1 = ips.objects.filter(colaborador_asignado=colaborador)        
+        for pc_laptop in pcs_laptops:                        
+            FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=pc_laptop).delete()
+            faltantes_backup_informacion.objects.filter(codigo_ip=pc_laptop).delete()                    
+            faltantes_inventario_hardware.objects.filter(codigo_ip=pc_laptop).delete()
+            faltantes_inventario_software.objects.filter(codigo_ip=pc_laptop).delete()        
         equipos_informaticos = equipos_informaticos_ti.objects.filter(colaborador_asignado=colaborador)         
         pcs_laptops.update(colaborador_asignado=None,codigo_estado=equipo_libre,switch=None,puerto='?')        
         equipos_informaticos.update(colaborador_asignado=None,codigo_estado=equipo_libre)
@@ -177,16 +181,8 @@ def cesar_colaborador(request,pk):
             cuenta_forticlient.save()            
         except Exception as e:
             print(e)        
-                                        
-        for pc_laptop in pcs_laptops1:                
-        #lista_ids_ips = list(ips.objects.filter(colaborador_asignado=colaborador).values_list('id', flat=True))            
-            FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=pc_laptop).delete()        
-            faltantes_backup_informacion.objects.filter(codigo_ip=pc_laptop).delete()
-            faltantes_inventario_hardware.objects.filter(codigo_ip=pc_laptop).delete()
-            faltantes_inventario_software.objects.filter(codigo_ip=pc_laptop).delete()
-        
-                   
-            
+                                                
+                                       
         return redirect('listar_colaboradores')
     
     return render(request,'colaboradores/confirmar_cesar.html',{'colaborador':colaborador})
