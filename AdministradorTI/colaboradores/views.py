@@ -164,13 +164,16 @@ def cesar_colaborador(request,pk):
         colaborador.estado_colaboradores = estado_colaborador
         colaborador.save()        
                         
-        equipo_libre = tipo_estado_ips.objects.get(pk=2)
+        
         pcs_laptops = ips.objects.filter(colaborador_asignado=colaborador)        
         for pc_laptop in pcs_laptops:                        
-            FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=pc_laptop).delete()
-            faltantes_backup_informacion.objects.filter(codigo_ip=pc_laptop).delete()                    
-            faltantes_inventario_hardware.objects.filter(codigo_ip=pc_laptop).delete()
-            faltantes_inventario_software.objects.filter(codigo_ip=pc_laptop).delete()        
+            FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=pc_laptop.pk).delete()
+            faltantes_backup_informacion.objects.filter(codigo_ip=pc_laptop.pk).delete()                    
+            faltantes_inventario_hardware.objects.filter(codigo_ip=pc_laptop.pk).delete()
+            faltantes_inventario_software.objects.filter(codigo_ip=pc_laptop.pk).delete()  
+            
+            
+        equipo_libre = tipo_estado_ips.objects.get(pk=2)          
         equipos_informaticos = equipos_informaticos_ti.objects.filter(colaborador_asignado=colaborador)         
         pcs_laptops.update(colaborador_asignado=None,codigo_estado=equipo_libre,switch=None,puerto='?')        
         equipos_informaticos.update(colaborador_asignado=None,codigo_estado=equipo_libre)
