@@ -76,6 +76,7 @@
                         </div>
                         <div class="contenedor-campos">
                             <h3 class="no-margin">Selecciona PC o Laptop por IP:</h3>
+                            {% if ip_disponibles|length > 0 %}
                             <div class="campo">
                                 <label class="campo--label">IP: </label>
                                 <div class="campos__formulario--listbox">
@@ -85,7 +86,12 @@
                                         {% endfor %}
                                     </select>
                                 </div>                            
-                            </div>                                                                                                    
+                            </div>                       
+                            {% else %}                                                                             
+                            <div class="campo">
+                                <label for="campo--label">No existen Equipos Disponibles Verifique</label>
+                            </div>
+                            {% endif %}
                             <div class="botones-formularios">
                                 <a href="{% url 'listar_colaboradores' %}">Volver a la Lista</a>
                                 <button type="submit">Crear</button>                
