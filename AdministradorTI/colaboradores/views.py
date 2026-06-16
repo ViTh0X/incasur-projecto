@@ -177,12 +177,12 @@ def cesar_colaborador(request,pk):
         except Exception as e:
             print(e)        
         
-        pcs_laptops = ips.objects.filter(colaborador_asignado=colaborador)
+        #pcs_laptops = ips.objects.filter(colaborador_asignado=colaborador)
         #lista_ids_ips = list(ips.objects.filter(colaborador_asignado=colaborador).values_list('id', flat=True))            
-        FaltantesRevisionEquiposWindows.objects.filter(codigo_ip__in=pcs_laptops.id).delete()        
-        faltantes_backup_informacion.objects.filter(codigo_ip__in=pcs_laptops.id).delete()
-        faltantes_inventario_hardware.objects.filter(codigo_ip__in=pcs_laptops.id).delete()
-        faltantes_inventario_software.objects.filter(codigo_ip__in=pcs_laptops.id).delete()
+        FaltantesRevisionEquiposWindows.objects.filter(codigo_ip__in=pcs_laptops.pk).delete()        
+        faltantes_backup_informacion.objects.filter(codigo_ip__in=pcs_laptops.pk).delete()
+        faltantes_inventario_hardware.objects.filter(codigo_ip__in=pcs_laptops.pk).delete()
+        faltantes_inventario_software.objects.filter(codigo_ip__in=pcs_laptops.pk).delete()
         
                    
             
