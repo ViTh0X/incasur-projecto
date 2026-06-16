@@ -166,11 +166,7 @@ def cesar_colaborador(request,pk):
                         
         equipo_libre = tipo_estado_ips.objects.get(pk=2)
         pcs_laptops = ips.objects.filter(colaborador_asignado=colaborador)
-        equipos_informaticos = equipos_informaticos_ti.objects.filter(colaborador_asignado=colaborador)
-        FaltantesRevisionEquiposWindows.objects.filter(codigo_ip__in=pcs_laptops).delete()        
-        faltantes_backup_informacion.objects.filter(codigo_ip__in=pcs_laptops).delete()
-        faltantes_inventario_hardware.objects.filter(codigo_ip__in=pcs_laptops).delete()
-        faltantes_inventario_software.objects.filter(codigo_ip__in=pcs_laptops).delete() 
+        equipos_informaticos = equipos_informaticos_ti.objects.filter(colaborador_asignado=colaborador)         
         pcs_laptops.update(colaborador_asignado=None,codigo_estado=equipo_libre,switch=None,puerto='?')        
         equipos_informaticos.update(colaborador_asignado=None,codigo_estado=equipo_libre)
                                  
@@ -180,6 +176,12 @@ def cesar_colaborador(request,pk):
             cuenta_forticlient.save()            
         except Exception as e:
             print(e)        
+        
+        lista_ids_ips = list(ips.objects.filter(colaborador_asignado=colaborador).values_list('id', flat=True))            
+        FaltantesRevisionEquiposWindows.objects.filter(codigo_ip__in=lista_ids_ips).delete()        
+        faltantes_backup_informacion.objects.filter(codigo_ip__in=lista_ids_ips).delete()
+        faltantes_inventario_hardware.objects.filter(codigo_ip__in=lista_ids_ips).delete()
+        faltantes_inventario_software.objects.filter(codigo_ip__in=lista_ids_ips).delete()
         
                    
             
