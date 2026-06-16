@@ -165,8 +165,7 @@ def cesar_colaborador(request,pk):
         colaborador.save()        
                         
         equipo_libre = tipo_estado_ips.objects.get(pk=2)
-        pcs_laptops = ips.objects.filter(colaborador_asignado=colaborador)
-        
+        pcs_laptops = ips.objects.filter(colaborador_asignado=colaborador)        
         equipos_informaticos = equipos_informaticos_ti.objects.filter(colaborador_asignado=colaborador)         
         pcs_laptops.update(colaborador_asignado=None,codigo_estado=equipo_libre,switch=None,puerto='?')        
         equipos_informaticos.update(colaborador_asignado=None,codigo_estado=equipo_libre)
@@ -178,14 +177,13 @@ def cesar_colaborador(request,pk):
         except Exception as e:
             print(e)        
         
-        
-        lista_ids_pcs = list(pcs_laptops.values_list('id',flat=True))            
-        for ip in lista_ids_pcs:                
+                       
+        for pc_laptop in pcs_laptops:                
         #lista_ids_ips = list(ips.objects.filter(colaborador_asignado=colaborador).values_list('id', flat=True))            
-            FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=int(ip)).delete()        
-            faltantes_backup_informacion.objects.filter(codigo_ip=int(ip)).delete()
-            faltantes_inventario_hardware.objects.filter(codigo_ip=int(ip)).delete()
-            faltantes_inventario_software.objects.filter(codigo_ip=int(ip)).delete()
+            FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=pc_laptop.pk).delete()        
+            faltantes_backup_informacion.objects.filter(codigo_ip=pc_laptop.pk).delete()
+            faltantes_inventario_hardware.objects.filter(codigo_ip=pc_laptop.pk).delete()
+            faltantes_inventario_software.objects.filter(codigo_ip=pc_laptop.pk).delete()
         
                    
             
