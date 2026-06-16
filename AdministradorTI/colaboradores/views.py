@@ -69,8 +69,7 @@ def agregar_colaborador(request):
             return redirect('listar_colaboradores')
     else:        
         formulario =  colaboradorForm()
-        formulario_ip = ipForm()
-        #formulario.fields['ip_colaborador'].queryset = ip_disponibles
+        formulario_ip = ipForm()        
     
     return render(request,'colaboradores/agregar_colaborador.html',{'formulario':formulario,'formulario_ip':formulario_ip,'ip_disponibles':ip_disponibles,'codigo_impresion_mostrar':codigo_impresion_mostrar})
 
