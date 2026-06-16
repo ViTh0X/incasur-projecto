@@ -62,6 +62,7 @@
                         <path d="M10 17l4 -5" />
                         </svg>
                     </a>
+                    {% if  colaborador.estado_colaboradores != 'Cesado' %}                    
                     <a title="CESAR COLABORADOR" href="{% url 'cesar_colaborador' pk=colaborador.codigo_colaborador %}">
                         <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +78,8 @@
                         <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
                         <path d="M10 10l4 4m0 -4l-4 4" />
                         </svg>
-                    </a>                                                              
+                    </a>                                                  
+                    {% endif %}            
                 </div>
             </td>            
         </tr>
