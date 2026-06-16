@@ -177,12 +177,13 @@ def cesar_colaborador(request,pk):
             cuenta_forticlient.save()            
         except Exception as e:
             print(e)        
-                
+            
+        for ip in lista_ids_pcs:                
         #lista_ids_ips = list(ips.objects.filter(colaborador_asignado=colaborador).values_list('id', flat=True))            
-        FaltantesRevisionEquiposWindows.objects.filter(codigo_ip__in=lista_ids_pcs).delete()        
-        faltantes_backup_informacion.objects.filter(codigo_ip__in=lista_ids_pcs).delete()
-        faltantes_inventario_hardware.objects.filter(codigo_ip__in=lista_ids_pcs).delete()
-        faltantes_inventario_software.objects.filter(codigo_ip__in=lista_ids_pcs).delete()
+            FaltantesRevisionEquiposWindows.objects.filter(codigo_ip__in=ip).delete()        
+            faltantes_backup_informacion.objects.filter(codigo_ip__in=ip).delete()
+            faltantes_inventario_hardware.objects.filter(codigo_ip__in=ip).delete()
+            faltantes_inventario_software.objects.filter(codigo_ip__in=ip).delete()
         
                    
             
