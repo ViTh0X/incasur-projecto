@@ -180,10 +180,10 @@ def cesar_colaborador(request,pk):
             
         for ip in lista_ids_pcs:                
         #lista_ids_ips = list(ips.objects.filter(colaborador_asignado=colaborador).values_list('id', flat=True))            
-            FaltantesRevisionEquiposWindows.objects.filter(codigo_ip__in=ip).delete()        
-            faltantes_backup_informacion.objects.filter(codigo_ip__in=ip).delete()
-            faltantes_inventario_hardware.objects.filter(codigo_ip__in=ip).delete()
-            faltantes_inventario_software.objects.filter(codigo_ip__in=ip).delete()
+            FaltantesRevisionEquiposWindows.objects.filter(codigo_ip=ip).delete()        
+            faltantes_backup_informacion.objects.filter(codigo_ip=ip).delete()
+            faltantes_inventario_hardware.objects.filter(codigo_ip=ip).delete()
+            faltantes_inventario_software.objects.filter(codigo_ip=ip).delete()
         
                    
             
