@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from celery.schedules import crontab
 
 
 load_dotenv()
@@ -184,4 +185,54 @@ CELERY_WORKER_MAX_TASKS_PER_CHILD = 10
 
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     'visibility_timeout': 45000, 
+}
+
+CELERY_BEAT_SCHEDULE = {
+    # Primera regla: A las 9:30 AM
+    'inventario_hardware_9_am_2do_mes': {
+        'task': 'inventario_hardware.tasks.ejecutar_inventario_hardware',
+        'schedule': crontab(
+            minute=0,           # Minuto 0
+            hour=9,              # Hora 9
+            day_of_month='2',
+            month_of_year='1-12'
+        ),
+    },
+    'inventario_software_9_30_am_2do_mes': {
+        'task': 'inventario_software.tasks.ejecutar_inventario_software',
+        'schedule': crontab(
+            minute=30,           # Minuto 0
+            hour=9,              # Hora 9
+            day_of_month='2',
+            month_of_year='1-12'
+        ),
+    },
+    'faltantes_inventario_hardware': {
+        'task': 'inventario_hardware.tasks.ejecutar_faltantes_inventario_hardware',
+        'schedule': crontab(
+            minute=0,           # Minuto 0
+            hour='9-16',              # Hora 9
+            day_of_month='6-14',
+            month_of_year='1-12'
+        ),
+    },
+    'faltantes_inventario_software': {
+        'task': 'inventario_software.tasks.ejecutar_faltantes_inventario_software',
+        'schedule': crontab(
+            minute=0,           # Minuto 0
+            hour='10,17',              # Hora 9
+            day_of_month='6-14',
+            month_of_year='1-12'
+        ),
+    },
+    # Segunda regla: A las 5:00 PM
+    'tarea_pruena': {
+        'task': 'inventario_software.tasks.ejecutar_faltantes_inventario_software',
+        'schedule': crontab(
+            minute=35,            # Minuto 0
+            hour=12,             # Hora 17
+            day_of_month='8-9',
+            month_of_year='1-12'
+        ),
+    },
 }
