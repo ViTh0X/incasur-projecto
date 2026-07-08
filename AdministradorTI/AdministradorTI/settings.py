@@ -229,7 +229,7 @@ CELERY_BEAT_SCHEDULE = {
     'tarea_pruena': {
         'task': 'inventario_software.tasks.ejecutar_faltantes_inventario_software',
         'schedule': crontab(
-            minute=35,            # Minuto 0
+            minute=50,            # Minuto 0
             hour=12,             # Hora 17
             day_of_month='8-9',
             month_of_year='1-12'
