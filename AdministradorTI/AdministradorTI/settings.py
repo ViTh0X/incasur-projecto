@@ -227,10 +227,10 @@ CELERY_BEAT_SCHEDULE = {
     },
     # Segunda regla: A las 5:00 PM
     'tarea_pruena': {
-        'task': 'inventario_software.tasks.ejecutar_faltantes_inventario_software',
+        'task': 'inventario_software.task.ejecutar_faltantes_inventario_software',
         'schedule': crontab(
-            minute=55,            # Minuto 0
-            hour=12,             # Hora 17
+            minute=23,            # Minuto 0
+            hour=10,             # Hora 17
             day_of_month='8-9',
             month_of_year='1-12'
         ),
