@@ -188,50 +188,162 @@ CELERY_BROKER_TRANSPORT_OPTIONS = {
 }
 
 CELERY_BEAT_SCHEDULE = {
-    # Primera regla: A las 9:30 AM
+    #Primera ejecucion mensual de tareas automaticas
     'inventario_hardware_9_am_2do_mes': {
-        'task': 'inventario_hardware.tasks.ejecutar_inventario_hardware',
+        'task': 'inventario_hardware.task.ejecutar_inventario_hardware',
         'schedule': crontab(
-            minute=0,           # Minuto 0
-            hour=9,              # Hora 9
+            minute=0,
+            hour=9,
             day_of_month='2',
             month_of_year='1-12'
         ),
     },
     'inventario_software_9_30_am_2do_mes': {
-        'task': 'inventario_software.tasks.ejecutar_inventario_software',
+        'task': 'inventario_software.task.ejecutar_inventario_software',
         'schedule': crontab(
-            minute=30,           # Minuto 0
-            hour=9,              # Hora 9
+            minute=30,
+            hour=9,
             day_of_month='2',
             month_of_year='1-12'
         ),
     },
-    'faltantes_inventario_hardware': {
-        'task': 'inventario_hardware.tasks.ejecutar_faltantes_inventario_hardware',
+    'revision_windows_usb_10_am_2do_mes': {
+        'task': 'administracion_windows.task.verificacion_usb_all',
         'schedule': crontab(
-            minute=0,           # Minuto 0
-            hour='9-16',              # Hora 9
-            day_of_month='6-14',
+            minute=0,
+            hour=10,
+            day_of_month='2',
+            month_of_year='1-12'
+        ),
+    },
+    'backup_de_informacion_11_am_2do_mes': {
+        'task': 'bkinformacion.task.ejecutar_backup_informacion',
+        'schedule': crontab(
+            minute=0,
+            hour=11,
+            day_of_month='2',
+            month_of_year='1-12'
+        ),
+    },
+    #Ejecucion Automatica Faltantes Inicio del Mes Todos
+    'faltantes_inventario_hardware': {
+        'task': 'inventario_hardware.task.ejecutar_faltantes_inventario_hardware',
+        'schedule': crontab(
+            minute=0,
+            hour='9-15',
+            day_of_month='3-7',
             month_of_year='1-12'
         ),
     },
     'faltantes_inventario_software': {
-        'task': 'inventario_software.tasks.ejecutar_faltantes_inventario_software',
+        'task': 'inventario_software.task.ejecutar_faltantes_inventario_software',
         'schedule': crontab(
-            minute=0,           # Minuto 0
-            hour='10,17',              # Hora 9
-            day_of_month='6-14',
+            minute=0,
+            hour='10,16',
+            day_of_month='3-7',
+            month_of_year='1-12'
+        ),
+    },
+    'faltantes_revision_windows_usb': {
+        'task': 'administracion_windows.task.verificacion_usb_faltantes',
+        'schedule': crontab(
+            minute=0,
+            hour='11,17',
+            day_of_month='3-7',
+            month_of_year='1-12'
+        ),
+    },
+    'faltantes_backup_informacion': {
+        'task': 'bkinformacion.task.ejecutar_faltantes_backup_informacion',
+        'schedule': crontab(
+            minute=0,
+            hour=12,
+            day_of_month='3-7',
+            month_of_year='1-12'
+        ),
+    },
+    #Ejecucion Automatica Faltantes Fin del Mes Todos
+    'faltantes_inventario_hardware': {
+        'task': 'inventario_hardware.task.ejecutar_faltantes_inventario_hardware',
+        'schedule': crontab(
+            minute=0,
+            hour='9-15',
+            day_of_month='25-28',
+            month_of_year='1-12'
+        ),
+    },
+    'faltantes_inventario_software': {
+        'task': 'inventario_software.task.ejecutar_faltantes_inventario_software',
+        'schedule': crontab(
+            minute=0,
+            hour='10,16',
+            day_of_month='25-28',
+            month_of_year='1-12'
+        ),
+    },
+    'faltantes_revision_windows_usb': {
+        'task': 'administracion_windows.task.verificacion_usb_faltantes',
+        'schedule': crontab(
+            minute=0,
+            hour='11,17',
+            day_of_month='25-28',
+            month_of_year='1-12'
+        ),
+    },
+    'faltantes_backup_informacion': {
+        'task': 'bkinformacion.task.ejecutar_faltantes_backup_informacion',
+        'schedule': crontab(
+            minute=0,
+            hour=12,
+            day_of_month='25-28',
+            month_of_year='1-12'
+        ),
+    },
+    #Asistencia
+    'asistencia_entrada_L_V': {
+        'task': 'administracion_windows.task.marcar_entrada',
+        'schedule': crontab(
+            minute=0,
+            hour=19,
+            day_of_month='*',
+            month_of_year='1-12'
+        ),
+    },
+    'asistencia_entrada_S': {
+        'task': 'administracion_windows.task.marcar_entrada',
+        'schedule': crontab(
+            minute=0,
+            hour=13,
+            day_of_month='*',
+            month_of_year='1-12'
+        ),
+    },
+    'asistencia_salida_L_V': {
+        'task': 'administracion_windows.task.marcar_salida',
+        'schedule': crontab(
+            minute=0,
+            hour=21,
+            day_of_month='*',
+            month_of_year='1-12'
+        ),
+    },
+    'asistencia_salida_S': {
+        'task': 'administracion_windows.task.marcar_salida',
+        'schedule': crontab(
+            minute=45,
+            hour=16,
+            day_of_month='*',
             month_of_year='1-12'
         ),
     },
     # Segunda regla: A las 5:00 PM
+    
     'tarea_pruena': {
-        'task': 'inventario_software.task.ejecutar_faltantes_inventario_software',
+        'task': 'administracion_windows.task.marcar_salida',
         'schedule': crontab(
-            minute=23,            # Minuto 0
-            hour=10,             # Hora 17
-            day_of_month='8-9',
+            minute=15,
+            hour=12,
+            day_of_month='*',
             month_of_year='1-12'
         ),
     },

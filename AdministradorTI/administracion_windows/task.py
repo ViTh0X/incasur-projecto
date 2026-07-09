@@ -329,3 +329,43 @@ def hacer_reset_contraseña_windows(ip):
         print(f"Error no pudo actualizar no esta en red {e}")
         windows_actualizacion.estato_actualizacion = "No se Actualizo"
         windows_actualizacion.save()
+        
+@shared_task
+def marcar_entrada():
+    try:
+        string_ip = '192.168.20.36'
+        username = "Administrador"
+        puerto = os.getenv('SSH_PORT')
+        keyfile = os.getenv('SSH_KEYFILE')
+        passphrase = os.getenv('SSH_PASSPHRASE')            
+        SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
+        try:
+            print(f"********TRABAJANDO IP {string_ip}*********")
+            SSH_instancia.marcar_entrada()               
+            print("Asistencia Marcada")                                                            
+        except Exception as e:
+            print(f"Equipo con IP {string_ip} No esta en linea")                            
+        return "ASISTENCIA ENTRADA MARCADA CORRECTAMENTE"
+
+    except Exception as e:
+        return "ERROR AL MARCAR ASISTENCIA ENTRADA"
+    
+@shared_task
+def marcar_salida():
+    try:
+        string_ip = '192.168.20.36'
+        username = "Administrador"
+        puerto = os.getenv('SSH_PORT')
+        keyfile = os.getenv('SSH_KEYFILE')
+        passphrase = os.getenv('SSH_PASSPHRASE')            
+        SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
+        try:
+            print(f"********TRABAJANDO IP {string_ip}*********")
+            SSH_instancia.marcar_salida()               
+            print("Asistencia Marcada")                                                            
+        except Exception as e:
+            print(f"Equipo con IP {string_ip} No esta en linea")                            
+        return "ASISTENCIA SALIDA MARCADA CORRECTAMENTE"
+
+    except Exception as e:
+        return "ERROR AL MARCAR ASISTENCIA SALIDA"
