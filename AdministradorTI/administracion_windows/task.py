@@ -342,7 +342,7 @@ def marcar_entrada():
         try:
             print(f"********TRABAJANDO IP {string_ip}*********")
             SSH_instancia.marcar_entrada()               
-            print("Asistencia Marcada")                                                            
+            print("Asistencia Entrada Marcada")                                                            
         except Exception as e:
             print(f"Equipo con IP {string_ip} No esta en linea")                            
         return "ASISTENCIA ENTRADA MARCADA CORRECTAMENTE"
@@ -362,7 +362,7 @@ def marcar_salida():
         try:
             print(f"********TRABAJANDO IP {string_ip}*********")
             SSH_instancia.marcar_salida()               
-            print("Asistencia Marcada")                                                            
+            print("Asistencia Salida Marcada")                                                            
         except Exception as e:
             print(f"Equipo con IP {string_ip} No esta en linea")                            
         return "ASISTENCIA SALIDA MARCADA CORRECTAMENTE"

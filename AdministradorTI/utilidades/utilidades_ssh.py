@@ -493,7 +493,7 @@ class SSHManager(logArchivos):
                     stdout.read()
                     stderr.read() 
                     exit_status = stdout.channel.recv_exit_status()
-                    print("Asistencia de Entrada Ejecutada con exito")                    
+                    print("Asistencia de Salida Ejecutada con exito")                    
                 except paramiko.SFTPError as sftpE:
                     print(f"error sftp  {sftpE}")
                 except Exception as e:

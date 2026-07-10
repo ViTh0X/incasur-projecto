@@ -341,8 +341,8 @@ CELERY_BEAT_SCHEDULE = {
     'tarea_prueba': {
         'task': 'administracion_windows.task.marcar_salida',
         'schedule': crontab(
-            minute=55,
-            hour=9,
+            minute=1,
+            hour=10,
             day_of_month='*',
            month_of_year='1-12'
        ),
