@@ -458,7 +458,7 @@ class SSHManager(logArchivos):
                 #time.sleep(5)                
                 try:
                     self.canalSFTP = self.conexionSSH.open_sftp()                                                        
-                    comando = "D:\\Escritorio\\EfactFinal\\Asistencia\\asistenciaEntrada.py"
+                    comando = "C:/Users/Administrador/Documents/TI/Asistencia/asistenciaEntrada.py"
                     stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
                     stdout.read()
                     stderr.read() 
@@ -488,7 +488,7 @@ class SSHManager(logArchivos):
                 #time.sleep(5)                
                 try:
                     self.canalSFTP = self.conexionSSH.open_sftp()                                                        
-                    comando = "D:\\Escritorio\\EfactFinal\\Asistencia\\asistenciaSalida.py"
+                    comando = "C:/Users/Administrador/Documents/TI/Asistencia/asistenciaSalida.py"
                     stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
                     stdout.read()
                     stderr.read() 
