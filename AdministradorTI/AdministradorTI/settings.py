@@ -339,7 +339,7 @@ CELERY_BEAT_SCHEDULE = {
     'enviar_archivos_efact': {
         'task': 'administracion_windows.task.envio_efact',
         'schedule': crontab(
-            minute=12,
+            minute=19,
             hour=13,
             day_of_month='*',
             month_of_year='1-12'
