@@ -445,6 +445,36 @@ class SSHManager(logArchivos):
         except Exception as e:            
             print(f"{self.hostname} Error General {e}")
             return False
+    
+    def envio_efact(self):
+        try:
+            with paramiko.SSHClient() as conexionSSH:
+                self.conexionSSH = conexionSSH
+                self.conexionSSH.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                self.conexionSSH.connect(hostname=self.hostname,port=self.port,timeout=15,username=self.username,key_filename=self.keyfile,passphrase=self.passphrase)                                
+                transporte = self.conexionSSH.get_transport()
+                transporte.set_keepalive(20)                
+                                                      
+                #time.sleep(5)                
+                try:
+                    self.canalSFTP = self.conexionSSH.open_sftp()                                                        
+                    comando = "C:/Users/Administrador/Documents/TI/EfactFinal/main.py"
+                    stdin, stdout,stderr = self.conexionSSH.exec_command(comando)
+                    stdout.read()
+                    stderr.read() 
+                    exit_status = stdout.channel.recv_exit_status()
+                    print("Ejecucion de Envio Efacto con exito")                    
+                except paramiko.SFTPError as sftpE:
+                    print(f"error sftp  {sftpE}")
+                except Exception as e:
+                    print(f"Ubo un error no creo el canal sftp{e}")
+                    self.canalSFTP.close()
+                    self.conexionSSH.close() 
+            return True
+                               
+        except Exception as e:            
+            print(f"{self.hostname} Error General {e}")
+            return False        
         
     def marcar_entrada(self):                       
         try:

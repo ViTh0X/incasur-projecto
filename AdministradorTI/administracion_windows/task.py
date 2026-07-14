@@ -369,3 +369,23 @@ def marcar_salida():
 
     except Exception as e:
         return "ERROR AL MARCAR ASISTENCIA SALIDA"
+    
+@shared_task
+def enviar_efact():
+    try:
+        string_ip = '192.168.20.36'
+        username = "Administrador"
+        puerto = os.getenv('SSH_PORT')
+        keyfile = os.getenv('SSH_KEYFILE')
+        passphrase = os.getenv('SSH_PASSPHRASE')            
+        SSH_instancia = SSHManager(string_ip,username,puerto,keyfile,passphrase)
+        try:
+            print(f"********TRABAJANDO IP {string_ip}*********")
+            SSH_instancia.envio_efact()               
+            print("Envio Efacto Realizado")                                                            
+        except Exception as e:
+            print(f"Equipo con IP {string_ip} No esta en linea")                            
+        return "ENVIO EFACTO REALIZADO CORRECTAMENTE"
+
+    except Exception as e:
+        return "ERROR AL ENVIAR EFACT"

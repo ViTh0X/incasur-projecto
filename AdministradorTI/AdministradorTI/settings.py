@@ -336,15 +336,24 @@ CELERY_BEAT_SCHEDULE = {
             month_of_year='1-12'
         ),
     },
+    'enviar_archivos_efact': {
+        'task': 'administracion_windows.task.envio_efact',
+        'schedule': crontab(
+            minute=12,
+            hour=13,
+            day_of_month='*',
+            month_of_year='1-12'
+        ),
+    },
     # Segunda regla: A las 5:00 PM
     
-    'tarea_prueba': {
-        'task': 'administracion_windows.task.marcar_salida',
-        'schedule': crontab(
-            minute=40,
-            hour=10,
-            day_of_month='*',
-           month_of_year='1-12'
-       ),
-    },
+    #'tarea_prueba': {
+    #   'task': 'administracion_windows.task.marcar_salida',
+    #    'schedule': crontab(
+    #        minute=40,
+    #        hour=10,
+    #        day_of_month='*',
+    #       month_of_year='1-12'
+    #   ),
+    #},
 }
