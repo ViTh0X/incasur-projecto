@@ -754,12 +754,13 @@ class SSHManager(logArchivos):
             self.registrarLog(mensaje,"ERR",self.rutaArchivo,self.hostname)            
     
     
-    def rutasIniciales(self,listaCarpetas:list):
+    def rutasIniciales(self,listaCarpetas:list,colaborador:str):
         try:
             rutaBase = Path("/mnt/backupinformacion/colaboradores_data")
             #rutaInicial = f"/mnt/backupcolaboradores/{self.hostname}/"
-            rutaInicial = rutaBase / self.hostname
-            print(f"Ruta inicial creada {rutaInicial} --- {self.hostname}")
+            nombre_completo = self.hostname + colaborador
+            rutaInicial = rutaBase / nombre_completo
+            print(f"Ruta inicial creada {rutaInicial} --- {nombre_completo}")
         except Exception as e:
             print(f"Error creando ruta {e}")
         listaRutasLocales = []                
@@ -771,7 +772,7 @@ class SSHManager(logArchivos):
             print(f"Esto se creo {ruta}")        
             listaRutasLocales.append(ruta)
             mensaje = "Las carpetas iniciales en el Disco /mnt/backupinformacion/colaboradores_data fueron creadas con exito"
-            self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
+            self.registrarLog(mensaje,"INF",self.rutaArchivo,nombre_completo)
         return listaRutasLocales
     
     
