@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404,redirect
 from ips.models import ips, tipo_equipos_informaticos, tipo_estado_ips
 from .models import EstadoAccionesWindows,FaltantesRevisionEquiposWindows
 from .task import cambiar_usb_solo_lectura, cambiar_usb_bloqueo_total,cambiar_usb_desbloqueo_total, hacer_reset_contraseña_windows,verificacion_usb_all,verificacion_usb_faltantes
-
+from datetime import datetime
 
 # Create your views here.
 def menu_opciones_windows(request):
@@ -16,7 +16,9 @@ def menu_opciones_windows(request):
     return render(request,'menu_opciones_windows/opciones_windows.html',{'acciones_windows':acciones_windows})
 
 def faltantes_verificacion_windows(request):
-    faltantes_windows = FaltantesRevisionEquiposWindows.objects.all()
+    año_actual = datetime.now().year
+    mes_actual = datetime.now().month
+    faltantes_windows = FaltantesRevisionEquiposWindows.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual)
     return render(request,'menu_opciones_windows/faltantes_revision_windows.html',{'faltantes_windows':faltantes_windows})
 
 def usb_solo_lectura(request,pk):
