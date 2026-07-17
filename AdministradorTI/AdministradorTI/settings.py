@@ -150,6 +150,16 @@ MEDIA_ROOT = '/var/www/mi_proyecto/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SESSION_COOKIE_NAME = 'administrador_ti'
+#Configuracion de correo
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.cajaincasur.com.pe'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'lquispe@cajaincasur.com.pe'
+EMAIL_HOST_PASSWORD = '73206012'
+DEFAULT_FROM_EMAIL = 'Notificacion de Administrador TI <lquispe@cajaincasur.com.pe>'
+
+
 #Configuracion Celery broker
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'

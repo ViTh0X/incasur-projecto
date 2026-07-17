@@ -7,6 +7,7 @@ from home.models import logs_actividades_celery
 import os
 from datetime import datetime
 from utilidades.utilidades_ssh import SSHManager
+from utilidades.envio_correo import enviar_correo_ti_incasur
 
 lista_acceso_total = ['Gerente General','Gerente Comercial','Gerente De TI','Gerente De Auditoria Interna','Gerente De Riesgos','Gerente De Investigación, Desarrollo E Innovacion','Gerente De Administracion Y Finanzas','Jefe De Marketing E Inteligencia Comercial','Asistente De Rrhh Y Logistica','Asistente de Producción']
 lista_solo_lectura = ['Jefe De Operaciones Central','Jefe De Productos Negocios','Asistente De Finanzas']
@@ -91,15 +92,17 @@ def verificacion_usb_all():
                 faltantes_update_windows.codigo_colaborador = ip_filtrada.colaborador_asignado                                    
                 faltantes_update_windows.save()
         
+        mensaje_final = "La ejecucion de revision Puertos USB termino."
         logs_revision_usb = logs_actividades_celery(            
-            mensaje = "La ejecucion de revision Puertos USB termino."
+            mensaje = mensaje_final
         )                                
         logs_revision_usb.save()                                          
         return "TAREA VERIFICACION USB TERMINO"
     
     except Exception as e:
+        mensaje_final = f"Error revisando los puertos USB {e}."
         logs_inventario_hardware = logs_actividades_celery(            
-            mensaje = F"Error revisando los usb {e}."
+            mensaje = mensaje_final
         )                                
         logs_inventario_hardware.save()
         return "ERROR REVISANDO PUERTOS USB"                             
@@ -187,18 +190,21 @@ def verificacion_usb_faltantes():
                 faltantes_update_windows.codigo_ip = ip_filtrada
                 faltantes_update_windows.codigo_colaborador = ip_filtrada.colaborador_asignado                                    
                 faltantes_update_windows.save()
-        
+        mensaje_final = "La ejecucion de revision faltantes Puertos USB termino."
         logs_revision_usb = logs_actividades_celery(            
-            mensaje = "La ejecucion de revision Puertos USB termino."
+            mensaje = mensaje_final
         )                                
-        logs_revision_usb.save()                                          
+        logs_revision_usb.save()
+        enviar_correo_ti_incasur(mensaje_final, "TAREA FALTANTES VERIFICACION USB TERMINO")
         return "TAREA FALTANTES VERIFICACION USB TERMINO"                 
     
     except Exception as e:
+        mensaje_final = f"Error revisando faltantes usbs {e}."
         logs_inventario_hardware = logs_actividades_celery(            
-            mensaje = F"Error revisando los usb {e}."
+            mensaje = mensaje_final
         )                                
         logs_inventario_hardware.save()
+        enviar_correo_ti_incasur(mensaje_final, "TAREA FALTANTES VERIFICACION USB TERMINO")
         return "ERROR FALTANTES REVISANDO PUERTOS USB"                                    
 
 @shared_task

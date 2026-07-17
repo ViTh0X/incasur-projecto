@@ -758,7 +758,7 @@ class SSHManager(logArchivos):
         try:
             rutaBase = Path("/mnt/backupinformacion/colaboradores_data")
             #rutaInicial = f"/mnt/backupcolaboradores/{self.hostname}/"
-            nombre_completo = self.hostname + colaborador
+            nombre_completo = self.hostname +"-"+ colaborador
             rutaInicial = rutaBase / nombre_completo
             print(f"Ruta inicial creada {rutaInicial} --- {nombre_completo}")
         except Exception as e:
