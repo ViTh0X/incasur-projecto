@@ -134,7 +134,7 @@ def ejecutar_faltantes_backup_informacion():
                 if equipo_conectado:
                     SSH_instancia.crearCanalSFTP()
                     backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
-                    listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"],colaborador)
+                    listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"],colaborador.colaborador_asignado.nombre_colaborador)
                     listaRutas = SSH_instancia.creaRutasRemotas(username,listaRutasLocales,string_ip)
                     for rutas in listaRutas:
                         llave, valor = list(rutas.items())[0]
