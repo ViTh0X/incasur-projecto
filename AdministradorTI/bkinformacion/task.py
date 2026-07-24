@@ -23,7 +23,7 @@ def ejecutar_backup_informacion():
         print(lista_ips_ocupadas)        
         for ip in lista_ips_ocupadas:                                        
             string_ip = ip['ip']
-            colaborador = ips.objects.get(ip_colaborador=string_ip)            
+            colaborador = ips.objects.get(ip=string_ip)            
             if string_ip in lista_ips_bloqueadas:
                 continue
             username = "Administrador"
@@ -112,7 +112,7 @@ def ejecutar_faltantes_backup_informacion():
             return "NO HAY FALTANTES TAREA TERMINADA"
         for ip_faltantes in lista_faltantes:            
             string_ip = ip_faltantes.codigo_ip.ip
-            colaborador = ips.objects.get(ip_colaborador=string_ip) 
+            colaborador = ips.objects.get(ip=string_ip) 
             if string_ip in lista_ips_bloqueadas:
                 continue
             username = "Administrador"
@@ -191,7 +191,7 @@ def ejecutar_faltantes_backup_informacion():
 @shared_task()
 def ejecutar_backup_individual(ip):
     try:
-        colaborador = ips.objects.get(ip_colaborador=ip) 
+        colaborador = ips.objects.get(ip=ip) 
         username = "Administrador"
         puerto = os.getenv('SSH_PORT')
         keyfile = os.getenv('SSH_KEYFILE')
