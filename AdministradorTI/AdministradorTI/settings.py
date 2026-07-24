@@ -277,7 +277,7 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'inventario_hardware.task.ejecutar_faltantes_inventario_hardware',
         'schedule': crontab(
             minute=0,
-            hour='9-15',
+            hour='9,15',
             day_of_month='24-28',
             month_of_year='1-12'
         ),
