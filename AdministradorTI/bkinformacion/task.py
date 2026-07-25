@@ -191,7 +191,7 @@ def ejecutar_faltantes_backup_informacion():
 @shared_task()
 def ejecutar_backup_individual(ip):
     try:
-        colaborador = ips.objects.get(ip=ip) 
+        #colaborador = ips.objects.get(ip=str(ip)) 
         username = "Administrador"
         puerto = os.getenv('SSH_PORT')
         keyfile = os.getenv('SSH_KEYFILE')
@@ -213,7 +213,7 @@ def ejecutar_backup_individual(ip):
                 backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                 print("Elimino Duplicados")
                 SSH_instancia.crearCanalSFTP()                    
-                listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"],colaborador.colaborador_asignado.nombre_colaborador)
+                listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"],ip_filtrada.colaborador_asignado.nombre_colaborador)
                 listaRutas = SSH_instancia.creaRutasRemotas(username,listaRutasLocales,ip)
                 print("Inicio la ejecucion del Backup Espere...")
                 for rutas in listaRutas:
