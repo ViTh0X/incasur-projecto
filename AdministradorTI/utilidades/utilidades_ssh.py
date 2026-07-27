@@ -780,7 +780,7 @@ class SSHManager(logArchivos):
         lsRutaBKUP = []
         rBaseRemoC = "C:/Users/"        
         try:
-            if ip == "192.168.1.122":
+            if ip == "192.168.20.22":
                 for rLocal in listaRutaLocales:
                     lsR = {}
                     rutaTexto = str(rLocal)
@@ -794,7 +794,7 @@ class SSHManager(logArchivos):
                 mensaje = "Las rutas iniciales fueron preparadas con exito"
                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
                 return lsRutaBKUP        
-            elif ip == "192.168.1.36":
+            elif ip == "192.168.20.53":
                 for rLocal in listaRutaLocales:
                     lsR = {}
                     rutaTexto = str(rLocal)
@@ -808,7 +808,7 @@ class SSHManager(logArchivos):
                 mensaje = "Las rutas iniciales fueron preparadas con exito"
                 self.registrarLog(mensaje,"INF",self.rutaArchivo,self.hostname)
                 return lsRutaBKUP
-            elif ip == "192.168.1.60":
+            elif ip == "192.168.20.42":
                 for rLocal in listaRutaLocales:
                     lsR = {}
                     rutaTexto = str(rLocal)
