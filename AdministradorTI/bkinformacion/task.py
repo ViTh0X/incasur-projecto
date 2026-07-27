@@ -206,6 +206,8 @@ def ejecutar_backup_individual(ip):
         #esta_en_linea = SSH_instancia.revisarConexionSSH()
         #Filtrando el objeto ip
         ip_filtrada = ips.objects.get(ip=ip)
+        nombre_colab_filtrado = ip_filtrada.colaborador_asignado.nombre_colaborador
+        roll_ip = ip_filtrada.roll_ip
         mes_actual = datetime.now().month
         año_actual = datetime.now().year
         dia_actual = datetime.now().day        
@@ -219,7 +221,7 @@ def ejecutar_backup_individual(ip):
                 backups_informacion.objects.filter(fecha_modificacion__year=año_actual,fecha_modificacion__month=mes_actual,codigo_ip=ip_filtrada).delete()
                 print("Elimino Duplicados")
                 SSH_instancia.crearCanalSFTP()                    
-                listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"],ip_filtrada.colaborador_asignado.nombre_colaborador)
+                listaRutasLocales = SSH_instancia.rutasIniciales(["Discos"],nombre_colab_filtrado)
                 listaRutas = SSH_instancia.creaRutasRemotas(username,listaRutasLocales,ip)
                 print("Inicio la ejecucion del Backup Espere...")
                 for rutas in listaRutas:
@@ -258,7 +260,7 @@ def ejecutar_backup_individual(ip):
             ip_filtrada = ips.objects.get(ip=ip)
             faltantes_hardware = faltantes_backup_informacion(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
             faltantes_hardware.save()
-        mensaje = f'La ejecucion de {ip} backup de informacion termino sin interrupciones.'
+        mensaje = f'La ejecucion de {ip} {nombre_colab_filtrado} {roll_ip} backup de informacion termino sin interrupciones.'
         logs_inventario_hardware = logs_actividades_celery(            
             mensaje = mensaje
         )                                
@@ -266,7 +268,7 @@ def ejecutar_backup_individual(ip):
         enviar_correo_ti_incasur(mensaje, f"TAREA BACKUP DE INFORMACION {ip}")
         return f"TAREA BACKUP {ip} DE INFORMACION TERMINARDA"
     except Exception as e:
-        mensaje = f"Error al ejecutar backup de informacion {ip}: {e}"
+        mensaje = f"Error al ejecutar backup de informacion {ip} {nombre_colab_filtrado} {roll_ip}: {e}"
         logs_inventario_hardware = logs_actividades_celery(
             mensaje = mensaje
             # mensaje = 'Ubo un error en la ejecucion de inventario de hardware no se completo.'
