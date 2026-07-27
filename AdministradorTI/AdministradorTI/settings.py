@@ -277,7 +277,7 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'inventario_hardware.task.ejecutar_faltantes_inventario_hardware',
         'schedule': crontab(
             minute=0,
-            hour='9,15',
+            hour='9,16',
             day_of_month='24-28',
             month_of_year='1-12'
         ),
@@ -285,8 +285,8 @@ CELERY_BEAT_SCHEDULE = {
     'faltantes_inventario_software': {
         'task': 'inventario_software.task.ejecutar_faltantes_inventario_software',
         'schedule': crontab(
-            minute=0,
-            hour='10,16',
+            minute=30,
+            hour='9,16',
             day_of_month='24-28',
             month_of_year='1-12'
         ),
@@ -295,7 +295,7 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'administracion_windows.task.verificacion_usb_faltantes',
         'schedule': crontab(
             minute=0,
-            hour='11,17',
+            hour='10,17',
             day_of_month='24-28',
             month_of_year='1-12'
         ),
@@ -303,8 +303,8 @@ CELERY_BEAT_SCHEDULE = {
     'faltantes_backup_informacion': {
         'task': 'bkinformacion.task.ejecutar_faltantes_backup_informacion',
         'schedule': crontab(
-            minute=0,
-            hour=12,
+            minute=10,
+            hour=10,
             day_of_month='24-28',
             month_of_year='1-12'
         ),
