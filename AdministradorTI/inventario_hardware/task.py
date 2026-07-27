@@ -9,6 +9,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 from utilidades.utilidades_ssh import SSHManager
+from utilidades.envio_correo import enviar_correo_ti_incasur
 
 @shared_task
 def ejecutar_inventario_hardware():
@@ -72,18 +73,21 @@ def ejecutar_inventario_hardware():
                 ip_filtrada = ips.objects.get(ip=string_ip)
                 faltantes_hardware = faltantes_inventario_hardware(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                 faltantes_hardware.save()
-        
+        mensaje = "Termino la tarea inventario de hardware correctamente, se han registrado los equipos que no pudieron ser inventariados en la tabla de faltantes."
         logs_inventario_hardware = logs_actividades_celery(
-            mensaje = 'La ejecucion de inventario de hardware termino sin interrupciones.'
+            mensaje = mensaje
         )                                
         logs_inventario_hardware.save()
-        return "TAREA INVENTARIO HARDWARE TERMINARDA"
+        enviar_correo_ti_incasur(mensaje, "TAREA INVENTARIO HARDWARE TERMINADA")
+        return "TAREA INVENTARIO HARDWARE TERMINADA"
     
     except Exception as e:
+        mensaje = f"Error al ejecutar inventario de hardware: {e}"
         logs_inventario_hardware = logs_actividades_celery(
-            mensaje = f"Error{e}"
+            mensaje = mensaje
         )                                
         logs_inventario_hardware.save()
+        enviar_correo_ti_incasur(mensaje, "ERROR TAREA INVENTARIO HARDWARE ERROR")
         return "ERROR FALTANTES INVENTARIO HARDWARE"                             
                              
 @shared_task
@@ -149,18 +153,21 @@ def ejecutar_faltantes_inventario_hardware():
                 ip_filtrada = ips.objects.get(ip=string_ip)
                 faltantes_hardware = faltantes_inventario_hardware(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                 faltantes_hardware.save()
-        
+        mensaje = "La ejecucion de FALTANTES inventario de hardware termino sin interrupciones."
         logs_inventario_hardware = logs_actividades_celery(
-            mensaje = 'La ejecucion de FALTANTES inventario de hardware termino sin interrupciones.'
+            mensaje = mensaje
         )                                
         logs_inventario_hardware.save()
-        return "TAREA FALTANTES INVENTARIO HARDWARE TERMINARDA"
+        enviar_correo_ti_incasur(mensaje, "TAREA FALTANTES INVENTARIO HARDWARE TERMINADA")
+        return "TAREA FALTANTES INVENTARIO HARDWARE TERMINADA"
     
     except Exception as e:
+        mensaje = f"Error al ejecutar faltantes inventario de hardware: {e}, \n Revisar en el Sistema."
         logs_inventario_hardware = logs_actividades_celery(
-            mensaje = f"Error{e}"
+            mensaje = mensaje
         )                                
         logs_inventario_hardware.save()
+        enviar_correo_ti_incasur(mensaje, "ERROR TAREA FALTANTES INVENTARIO HARDWARE ERROR")
         return "ERROR FALTANTES INVENTARIO HARDWARE"        
     
     

@@ -92,20 +92,22 @@ def verificacion_usb_all():
                 faltantes_update_windows.codigo_colaborador = ip_filtrada.colaborador_asignado                                    
                 faltantes_update_windows.save()
         
-        mensaje_final = "La ejecucion de revision Puertos USB termino."
+        mensaje_final = "La ejecucion de revision Puertos USB mensual termino."
         logs_revision_usb = logs_actividades_celery(            
             mensaje = mensaje_final
         )                                
-        logs_revision_usb.save()                                          
-        return "TAREA VERIFICACION USB TERMINO"
+        logs_revision_usb.save()
+        enviar_correo_ti_incasur(mensaje_final, "TAREA VERIFICACION USB MENSUAL")                                          
+        return "TAREA VERIFICACION USB MENSUAL TERMINADA"
     
     except Exception as e:
-        mensaje_final = f"Error revisando los puertos USB {e}."
+        mensaje_final = f"Error revisando los puertos USB mensual: {e}"
         logs_inventario_hardware = logs_actividades_celery(            
             mensaje = mensaje_final
         )                                
         logs_inventario_hardware.save()
-        return "ERROR REVISANDO PUERTOS USB"                             
+        enviar_correo_ti_incasur(mensaje_final, "ERROR TAREA VERIFICACION USB MENSUAL")
+        return "ERROR REVISANDO PUERTOS USB MENSUAL"                             
     
                              
 @shared_task
@@ -199,12 +201,12 @@ def verificacion_usb_faltantes():
         return "TAREA FALTANTES VERIFICACION USB TERMINO"                 
     
     except Exception as e:
-        mensaje_final = f"Error revisando faltantes usbs {e}."
+        mensaje_final = f"Error revisando faltantes usbs {e} \n Revisar en el Sistema."
         logs_inventario_hardware = logs_actividades_celery(            
             mensaje = mensaje_final
         )                                
         logs_inventario_hardware.save()
-        enviar_correo_ti_incasur(mensaje_final, "TAREA FALTANTES VERIFICACION USB TERMINO")
+        enviar_correo_ti_incasur(mensaje_final, "ERRORTAREA FALTANTES VERIFICACION USB TERMINO")
         return "ERROR FALTANTES REVISANDO PUERTOS USB"                                    
 
 @shared_task

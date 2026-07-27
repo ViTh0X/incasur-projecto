@@ -9,6 +9,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 from utilidades.utilidades_ssh import SSHManager
+from utilidades.envio_correo import enviar_correo_ti_incasur
 
 @shared_task
 def ejecutar_inventario_software():
@@ -65,19 +66,22 @@ def ejecutar_inventario_software():
                 ip_filtrada = ips.objects.get(ip=string_ip)
                 faltantes_software = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                 faltantes_software.save()
-        
+        mensaje = "La ejecucion de inventario de software termino sin interrupciones, se han registrado los equipos que no pudieron ser inventariados en la tabla de faltantes."
         logs_inventario_hardware = logs_actividades_celery(            
-            mensaje = 'La ejecucion de inventario de software termino sin interrupciones.'
+            mensaje = mensaje
         )                                
         logs_inventario_hardware.save()
-        return "TAREA INVENTARIO SOFTWARE TERMINARDA"         
+        enviar_correo_ti_incasur(mensaje, "TAREA INVENTARIO SOFTWARE TERMINADA")
+        return "TAREA INVENTARIO SOFTWARE TERMINADA"         
             
     except Exception as e:
+        mensaje = f"Error al ejecutar inventario de software: {e}, \n Revisar en el Sistema."
         logs_inventario_hardware = logs_actividades_celery(
-            mensaje = f"Error {e}"
+            mensaje = mensaje
             # mensaje = 'Ubo un error en la ejecucion de inventario de software no se completo.'
         )                                
         logs_inventario_hardware.save()
+        enviar_correo_ti_incasur(mensaje, "ERROR TAREA INVENTARIO SOFTWARE ERROR")
         return "ERROR INVENTARIO SOFTWARE"
     
 
@@ -133,19 +137,22 @@ def ejecutar_faltantes_inventario_software():
                 ip_filtrada = ips.objects.get(ip=string_ip)
                 faltantes_software = faltantes_inventario_software(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                 faltantes_software.save()
-        
+        mensaje = "La ejecucion de FALTANTES inventario de software termino sin interrupciones"
         faltantes_software = logs_actividades_celery(
-            mensaje = 'La ejecucion FALTANTES de inventario de software termino sin interrupciones.'
+            mensaje = mensaje
         )                                
         faltantes_software.save()
-        return "TAREA FALTANTES INVENTARIO SOFTWARE TERMINARDA"         
+        enviar_correo_ti_incasur(mensaje, "TAREA FALTANTES INVENTARIO SOFTWARE TERMINADA")
+        return "TAREA FALTANTES INVENTARIO SOFTWARE TERMINADA"         
             
     except Exception as e:
+        mensaje = f"Error al ejecutar FALTANTES inventario de software: {e}, \n Revisar en el Sistema."
         logs_inventario_hardware = logs_actividades_celery(
-            mensaje = f"Error{e}"
+            mensaje = mensaje
             # mensaje = 'Ubo un error en la ejecucion de FALTANTES inventario de software no se completo.'
         )                                
         faltantes_software.save()
+        enviar_correo_ti_incasur(mensaje, "ERROR TAREA FALTANTES INVENTARIO SOFTWARE ERROR")
         return "ERROR FALTANTES INVENTARIO SOFTWARE"
 
 @shared_task

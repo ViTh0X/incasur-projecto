@@ -9,7 +9,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 from utilidades.utilidades_ssh import SSHManager
-
+from utilidades.envio_correo import enviar_correo_ti_incasur
 
 lista_ips_bloqueadas = ['192.168.1.40','192.168.1.38']
 @shared_task()
@@ -86,18 +86,21 @@ def ejecutar_backup_informacion():
                 ip_filtrada = ips.objects.get(ip=string_ip)
                 faltantes_hardware = faltantes_backup_informacion(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                 faltantes_hardware.save()
-                
+        mensaje = "La ejecucion de backup de informacion mensual termino sin interrupciones."        
         logs_inventario_hardware = logs_actividades_celery(            
-            mensaje = 'La ejecucion de backup de informacion termino sin interrupciones.'
+            mensaje = mensaje
         )                                
         logs_inventario_hardware.save()
-        return "TAREA BACKUP DE INFORMACION TERMINARDA"
+        enviar_correo_ti_incasur(mensaje, "TAREA BACKUP DE INFORMACION MENSUAL EJECUTADA CON EXITO")
+        return "TAREA BACKUP DE INFORMACION MENSUAL TERMINADA"
     except Exception as e:
+        mensaje = f"Error al ejecutar backup de informacion mensual: {e}"
         logs_inventario_hardware = logs_actividades_celery(
-            mensaje = f"Error{e}"
+            mensaje = mensaje
             # mensaje = 'Ubo un error en la ejecucion de inventario de hardware no se completo.'
         )                                
         logs_inventario_hardware.save()
+        enviar_correo_ti_incasur(mensaje, "TAREA BACKUP DE INFORMACION MENSUAL ERROR")
         return "ERROR REALIZANDO EL BACKUP DE INFORMACION"
     
 @shared_task()
@@ -172,19 +175,22 @@ def ejecutar_faltantes_backup_informacion():
                 ip_filtrada = ips.objects.get(ip=string_ip)
                 faltantes_hardware = faltantes_backup_informacion(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
                 faltantes_hardware.save()
-        
+        mensaje = "La ejecucion de FALTANTES backup de informacion termino sin interrupciones."
         logs_inventario_hardware = logs_actividades_celery(            
-            mensaje = 'La ejecucion de FALTANTES backup de informacion termino sin interrupciones.'
+            mensaje = mensaje
         )                                
         logs_inventario_hardware.save()
+        enviar_correo_ti_incasur(mensaje, "TAREA FALTANTES BACKUP DE INFORMACION TERMINADA")
         return "TAREA FALTANTES BACKUP DE INFORMACION TERMINARDA"
     
     except Exception as e:
+        mensaje = f"Error al ejecutar FALTANTES backup de informacion: {e} \n Revisar en el Sistema."
         logs_inventario_hardware = logs_actividades_celery(
-            mensaje = f"Error{e}"
+            mensaje = mensaje
             # mensaje = 'Ubo un error en la ejecucion de FALTANTES inventario de software no se completo.'
         )                                
         logs_inventario_hardware.save()
+        enviar_correo_ti_incasur(mensaje, "ERROR TAREA FALTANTES BACKUP DE INFORMACION ERROR")
         return "ERROR REALIZANDO EL FALTANTES BACKUP DE INFORMACION"        
 
 
@@ -252,16 +258,19 @@ def ejecutar_backup_individual(ip):
             ip_filtrada = ips.objects.get(ip=ip)
             faltantes_hardware = faltantes_backup_informacion(codigo_ip=ip_filtrada,codigo_colaborador=ip_filtrada.colaborador_asignado)
             faltantes_hardware.save()
-        
+        mensaje = f'La ejecucion de {ip} backup de informacion termino sin interrupciones.'
         logs_inventario_hardware = logs_actividades_celery(            
-            mensaje = f'La ejecucion de {ip} backup de informacion termino sin interrupciones.'
+            mensaje = mensaje
         )                                
         logs_inventario_hardware.save()
+        enviar_correo_ti_incasur(mensaje, f"TAREA BACKUP DE INFORMACION {ip}")
         return f"TAREA BACKUP {ip} DE INFORMACION TERMINARDA"
     except Exception as e:
+        mensaje = f"Error al ejecutar backup de informacion {ip}: {e}"
         logs_inventario_hardware = logs_actividades_celery(
-            mensaje = f"Error{e}"
+            mensaje = mensaje
             # mensaje = 'Ubo un error en la ejecucion de inventario de hardware no se completo.'
         )                                
         logs_inventario_hardware.save()
+        enviar_correo_ti_incasur(mensaje, f"ERROR TAREA BACKUP DE INFORMACION {ip}")
         return f"ERROR REALIZANDO EL BACKUP DE INFORMACION {ip}"    
