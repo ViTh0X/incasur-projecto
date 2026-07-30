@@ -5,6 +5,6 @@ def enviar_correo_ti_incasur(mensaje:str,asunto:str):
         subject=asunto,
         message=mensaje,
         from_email='lquispe@cajaincasur.com.pe',
-        recipient_list=['ti@cajaincasur.com.pe'],
+        recipient_list=['lquispe@cajaincasur.com.pe'],
         fail_silently=False,
     )
