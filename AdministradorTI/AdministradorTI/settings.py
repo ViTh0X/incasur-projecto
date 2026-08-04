@@ -236,7 +236,7 @@ CELERY_BEAT_SCHEDULE = {
         ),
     },
     #Ejecucion Automatica Faltantes Inicio del Mes Todos
-    'faltantes_inventario_hardware': {
+    'faltantes_inventario_hardware_inicio': {
         'task': 'inventario_hardware.task.ejecutar_faltantes_inventario_hardware',
         'schedule': crontab(
             minute=0,
@@ -245,7 +245,7 @@ CELERY_BEAT_SCHEDULE = {
             month_of_year='1-12'
         ),
     },
-    'faltantes_inventario_software': {
+    'faltantes_inventario_software_inicio': {
         'task': 'inventario_software.task.ejecutar_faltantes_inventario_software',
         'schedule': crontab(
             minute=30,
@@ -254,7 +254,7 @@ CELERY_BEAT_SCHEDULE = {
             month_of_year='1-12'
         ),
     },
-    'faltantes_revision_windows_usb': {
+    'faltantes_revision_windows_usb_inicio': {
         'task': 'administracion_windows.task.verificacion_usb_faltantes',
         'schedule': crontab(
             minute=0,
@@ -263,7 +263,7 @@ CELERY_BEAT_SCHEDULE = {
             month_of_year='1-12'
         ),
     },
-    'faltantes_backup_informacion': {
+    'faltantes_backup_informacion_inicio': {
         'task': 'bkinformacion.task.ejecutar_faltantes_backup_informacion',
         'schedule': crontab(
             minute=10,
@@ -273,7 +273,7 @@ CELERY_BEAT_SCHEDULE = {
         ),
     },
     #Ejecucion Automatica Faltantes Fin del Mes Todos
-    'faltantes_inventario_hardware': {
+    'faltantes_inventario_hardware_fin': {
         'task': 'inventario_hardware.task.ejecutar_faltantes_inventario_hardware',
         'schedule': crontab(
             minute=0,
@@ -282,7 +282,7 @@ CELERY_BEAT_SCHEDULE = {
             month_of_year='1-12'
         ),
     },
-    'faltantes_inventario_software': {
+    'faltantes_inventario_software_fin': {
         'task': 'inventario_software.task.ejecutar_faltantes_inventario_software',
         'schedule': crontab(
             minute=30,
@@ -291,7 +291,7 @@ CELERY_BEAT_SCHEDULE = {
             month_of_year='1-12'
         ),
     },
-    'faltantes_revision_windows_usb': {
+    'faltantes_revision_windows_usb_fin': {
         'task': 'administracion_windows.task.verificacion_usb_faltantes',
         'schedule': crontab(
             minute=0,
@@ -300,7 +300,7 @@ CELERY_BEAT_SCHEDULE = {
             month_of_year='1-12'
         ),
     },
-    'faltantes_backup_informacion': {
+    'faltantes_backup_informacion_fin': {
         'task': 'bkinformacion.task.ejecutar_faltantes_backup_informacion',
         'schedule': crontab(
             minute=10,
