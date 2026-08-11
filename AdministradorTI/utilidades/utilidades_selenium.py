@@ -13,8 +13,8 @@ load_dotenv()
 import secrets
 import string
 
-from utilidades_qr import crear_qr_wifi
-from envio_correo import enviar_correo_cambio_contraseña, fallo_crear_contraseña
+from .utilidades_qr import crear_qr_wifi
+from .envio_correo import enviar_correo_cambio_contraseña, fallo_crear_contraseña
 
 URL_EQUIPO_WIFI = "http://192.168.40.150:8080"
 USUARIO = "Admin"
