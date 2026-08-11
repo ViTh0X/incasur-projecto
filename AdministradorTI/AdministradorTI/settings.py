@@ -355,6 +355,15 @@ CELERY_BEAT_SCHEDULE = {
             month_of_year='1-12'
         ),
     },
+    'generar_wifi_qr_contrasena': {
+            'task': 'administracion_windows.task.cambiar_contrasena_qr_wifi',
+            'schedule': crontab(
+                minute=0,
+                hour=13,
+                day_of_month='*',
+                month_of_year='1-12'
+            ),
+        },
     # Segunda regla: A las 5:00 PM
     
     #'tarea_prueba': {

@@ -8,6 +8,8 @@ import os
 from datetime import datetime
 from utilidades.utilidades_ssh import SSHManager
 from utilidades.envio_correo import enviar_correo_ti_incasur
+from utilidades.utilidades_selenium import cambiar_contrasena_wifi
+
 
 lista_acceso_total = ['Gerente General','Gerente Comercial','Gerente De TI','Gerente De Auditoria Interna','Gerente De Riesgos','Gerente De Investigación, Desarrollo E Innovacion','Gerente De Administracion Y Finanzas','Jefe De Marketing E Inteligencia Comercial','Asistente De Rrhh Y Logistica','Asistente de Producción']
 lista_solo_lectura = ['Jefe De Operaciones Central','Jefe De Productos Negocios','Asistente De Finanzas']
@@ -397,3 +399,11 @@ def enviar_efact():
 
     except Exception as e:
         return "ERROR AL ENVIAR EFACT"
+    
+@shared_task
+def cambiar_contrasena_qr_wifi():
+    try:
+        cambiar_contrasena_wifi()                            
+        return "TERMINO LA TAREA DE GENERAR WIFI Y CAMBIAR QR"
+    except Exception as e:
+        return "ERROR EN LA TAREA DE GENERAR WIFI Y CAMBIAR QR"
