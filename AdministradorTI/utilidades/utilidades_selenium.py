@@ -38,7 +38,8 @@ def cambiar_contrasena_wifi():
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--window-size=1920,1080") # <-- Recomendado para evitar problemas de clicks en elementos ocultos
         chrome_options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36") # Opcional: evita bloqueos
-        
+        chrome_options.add_argument("--no-sandbox") # Crucial en entornos Linux o si el proceso corre como root/servicios
+        chrome_options.add_argument("--disable-dev-shm-usage") # Evita que Chrome colapse por falta de memoria compartida (/dev/shm) en el servidor
         # Se pasan las options al inicializar el driver
         driver = webdriver.Chrome(
             service=ChromeService(ChromeDriverManager().install()), 
