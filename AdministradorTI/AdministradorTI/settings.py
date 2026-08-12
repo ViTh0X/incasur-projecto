@@ -358,7 +358,7 @@ CELERY_BEAT_SCHEDULE = {
     'generar_wifi_qr_contrasena': {
             'task': 'administracion_windows.task.cambiar_contrasena_qr_wifi',
             'schedule': crontab(
-                minute=20,
+                minute=23,
                 hour=20,
                 day_of_month='*',
                 month_of_year='1-12'

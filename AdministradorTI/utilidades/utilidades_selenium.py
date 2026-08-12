@@ -95,7 +95,7 @@ def cambiar_contrasena_wifi():
             print("Error al generar el código QR.")
         print("Contraseña de WiFi cambiada y código QR generado exitosamente.")
     except Exception as e:
-        print("Ocurrio un error al generar el QR , no se logro.")
+        print(f"Ocurrio un error al generar el QR , no se logro.{e}")
         driver.quit()
         exit()
         
