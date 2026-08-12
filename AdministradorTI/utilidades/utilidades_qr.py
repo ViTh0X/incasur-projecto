@@ -17,6 +17,6 @@ def crear_qr_wifi(contraseña_wifi,ruta_qr):
         qr_img = qrcode.make(wifi_data)
         ruta_qr_final = f"{ruta_qr}/wifi_qr.png"
         qr_img.save(ruta_qr_final)
-        return ruta_qr_final
+        return True,ruta_qr_final
     except Exception as e:
-        return e
+        return False,e
