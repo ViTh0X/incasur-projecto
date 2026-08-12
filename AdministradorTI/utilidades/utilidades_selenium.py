@@ -83,7 +83,10 @@ def cambiar_contrasena_wifi():
         campo_confirmar_contraseña_wifi = driver.find_element(By.XPATH, "//input[@value='Guardar parámetros']")
         campo_confirmar_contraseña_wifi.click()
         time.sleep(5)
-        qr_generado_ruta = crear_qr_wifi(contraseña_wifi=nueva_contraseña,ruta_qr=ruta_almacenamiento_imagen_qr)
+        try:
+            qr_generado_ruta = crear_qr_wifi(contraseña_wifi=nueva_contraseña,ruta_qr=ruta_almacenamiento_imagen_qr)
+        except Exception as e:
+            print(f"Errorrrrrrr{e}")
         if not qr_generado_ruta:
             enviar_correo_cambio_contraseña(
                 mensaje=f"Se ha cambiado la contraseña de WiFi a: {nueva_contraseña}",
