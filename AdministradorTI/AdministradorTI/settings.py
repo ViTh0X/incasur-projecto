@@ -359,9 +359,9 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'administracion_windows.task.cambiar_contrasena_qr_wifi',
         'schedule': crontab(
             minute=30,
-            hour=9,
-            day_of_month='*',
-            month_of_year='1-12'
+            hour=7,
+            day_of_month='1',
+            month_of_year='*/2'
         ),
     },
     # Segunda regla: A las 5:00 PM
