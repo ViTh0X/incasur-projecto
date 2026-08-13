@@ -4,7 +4,7 @@ import qrcode
 def crear_qr_wifi(contraseña_wifi,ruta_qr):
     try:
     # Configura los datos de tu red Wi-Fi no oculta
-        ssid = "INCASURTI"
+        ssid = "REUINCASURWIFI"
         password = contraseña_wifi
         security = "WPA"
         is_hidden = False  # Indicamos que la red no emite su SSID
