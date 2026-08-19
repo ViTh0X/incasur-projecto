@@ -16,7 +16,7 @@ def enviar_correo_cambio_contraseña(mensaje: str, asunto: str, ruta_imagen: str
         subject=asunto,
         body=mensaje,
         from_email='lquispe@cajaincasur.com.pe',
-        to=['lquispe@cajaincasur.com.pe'],
+        to=['lquispe@cajaincasur.com.pe','jrivero@cajaincasur.com.pe','jcornejo@cajaincasur.com.pe'],
     )
     
     # Verificamos que el archivo exista antes de adjuntar
@@ -33,7 +33,7 @@ def fallo_crear_contraseña(mensaje:str,asunto:str):
         subject=asunto,
         message=mensaje,
         from_email='lquispe@cajaincasur.com.pe',
-        recipient_list=['lquispe@cajaincasur.com.pe'],
+        recipient_list=['lquispe@cajaincasur.com.pe','jrivero@cajaincasur.com.pe'],
         fail_silently=False,
     )
     

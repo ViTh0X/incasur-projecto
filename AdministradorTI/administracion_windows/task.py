@@ -11,7 +11,7 @@ from utilidades.envio_correo import enviar_correo_ti_incasur
 from utilidades.utilidades_selenium import cambiar_contrasena_wifi
 
 
-lista_acceso_total = ['Gerente General','Gerente Comercial','Gerente De TI','Gerente De Auditoria Interna','Gerente De Riesgos','Gerente De Investigación, Desarrollo E Innovacion','Gerente De Administracion Y Finanzas','Jefe De Marketing E Inteligencia Comercial','Asistente De Rrhh Y Logistica','Asistente de Producción']
+lista_acceso_total = ['Gerente General','Gerente Comercial','Gerente De TI','Gerente De Auditoria Interna','Gerente De Riesgos','Gerente De Investigación, Desarrollo E Innovacion','Gerente De Administracion Y Finanzas','Jefe De Marketing E Inteligencia Comercial','Asistente De Rrhh Y Logistica','Asistente de Producción','Jefe De Organización Y Métodos','Jefe de Produccion']
 lista_solo_lectura = ['Jefe De Operaciones Central','Jefe De Productos Negocios','Asistente De Finanzas']
 ip_cajas = ['192.168.20.4','192.168.20.3']
 

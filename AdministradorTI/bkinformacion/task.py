@@ -11,7 +11,7 @@ load_dotenv()
 from utilidades.utilidades_ssh import SSHManager
 from utilidades.envio_correo import enviar_correo_ti_incasur
 
-lista_ips_bloqueadas = ['192.168.1.40','192.168.1.38']
+lista_ips_bloqueadas = ['192.168.20.36','192.168.20.21']
 @shared_task()
 def ejecutar_backup_informacion():
     try:
